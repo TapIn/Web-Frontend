@@ -91,13 +91,69 @@ TapIn.Frontend.Map = function(elem)
         return this;
     }
 
-
+    /**
+     * Gets the bounds of the current map view
+     * @return Array Array of bounds: [[n,e],[s,w]]
+     */
     this.getBounds = function()
     {
         var gm_bounds = _map.getBounds();
         var ne = gm_bounds.getNorthEast();
         var sw = gm_bounds.getSouthWest();
-        return [[ne.lat(), ne.lng()],[sw.lat(),sw.lng()]];
+
+        // Sometimes the ne bound is actually the sw:
+        var n = ne.lat();
+        var e = ne.lng();
+        var s = sw.lat();
+        var w = sw.lng();
+
+        if (s > n) {
+            var tmp = n;
+            n = s;
+            s = tmp;
+        }
+
+        if (w > e) {
+            var tmp = w;
+            w = e;
+            e = tmp;
+        }
+
+        // Google maps sometimes messes up on the bounds when we're close to a border (since 179E + 2 = -179E)
+        if (this.getZoom() <= 4) {
+            n =   90;
+            s =  -90;
+            e =  180;
+            w = -180;
+        }
+
+        n = n % 180;
+        s = s % 180;
+        e = e % 360;
+        w = w % 360;
+
+        // TODO: It's still possible the bounds could mess up if we're looking at streams in the Pacific islands at a close zoom level.
+
+        return [[n,e],[s,w]];
+    }
+
+    /**
+     * Gets the current center of the map
+     * @return Array LatLon of the center of the map
+     */
+    this.getCenter = function()
+    {
+        var center = _map.getCenter();
+        return [center.lat(), center.lng()];
+    }
+
+    /**
+     * Gets the zoom of the current map view
+     * @return int Zoom level, however you define that
+     */
+    this.getZoom = function()
+    {
+        return _map.getZoom();
     }
 
     var onPinAdd = function(pin)
@@ -133,10 +189,21 @@ TapIn.Frontend.Map = function(elem)
         TapIn.Log('debug', "Map initialized!");
 
         _map = new google.maps.Map(_elem, {
-            center: new google.maps.LatLng(-34.397, 150.644),
-            zoom: 8,
+            center: new google.maps.LatLng(40.0024331757129, 269.88193994140624),
+            zoom: 5,
+            minZoom: 3,
+            panControl: false,
+            zoomControl: false,
+            mapTypeControl: false,
+            overviewMapControl: false,
+            rotateControl: false,
+            scaleControl: false,
+            streetViewControl: false,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });
+
+        // TODO: We can't specify a max bounds in the map control, but it's annoying to have the map pan off the screen.
+        //       We should implement something like this: http://stackoverflow.com/questions/3125065/how-do-i-limit-panning-in-google-maps-api-v3
 
         _map.zoom_changed = _this.OnZoom.apply;
         _map.drag_ended = _this.OnPan.apply;
@@ -231,7 +298,7 @@ TapIn.Frontend.Map.PinCollection = function()
 
         // Process pin removals
         for (var i in this._pins) {
-            if (!(this._pins[i] in pinCollection._pins)) {
+            if (!(this._pins[i].Uid in pinCollection._pins)) {
                 this.removePin(this._pins[i]);
             }
         }

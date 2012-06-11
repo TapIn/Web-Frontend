@@ -119,7 +119,7 @@ TapIn.Api.Live = function()
         _this.OnWaiterBirth.register(function(){TapIn.Log('debug', "Waiter was born.");});
         _this.OnWaiterDeath.register(function(err){TapIn.Log('debug', "Waiter died: " + err);});
 
-        _this.birthWaiters();
+        //_this.birthWaiters();
     }
     constructor();
 }

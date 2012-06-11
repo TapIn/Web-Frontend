@@ -54,7 +54,7 @@
     </div>
 
     <div class="container" style="width:100%">
-    <div id="map_canvas" style="width: 100%; height: 1000px; margin-top: -20px;"></div>
+    <div id="map_canvas" style="position: absolute; top: 20px; left: 0; bottom: 0; right: 0;"></div>
       
      </div>
 
@@ -87,19 +87,28 @@
     <script type="text/javascript">
         var main_map;
         var api;
-        $(document).ready(function(){
-            main_map = new TapIn.Frontend.Map($("#map_canvas"));
-            api = new TapIn.Api();
-            main_map.OnBoundsChange.register(function(){
+
+        var updateMap = function(){
                 var bounds = main_map.getBounds();
                 api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], 3, 'now', function(streams){
+                    var new_pins = new TapIn.Frontend.Map.PinCollection();
                     for (var i in streams) {
                         var stream = streams[i];
                         var coords = streams[i][0]['coord'];
                         var pin = new TapIn.Frontend.Map.Pin(coords[0], coords[1], i);
-                        main_map.Pins.addOrUpdatePin(pin);
+                        new_pins.addOrUpdatePin(pin);
                     }
+
+                    console.log(new_pins);
+                    main_map.Pins.replace(new_pins);
                 })
+            };
+        $(document).ready(function(){
+            main_map = new TapIn.Frontend.Map($("#map_canvas"));
+            api = new TapIn.Api();
+            main_map.OnBoundsChange.register(updateMap);
+            TapIn.Util.Async.later(100,function(){
+                updateMap();
             });
         });
     </script>
