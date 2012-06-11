@@ -93,7 +93,12 @@
             main_map.OnBoundsChange.register(function(){
                 var bounds = main_map.getBounds();
                 api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], 3, 'now', function(streams){
-                    console.log(streams);
+                    for (var i in streams) {
+                        var stream = streams[i];
+                        var coords = streams[i][0]['coord'];
+                        var pin = new TapIn.Frontend.Map.Pin(coords[0], coords[1], i);
+                        main_map.Pins.addOrUpdatePin(pin);
+                    }
                 })
             });
         });
