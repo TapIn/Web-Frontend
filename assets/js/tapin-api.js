@@ -3,7 +3,7 @@ TapIn.Api = function()
     var _this = this;
     this.Live = new TapIn.Api.Live();
 
-    var base = "http://stage.api.tapin.tv/";
+    var base = "http://stage.api.tapin.tv/web/";
 
     // Events
     this.OnApiError = new TapIn.Event();
@@ -24,7 +24,7 @@ TapIn.Api = function()
     var prev_get_streams = null;
     this.get_streams_by_location = function(north, east, south, west, start, end, lambda)
     {
-        var endpoint = 'getstreamsbylocation/topleft=' + north + ',topleft=' + east + '&bottomright=' + south + ',bottomright=' + west + '&start=' + start + '&end=' + end;
+        var endpoint = 'getstreamsbylocation?topleft=' + north + ',topleft=' + east + '&bottomright=' + south + ',bottomright=' + west + '&start=' + start + '&end=' + end;
 
         if (prev_get_streams !== null) {
             prev_get_streams.abort();
