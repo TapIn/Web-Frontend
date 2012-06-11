@@ -3,7 +3,7 @@ TapIn.Api = function()
     var _this = this;
     this.Live = new TapIn.Api.Live();
 
-    var base = "http://184.169.213.133/";
+    var base = "http://stage.api.tapin.tv/";
 
     // Events
     this.OnApiError = new TapIn.Event();
