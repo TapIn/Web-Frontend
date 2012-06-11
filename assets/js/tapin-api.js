@@ -9,7 +9,7 @@ TapIn.Api = function()
     this.OnApiError = new TapIn.Event();
 
     this.call = function(endpoint, lambda) {
-        $.ajax({
+        return $.ajax({
             url: base + endpoint,
             dataType: 'json',
             success: function(data) {
@@ -21,10 +21,17 @@ TapIn.Api = function()
         });
     }
 
+    var prev_get_streams = null;
     this.get_streams_by_location = function(north, east, south, west, start, end, lambda)
     {
         var endpoint = 'getstreamsbylocation/topleft=' + north + ',topleft=' + east + '&bottomright=' + south + ',bottomright=' + west + '&start=' + start + '&end=' + end;
-        this.call(endpoint, function(data){
+
+        if (prev_get_streams !== null) {
+            prev_get_streams.abort();
+        }
+
+        prev_get_streams = this.call(endpoint, function(data){
+            TapIn.Log('debug', 'Stream data recieved: ', data.data.streams)
             lambda(data.data.streams);
         });
     }
@@ -62,7 +69,7 @@ TapIn.Api.Live = function()
     var onApiErrorHandler = function(err)
     {
         if (err !== 'abort') {
-            setTimeout(birthWaiter, 1000);
+            setTimeout(birthWaiter, 1500);
         }
     }
 
@@ -76,6 +83,11 @@ TapIn.Api.Live = function()
     this.birthWaiters = function(count)
     {
         TapIn.Log('debug', 'Birthing waiters.');
+
+        if (typeof(count) === 'undefined') {
+            count = 5;
+        }
+
         for(var i = 0; i < count; i++)
         {
             birthWaiter();
@@ -106,6 +118,8 @@ TapIn.Api.Live = function()
 
         _this.OnWaiterBirth.register(function(){TapIn.Log('debug', "Waiter was born.");});
         _this.OnWaiterDeath.register(function(err){TapIn.Log('debug', "Waiter died: " + err);});
+
+        _this.birthWaiters();
     }
     constructor();
 }
