@@ -1,6 +1,33 @@
 TapIn.Api = function()
 {
+    var _this = this;
     this.Live = new TapIn.Api.Live();
+
+    var base = "http://184.169.213.133/";
+
+    // Events
+    this.OnApiError = new TapIn.Event();
+
+    this.call = function(endpoint, lambda) {
+        $.ajax({
+            url: base + endpoint,
+            dataType: 'json',
+            success: function(data) {
+                lambda(data);
+            },
+            error: function(s, error) {
+                _this.OnApiError.apply(error);
+            }
+        });
+    }
+
+    this.get_streams_by_location = function(north, east, south, west, start, end, lambda)
+    {
+        var endpoint = 'getstreamsbylocation/topleft=' + north + ',topleft=' + east + '&bottomright=' + south + ',bottomright=' + west + '&start=' + start + '&end=' + end;
+        this.call(endpoint, function(data){
+            lambda(data.data.streams);
+        });
+    }
 };
 
 TapIn.Api.Live = function()

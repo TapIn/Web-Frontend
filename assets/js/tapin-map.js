@@ -2,6 +2,8 @@ TapIn.Frontend.Map = function(elem)
 {
     var _this = this;
     var _elem = null;
+    var _map = null;
+    var _markers = {};
 
     // Properties
     this.Pins = new TapIn.Frontend.Map.PinCollection();
@@ -9,33 +11,144 @@ TapIn.Frontend.Map = function(elem)
     // Events
     this.OnZoom = new TapIn.Event();
     this.OnPan = new TapIn.Event();
+    this.OnBoundsChange = new TapIn.Event();
+
+    /**
+     * Pans the map to the location without changing the zoom level.
+     * @param  float lat Latitude
+     * @param  float lon Longitude
+     * @return Object    The current object
+     */
+    this.center = function(lat, lon)
+    {
+        TapIn.Log('debug', 'Centering map on [' + lat + ',' + lon + ']');
+        _map.panTo(new google.maps.LatLng(lat, lon));
+        return this;
+    }
+
+    /**
+     * Zooms the map to the level specified without changing the center.
+     * @param  int      level   Zoom level
+     * @return Object           The current object
+     */
+    this.zoom = function(level)
+    {
+        TapIn.Log('debug', 'Zooming map to ' + level);
+        _map.setZoom(level);
+        return this;
+    }
+
+    /**
+     * Pans and zooms the map to fit the square formed by the points
+     * @param  float north Top lat
+     * @param  float east  Left long
+     * @param  float south Bottom lat
+     * @param  float west  Right long
+     * @return Object      The current object
+     */
+    this.goBound = function(north, east, south, west)
+    {
+        TapIn.Log('Moving map to [' + north + ',' + east + '],[' + south + ',' + west + ']');
+        _map.panToBounds(new google.maps.LatLng(south, west), new google.maps.LatLng(north, east));
+        return this;
+    }
+
+    /**
+     * Pans and zooms the map to fit all of the points specified
+     * @param  array points Array of points (e.g. [[lat,long],[lat,long],...])
+     * @return Object       The current object
+     */
+    this.goFit = function(points)
+    {
+        var north = 0;
+        var south = 0;
+        var east = 0;
+        var west = 0;
+
+        for (var i in points) {
+            var point = points[i];
+            var lat = point[0];
+            var lon = point[1];
+
+            if (lat > north) {
+                north = lat;
+            }
+
+            if (lat < south) {
+                south = lat;
+            }
+
+            if (lon > east) {
+                east = lon;
+            }
+
+            if (lon < west) {
+                west = lon;
+            }
+        }
+
+        this.goBound(north, east, south, west);
+        return this;
+    }
+
+
+    this.getBounds = function()
+    {
+        var gm_bounds = _map.getBounds();
+        var ne = gm_bounds.getNorthEast();
+        var sw = gm_bounds.getSouthWest();
+        return [[ne.lat(), ne.lng()],[sw.lat(),sw.lng()]];
+    }
 
     var onPinAdd = function(pin)
     {
         TapIn.Log('debug', "Pin added");
+        _markers[pin.Uid] = new google.maps.Marker({
+            position: new google.maps.LatLng(pin.Lat, pin.Lon),
+            map: _map
+        });
     }
 
     var onPinUpdate = function(pin)
     {
         TapIn.Log('debug', "Pin updated");
+        _markers[pin.Uid].setPosition(new google.maps.LatLng(pin.Lat, pin.Lon));
     }
 
     var onPinRemove = function(pin)
     {
         TapIn.Log('debug', "Pin removed");
+        _markers[pin.Uid].setMap(null);
+        delete _markers[pin.Uid];
     }
 
     var constructor = function(elem)
     {
+        if (elem instanceof jQuery) {
+            elem = elem[0];
+        }
+
         _elem = elem;
 
-        TapIn.Log('debug', "Map initialized!", elem);
+        TapIn.Log('debug', "Map initialized!");
+
+        _map = new google.maps.Map(_elem, {
+            center: new google.maps.LatLng(-34.397, 150.644),
+            zoom: 8,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        _map.zoom_changed = _this.OnZoom.apply;
+        _map.drag_ended = _this.OnPan.apply;
 
         _this.Pins.OnPinAdd.register(onPinAdd);
         _this.Pins.OnPinUpdate.register(onPinUpdate);
         _this.Pins.OnPinRemove.register(onPinRemove);
+
+        _this.OnPan.register(_this.OnBoundsChange.apply);
+        _this.OnZoom.register(_this.OnBoundsChange.apply);
     }
-    constructor();
+    constructor(elem);
 }
 
 TapIn.Frontend.Map.PinCollection = function()
@@ -47,27 +160,43 @@ TapIn.Frontend.Map.PinCollection = function()
     this.OnPinUpdate = new TapIn.Event();
     this.OnPinRemove = new TapIn.Event();
 
-    // TODO: automatically remove pins if we don't hear from them in a specified time
-
+    /**
+     * Adds the pin, or updates it if it's already in the collection
+     * @param Object pin The pin to add or update
+     */
     this.addOrUpdatePin = function(pin)
     {
         var _event = null;
-        if (pin.StreamId in this._pins) {
-            var oldPin = this._pins[pin.StreamId];
+        if (pin.Uid in this._pins) {
+            var oldPin = this._pins[pin.Uid];
             if (pin.Lat !== oldPin.Lat || pin.Lon !== oldPin.Lon) {
-                this._pins[pin.StreamId] = pin.clone();
-                this.OnPinUpdate.apply(this._pins[pin.StreamId]);
+                this._pins[pin.Uid] = pin.clone();
+                this.OnPinUpdate.apply(this._pins[pin.Uid]);
             }
         } else {
-            this._pins[pin.StreamId] = pin.clone();
-            this.OnPinAdd.apply(this._pins[pin.StreamId]);
+            this._pins[pin.Uid] = pin.clone();
+            this.OnPinAdd.apply(this._pins[pin.Uid]);
         }
     }
 
-    this.removePin = function(pin)
+    /**
+     * Removes the pin from the collection
+     * @param  Object pin_or_uid The pin to remove, or its UID
+     */
+    this.removePin = function(pin_or_uid)
     {
-        if (pin.StreamId in this._pins) {
-            delete this._pins[pin.StreamId];
+        var pin = null;
+        var uid = null;
+        if (pin_or_uid instanceof TapIn.Frontend.Map.Pin) {
+            uid = pin_or_uid.Uid;
+        } else {
+            uid = pin_or_uid;
+        }
+
+        pin = this._pins[uid].clone();
+
+        if (pin.Uid in this._pins) {
+            delete this._pins[uid];
             this.OnPinRemove.apply(pin);
             return true;
         } else {
@@ -75,6 +204,24 @@ TapIn.Frontend.Map.PinCollection = function()
         }
     }
 
+    /**
+     * Gets the pin
+     * @param  int     uid  The UID of the pin to get
+     * @return Object       The pin
+     */
+    this.getPin = function(uid)
+    {
+        if (uid in this._pins) {
+            return this._pins[uid].clone();
+        } else {
+            return undefined;
+        }
+    }
+
+    /**
+     * Replaces the PinCollection with another
+     * @param  Object pinCollection The PinCollection to update with
+     */
     this.replace = function(pinCollection)
     {
         // Process pin additions and updates
@@ -89,26 +236,48 @@ TapIn.Frontend.Map.PinCollection = function()
             }
         }
     }
+
+    /**
+     * Removes all pins from the collection
+     */
+    this.clear = function()
+    {
+        for (var i in this._pins) {
+            this.removePin(this._pins[i]);
+        }
+    }
 }
 
-TapIn.Frontend.Map.Pin = function(stream_id, lat, lon)
+TapIn.Frontend.Map.Pin = function(lat, lon, uid, data)
 {
     var _this = this;
     this.Lat = null;
     this.Lon = null;
-    this.StreamId = null;
+    this.Uid = null;
+    this.Data = null;
 
-    var constructor = function(stream_id, lat, lon)
+    var constructor = function(lat, lon, uid, data)
     {
         _this.Lat = lat;
         _this.Lon = lon;
-        _this.StreamId = stream_id;
+        if (typeof(uid) === 'undefined' || uid === null)
+        {
+            _this.Uid = Math.floor(Math.random()*1000000000000);
+        } else {
+            _this.Uid = uid;
+        }
+
+        _this.Data = data;
     }
 
+    /**
+     * Gets a deep copy of the object
+     * @return Object Copy of the object
+     */
     this.clone = function()
     {
-        return new TapIn.Frontend.Map.Pin(this.StreamId, this.Lat, this.Lon);
+        return new TapIn.Frontend.Map.Pin(this.Lat, this.Lon, this.Uid, this.Data);
     }
 
-    constructor(stream_id, lat, lon);
+    constructor(lat, lon, uid, data);
 }

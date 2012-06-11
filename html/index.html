@@ -30,7 +30,7 @@
     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
   </head>
 
-  <body onload="initialize()">
+  <body>
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -76,35 +76,27 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCT6d3KrGPRmnP-Z1asHB6MuC9Ed0idEXg&amp;sensor=false"></script>
     <script src="../assets/js/tapin-init.js"></script>
     <script src="../assets/js/tapin-event.js"></script>
     <script src="../assets/js/tapin-map.js"></script>
     <script src="../assets/js/tapin-api.js"></script>
 
+
+
     <script type="text/javascript">
-        map = new TapIn.Frontend.Map("test");
-        pin = new TapIn.Frontend.Map.Pin("a", 1, 2);
-
-
-    </script>
-
-
-     <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCT6d3KrGPRmnP-Z1asHB6MuC9Ed0idEXg&sensor=false">
-    </script>
-    <script>
-
-       function initialize() {
-        var myOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 8,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"),
-            myOptions);
-      }
-
-
+        var main_map;
+        var api;
+        $(document).ready(function(){
+            main_map = new TapIn.Frontend.Map($("#map_canvas"));
+            api = new TapIn.Api();
+            main_map.OnBoundsChange.register(function(){
+                var bounds = main_map.getBounds();
+                api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], 3, 'now', function(streams){
+                    console.log(streams);
+                })
+            });
+        });
     </script>
 
   </body>
