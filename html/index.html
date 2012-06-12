@@ -109,9 +109,10 @@
             main_map.OnPinClick.register(showVideoForPin);
 
             // Get an initial update
-            TapIn.Util.Async.later(100,function(){
-                updateMap();
-            });
+            TapIn.Util.Async.later(100,updateMap);
+
+            // Fake live
+            TapIn.Util.Async.every(10000, updateMap);
         });
     </script>
   </body>

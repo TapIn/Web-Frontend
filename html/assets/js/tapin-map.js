@@ -211,9 +211,12 @@ TapIn.Frontend.Map = function(elem)
 
         TapIn.Log('debug', "Map initialized!");
 
+        // 40.0024331757129, 269.88193994140624, 5 => All of US
+        // 37.70751808422908, -122.1353101196289, 11 => Bay Area
+
         _map = new google.maps.Map(_elem, {
-            center: new google.maps.LatLng(40.0024331757129, 269.88193994140624),
-            zoom: 5,
+            center: new google.maps.LatLng(37.70751808422908, -122.1353101196289),
+            zoom: 11,
             minZoom: 3,
             panControl: false,
             zoomControl: false,
