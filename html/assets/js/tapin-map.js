@@ -157,8 +157,25 @@ TapIn.Frontend.Map = function(elem)
         return _map.getZoom();
     }
 
+
+    // Google maps "drag" event is broken. We'll fix it here:
+    var _center_changed = false;
+    var onCenterChanged = function()
+    {
+        _center_changed = true;
+    }
+
+    var onMouseUp = function()
+    {
+        if (_center_changed) {
+            _center_changed = false;
+            _this.OnPan.apply();
+        }
+    }
+
     var onPinAdd = function(pin)
     {
+        TapIn.Log('debug', "Pin added");
         _markers[pin.Uid] = new google.maps.Marker({
             position: new google.maps.LatLng(pin.Lat, pin.Lon),
             map: _map
@@ -205,7 +222,12 @@ TapIn.Frontend.Map = function(elem)
             rotateControl: false,
             scaleControl: false,
             streetViewControl: false,
+            center_changed: onCenterChanged,
             mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        $(document).mouseup(function(){
+            onMouseUp();
         });
 
         // TODO: We can't specify a max bounds in the map control, but it's annoying to have the map pan off the screen.
