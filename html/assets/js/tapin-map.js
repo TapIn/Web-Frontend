@@ -12,6 +12,7 @@ TapIn.Frontend.Map = function(elem)
     this.OnZoom = new TapIn.Event();
     this.OnPan = new TapIn.Event();
     this.OnBoundsChange = new TapIn.Event();
+    this.OnPinClick = new TapIn.Event();
 
     /**
      * Pans the map to the location without changing the zoom level.
@@ -158,10 +159,15 @@ TapIn.Frontend.Map = function(elem)
 
     var onPinAdd = function(pin)
     {
-        TapIn.Log('debug', "Pin added");
         _markers[pin.Uid] = new google.maps.Marker({
             position: new google.maps.LatLng(pin.Lat, pin.Lon),
             map: _map
+        });
+
+        google.maps.event.addListener(_markers[pin.Uid], "click", pin.OnClick.apply);
+
+        pin.OnClick.register(function(){
+            _this.OnPinClick.apply(pin);
         });
     }
 
@@ -322,6 +328,8 @@ TapIn.Frontend.Map.Pin = function(lat, lon, uid, data)
     this.Lon = null;
     this.Uid = null;
     this.Data = null;
+
+    this.OnClick = new TapIn.Event();
 
     var constructor = function(lat, lon, uid, data)
     {
