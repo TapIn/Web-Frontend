@@ -50,12 +50,13 @@
     <div class="time-slider">
     <div class="bar"></div>
        <ul>
-          <li><p>All</p></li>
-          <li><p>Year</p></li>
-          <li><p>Month</p></li>
-          <li><p>Week</p></li>
-          <li><p>Day</p></li>
-          <li><p>Hour</p></li>
+          <li data-time="all"><p>All</p></li>
+          <li data-time="year"><p>Year</p></li>
+          <li data-time="month"><p>Month</p></li>
+          <li data-time="week"><p>Week</p></li>
+          <li data-time="day"><p>Day</p></li>
+          <li data-time="hour"><p>Hour</p></li>
+          <li class="current" data-time="now"><p>Now</p></li>
         </ul>
     </div>
 
@@ -87,10 +88,20 @@
         var api;
         var player;
 
+        var time_now = 60 * 10; // Last 10 minutes
+        var time_hour = 60 * 60;
+        var time_day = time_hour * 24;
+        var time_week = time_day * 7;
+        var time_month = time_day * 31;
+        var time_year = time_day * 365;
+        var time_all = Math.floor((new Date()).getTime()/1000);
+
+        var timescale = time_now;
+
         var updateMap = function()
         {
             var bounds = main_map.getBounds();
-            var since_time = Math.floor(((new Date()).getTime()/1000) - (60*10));
+            var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
             api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
                 var new_pins = new TapIn.Frontend.Map.PinCollection();
                 for (var i in streams) {
@@ -115,11 +126,51 @@
         }
 
         $(document).ready(function(){
+            // Initialize frontend elements
             main_map = new TapIn.Frontend.Map($("#map"));
             player = new TapIn.Frontend.Player($("#player"));
             api = new TapIn.Api();
+
+            // Bind to time slider events
+            $(".time-slider li").click(function(){
+                var time = $(this).attr('data-time');
+                switch(time) {
+                    case 'now' :
+                        timescale = time_now;
+                        break;
+                    case 'hour' :
+                        timescale = time_hour;
+                        break;
+                    case 'day':
+                        timescale = time_day;
+                        break;
+                    case 'week':
+                        timescale = time_week;
+                        break;
+                    case 'month':
+                        timescale = time_month;
+                        break;
+                    case 'year':
+                        timescale = time_year;
+                        break;
+                    case 'all':
+                        timescale = time_all;
+                        break;
+                }
+
+                $(".time-slider li").each(function(){
+                    $(this).removeClass('current');
+                })
+
+                $(this).addClass('current');
+
+                updateMap();
+            });
+
+            // Redraw pins on map move
             main_map.OnBoundsChange.register(updateMap);
 
+            // Show video when we click a pin
             main_map.OnPinClick.register(showVideoForPin);
 
             // Get an initial update

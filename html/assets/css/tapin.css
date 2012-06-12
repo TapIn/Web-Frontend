@@ -1,5 +1,5 @@
 .time-slider {
-  width: 340px;
+  width: 380px;
   height: 50px;
   position: absolute;
   left: 0px;
@@ -8,7 +8,7 @@
 }
 
 .time-slider .bar{
-  width: 240px;
+  width: 280px;
   height: 3px;
   background:#333;
   position:absolute;
@@ -36,7 +36,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 }
 
-.time-slider li:hover {
+.time-slider li:hover, .time-slider li.current {
   background: rgb(169,3,41); /* Old browsers */
   background: -moz-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(169,3,41,1)), color-stop(44%,rgba(143,2,34,1)), color-stop(100%,rgba(109,0,25,1))); /* Chrome,Safari4+ */
