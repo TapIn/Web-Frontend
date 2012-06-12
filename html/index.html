@@ -76,7 +76,8 @@
         var updateMap = function()
         {
             var bounds = main_map.getBounds();
-            api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], 1339524288, 'now', function(streams){
+            var since_time = Math.floor(((new Date()).getTime()/1000) - (60*10));
+            api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
                 var new_pins = new TapIn.Frontend.Map.PinCollection();
                 for (var i in streams) {
                     var stream = streams[i];
@@ -92,8 +93,8 @@
         var showVideoForPin = function(pin)
         {
             api.get_stream_by_stream_id(pin.Data.stream_id, function(data){
-                var server = 'rtmp://' + data.server + '/live/';
-                var endpoint = data.streamID + '/steam'
+                var server = 'rtmp://' + data.host + '/live/' + data.streamID;
+                var endpoint = 'stream'
                 TapIn.Log('debug', 'Starting stream: ' + server + endpoint);
                 player.playLive(server, endpoint);
             });

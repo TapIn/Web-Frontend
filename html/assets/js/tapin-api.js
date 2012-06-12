@@ -41,7 +41,7 @@ TapIn.Api = function()
 
     this.get_stream_by_stream_id = function(id, lambda)
     {
-        var params = 'streamID=' + id;
+        var params = 'streamid=' + id;
 
         this.call('getstreambystreamid', params, function(data){
             TapIn.Log('debug', 'Stream data for ' + id + ': ', data.data);
