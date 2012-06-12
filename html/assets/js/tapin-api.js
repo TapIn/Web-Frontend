@@ -8,9 +8,14 @@ TapIn.Api = function()
     // Events
     this.OnApiError = new TapIn.Event();
 
-    this.call = function(endpoint, lambda) {
-        return $.ajax({
-            url: base + endpoint,
+    var previous_requests = {};
+    this.call = function(endpoint, params, lambda) {
+        if (endpoint in previous_requests) {
+            previous_requests[endpoint].abort();
+        }
+
+        var xhttp = $.ajax({
+            url: base + endpoint + '?' + params,
             dataType: 'json',
             success: function(data) {
                 lambda(data);
@@ -19,21 +24,29 @@ TapIn.Api = function()
                 _this.OnApiError.apply(error);
             }
         });
+
+        previous_requests[endpoint] = xhttp;
+        return xhttp;
     }
 
-    var prev_get_streams = null;
     this.get_streams_by_location = function(north, east, south, west, start, end, lambda)
     {
-        var endpoint = 'getstreamsbylocation?topleft=' + north + '&topleft=' + east + '&bottomright=' + south + '&bottomright=' + west + '&start=' + start + '&end=' + end;
+        var params = 'topleft=' + north + '&topleft=' + east + '&bottomright=' + south + '&bottomright=' + west + '&start=' + start + '&end=' + end;
 
-        if (prev_get_streams !== null) {
-            prev_get_streams.abort();
-        }
-
-        prev_get_streams = this.call(endpoint, function(data){
-            TapIn.Log('debug', 'Stream data recieved: ', data.data.streams)
+        this.call('getstreamsbylocation', params, function(data){
+            TapIn.Log('debug', 'Stream data recieved: ', data.data.streams);
             lambda(data.data.streams);
         });
+    }
+
+    this.get_stream_by_stream_id = function(id, lambda)
+    {
+        var params = 'streamID=' + id;
+
+        this.call('getstreambystreamid', params, function(data){
+            TapIn.Log('debug', 'Stream data for ' + id + ': ', data.data);
+            lambda(data.data);
+        })
     }
 };
 
