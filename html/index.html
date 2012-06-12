@@ -41,7 +41,7 @@
               <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>
-           <input type="search" class="search" placeholder="Search" name="search" id="search"/>
+           <input type="search" class="search" placeholder="Explore" name="search" id="search"/>
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -123,9 +123,10 @@
             main_map.OnPinClick.register(showVideoForPin);
 
             // Get an initial update
-            TapIn.Util.Async.later(100,function(){
-                updateMap();
-            });
+            TapIn.Util.Async.later(100,updateMap);
+
+            // Fake live
+            TapIn.Util.Async.every(10000, updateMap);
         });
     </script>
   </body>
