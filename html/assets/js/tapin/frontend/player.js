@@ -1,4 +1,4 @@
-TapIn.Frontend.Player = function(div)
+define([], function(div)
 {
     var _this = this;
     var _player = null;
@@ -44,4 +44,4 @@ TapIn.Frontend.Player = function(div)
         _player_div = div.appendChild(document.createElement('div'));
     }
     constructor(div);
-}
+});
