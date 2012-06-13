@@ -22,7 +22,7 @@ define(['./util/log', './util/event'], function(Log, Event){
                 lambda(data);
             },
             error: function(s, error) {
-                _this.onApiError.apply(error);
+                _staticApi.onApiError.apply(error);
             }
         });
 

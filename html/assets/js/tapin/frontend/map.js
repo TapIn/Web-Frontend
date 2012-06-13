@@ -1,4 +1,4 @@
-define(['./pincollection', '../util/log', '../util/event'], function(PinCollection, Log, Event){
+define(['./map/pincollection', '../util/log', '../util/event'], function(PinCollection, Log, Event){
     return function(elem)
     {
         var _this = this;
@@ -240,9 +240,9 @@ define(['./pincollection', '../util/log', '../util/event'], function(PinCollecti
             _map.zoom_changed = _this.onZoom.apply;
             _map.drag_ended = _this.onPan.apply;
 
-            _this.Pins.OnPinAdd.register(onPinAdd);
-            _this.Pins.OnPinUpdate.register(onPinUpdate);
-            _this.Pins.OnPinRemove.register(onPinRemove);
+            _this.Pins.onPinAdd.register(onPinAdd);
+            _this.Pins.onPinUpdate.register(onPinUpdate);
+            _this.Pins.onPinRemove.register(onPinRemove);
 
             _this.onPan.register(_this.onBoundsChange.apply);
             _this.onZoom.register(_this.onBoundsChange.apply);

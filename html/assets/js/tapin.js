@@ -17,7 +17,7 @@ define(['./tapin/frontend/map', './tapin/frontend/map/pin', './tapin/frontend/ma
     {
         var bounds = main_map.getBounds();
         var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
-        api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
+        Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
             var new_pins = new PinCollection();
             for (var i in streams) {
                 var stream = streams[i];
@@ -32,7 +32,7 @@ define(['./tapin/frontend/map', './tapin/frontend/map/pin', './tapin/frontend/ma
 
     var showVideoForPin = function(pin)
     {
-        api.get_stream_by_stream_id(pin.Data.stream_id, function(data){
+        Api.get_stream_by_stream_id(pin.Data.stream_id, function(data){
             var server = 'rtmp://' + data.host + '/live/' + data.streamID;
             var endpoint = 'stream'
             Log('debug', 'Starting stream: ' + server + endpoint);
@@ -83,10 +83,10 @@ define(['./tapin/frontend/map', './tapin/frontend/map/pin', './tapin/frontend/ma
         });
 
         // Redraw pins on map move
-        main_map.OnBoundsChange.register(updateMap);
+        main_map.onBoundsChange.register(updateMap);
 
         // Show video when we click a pin
-        main_map.OnPinClick.register(showVideoForPin);
+        main_map.onPinClick.register(showVideoForPin);
 
         // Get an initial update
         Async.later(100,updateMap);
