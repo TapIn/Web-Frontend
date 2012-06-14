@@ -1,4 +1,22 @@
-define(['./tapin/frontend/map', './tapin/frontend/map/pin', './tapin/frontend/map/pincollection', './tapin/frontend/player', './tapin/api', './tapin/util/async', './tapin/util/log'], function(Map, Pin, PinCollection, Player, Api, Async, Log){
+var DEBUG = true;
+
+var config = {
+    paths: {
+        'flowplayer': 'flowplayer/flowplayer-3.2.10.min',
+    },
+    shim: {
+        'flowplayer': {
+            exports: 'flowplayer'
+        }
+    }
+};
+if (DEBUG) {
+    config['urlArgs'] = 'noCache=' +  (new Date()).getTime();
+}
+
+require.config(config);
+
+define(['jquery', 'tapin/frontend/map', 'tapin/frontend/map/pin', 'tapin/frontend/map/pincollection', 'tapin/frontend/player', 'tapin/api', 'tapin/util/async', 'tapin/util/log'], function(JQuery, Map, Pin, PinCollection, Player, Api, Async, Log){
     var main_map;
     var api;
     var player;
@@ -47,7 +65,7 @@ define(['./tapin/frontend/map', './tapin/frontend/map/pin', './tapin/frontend/ma
         api = new Api();
 
         // Bind to time slider events
-        $(".time-slider li").click(function(){
+        JQuery(".time-slider li").click(function(){
             var time = $(this).attr('data-time');
             switch(time) {
                 case 'now' :
@@ -73,11 +91,11 @@ define(['./tapin/frontend/map', './tapin/frontend/map/pin', './tapin/frontend/ma
                     break;
             }
 
-            $(".time-slider li").each(function(){
-                $(this).removeClass('current');
+            JQuery(".time-slider li").each(function(){
+                JQuery(this).removeClass('current');
             })
 
-            $(this).addClass('current');
+            JQuery(this).addClass('current');
 
             updateMap();
         });

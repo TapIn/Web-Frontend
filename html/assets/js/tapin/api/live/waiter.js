@@ -1,4 +1,4 @@
-define(['../../util'], function(Util){
+define(['tapin/util', 'jquery'], function(Util, JQuery){
     return function(success_lambda, failure_lambda)
     {
         var xhr = null;
@@ -7,7 +7,7 @@ define(['../../util'], function(Util){
 
         var constructor = function(success_lambda, failure_lambda)
         {
-            xhr = $.ajax({
+            xhr = JQuery.ajax({
                 url: endpoint . '?random=' + Util.randomString(),
                 dataType: 'json',
                 success: function(data) {

@@ -1,4 +1,4 @@
-define([], function(){
+define(['flowplayer'], function(Flowplayer){
     return function(div)
     {
         var _this = this;
@@ -25,7 +25,7 @@ define([], function(){
 
         var init_player = function(clip)
         {
-            _player = $f(_player_div, "assets/swf/flowplayer-3.2.11.swf", {
+            _player = Flowplayer(_player_div, "assets/swf/flowplayer-3.2.11.swf", {
                 clip: clip,
                 plugins: {
                     rtmp: {

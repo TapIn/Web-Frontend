@@ -1,4 +1,4 @@
-define(['../util/event', '../util/log', './live/waiter'], function(Event, Log, Waiter){
+define(['tapin/util/event', 'tapin/util/log', 'tapin/api/live/waiter'], function(Event, Log, Waiter){
     return function()
     {
         var _this = this;

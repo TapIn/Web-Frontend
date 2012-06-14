@@ -1,4 +1,4 @@
-define(['./map/pincollection', '../util/log', '../util/event'], function(PinCollection, Log, Event){
+define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'], function(PinCollection, Log, Event){
     return function(elem)
     {
         var _this = this;

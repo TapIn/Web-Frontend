@@ -1,4 +1,4 @@
-define(['./util/log', './util/event'], function(Log, Event){
+define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQuery){
     var _staticApi = function()
     {
         var _this = this;
@@ -15,7 +15,7 @@ define(['./util/log', './util/event'], function(Log, Event){
             previous_requests[endpoint].abort();
         }
 
-        var xhttp = $.ajax({
+        var xhttp = JQuery.ajax({
             url: _staticApi.base + endpoint + '?' + params,
             dataType: 'json',
             success: function(data) {

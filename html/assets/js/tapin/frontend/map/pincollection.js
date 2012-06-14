@@ -1,4 +1,4 @@
-define(['./pin', '../../util/event'], function(Pin, Event){
+define(['tapin/frontend/map/pin', 'tapin/util/event'], function(Pin, Event){
     return function()
     {
         this._pins = {};

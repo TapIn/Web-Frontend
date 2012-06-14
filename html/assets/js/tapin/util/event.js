@@ -1,4 +1,4 @@
-define([], function(){
+define(['tapin/util'], function(Util){
     return function()
     {
         var _delegates = [];
@@ -19,7 +19,7 @@ define([], function(){
         this.apply = function()
         {
             for (var i in _delegates) {
-                TapIn.Util.callUserFuncArray(_delegates[i], arguments);
+                Util.callUserFuncArray(_delegates[i], arguments);
             }
         }
     }
