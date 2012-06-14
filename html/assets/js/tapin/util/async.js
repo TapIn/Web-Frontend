@@ -4,7 +4,7 @@ define([], function()
         var delegates = {};
 
         var getId = function(milli) {
-            return (new Date()) + "+" + milli + "-" + Math.floor(Math.random());
+            return (new Date()).getTime() + "+" + milli + "-" + Math.floor(Math.random());
         }
 
         var returningLater = function(id, noGc) {
