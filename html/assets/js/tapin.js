@@ -26,9 +26,11 @@ require.config(config);
 define([
        'jquery',
        'documentcloud/backbone',
+       'tapin/util/async',
        'tapin/frontend/controllers/map',
+       'tapin/frontend/controllers/video',
        'tapin/frontend/controllers/static'],
-       function(JQuery, Backbone)
+       function(JQuery, Backbone, Async)
 {
 
 

@@ -1,4 +1,4 @@
-define(['flowplayer'], function(Flowplayer){
+define(['flowplayer', 'tapin/util/log'], function(Flowplayer, Log){
     return function(div)
     {
         var _this = this;
@@ -25,6 +25,7 @@ define(['flowplayer'], function(Flowplayer){
 
         var init_player = function(clip)
         {
+            Log('debug', 'Starting flowplayer');
             _player = Flowplayer(_player_div, "assets/swf/flowplayer-3.2.11.swf", {
                 clip: clip,
                 plugins: {

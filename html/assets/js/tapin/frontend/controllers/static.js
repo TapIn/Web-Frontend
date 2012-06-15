@@ -1,4 +1,4 @@
-define(['jquery', 'documentcloud/backbone', 'tapin/frontend'], function(JQuery, Backbone, Frontend)
+define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log'], function(JQuery, Backbone, Frontend, Log)
 {
     // And now the controller:
     var app = new (Backbone.Router.extend(new function(){
@@ -6,21 +6,26 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend'], function(JQuery, 
             'page/*path': 'showPage'
         }
 
+        this.initialize = function(){
+           JQuery(window).bind('hashchange', function(){
+                Frontend.closeModalPage();
+                Frontend.updateNav('');
+            })
+        }
+
         this.showPage = function(path)
         {
+            Log('debug', 'Changing page to ' + path);
             JQuery.ajax({
                 url: 'assets/static/' + path,
                 dataType: 'html',
                 success: function(html){
-                    Frontend.showModalPage(html, function(){
-                        app.navigate('map/' + Frontend.timeslider.getCurrentTime());
-                    });
+                    Frontend.showModalPage(html);
+                    Frontend.updateNav('page/' + path);
                 }
             })
         }
     }));
 
-    Frontend.timeslider.onTimeChange.register(function(time, name){
-        app.navigate('map/' + name);
-    });
+    window.y = app;
 });
