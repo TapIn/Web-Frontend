@@ -6,9 +6,13 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
     }
 
     var previous_requests = {};
-    _staticApi.base = "http://stage.api.tapin.tv/web/";
+    _staticApi.base = "http://api.tapin.tv/web/";
 
     _staticApi.onApiError = new Event();
+
+    _staticApi.stage = function(){
+        _staticApi.base = "http://stage.api.tapin.tv/web/";
+    }
 
     _staticApi.call = function(endpoint, params, lambda) {
         if (endpoint in previous_requests) {
@@ -29,7 +33,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         previous_requests[endpoint] = xhttp;
         return xhttp;
     }
-    
+
     _staticApi.get_streams_by_location = function(north, east, south, west, start, end, lambda)
     {
         var params = 'topleft=' + north + '&topleft=' + east + '&bottomright=' + south + '&bottomright=' + west + '&start=' + start + '&end=' + end;
@@ -48,7 +52,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         _staticApi.call('login', params, function(data){
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })    
+        })
     }
 
     _staticApi.register = function(username, password, lambda)
@@ -59,11 +63,11 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         _staticApi.call('register', params, function(data){
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })    
+        })
     }
 
     _staticApi.update_object_by_key = function(obj, key, paramsDict, lambda)
-    {   
+    {
         var params = '';
 
         for (var key in paramsDict){
@@ -75,11 +79,11 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         _staticApi.call(('update/' + obj + '/' + key), params, function(data){
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })    
+        })
     }
 
     _staticApi.delete_object_by_key = function(obj, key, paramsArr, lambda)
-    {   
+    {
         var params = '';
 
         for (var key in paramsArr){
@@ -89,7 +93,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         _staticApi.call(('delete/' + obj + '/' + key), params, function(data){
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })    
+        })
     }
 
     _staticApi.get_object_by_key = function(obj, key, lambda)
@@ -99,7 +103,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         _staticApi.call(('get/' + obj + "/" + "key"), params, function(data){
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })    
+        })
     }
 
     _staticApi.get_object_by_secondary_key = function(obj, secondary, key, lambda)
@@ -109,9 +113,9 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         _staticApi.call(('get/' + obj + "by" + secondary + "/" + key), params, function(data){
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })    
+        })
     }
-    
+
     //Deprecated
     _staticApi.get_stream_by_stream_id = function(id, lambda)
     {

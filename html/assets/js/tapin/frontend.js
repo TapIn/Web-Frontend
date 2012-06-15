@@ -106,10 +106,10 @@ define([
             this.mainMap.onPinClick.register(_this.showVideoForPin);
 
             // Get an initial update
-            //Async.later(1000, _this.updateMap);
+            Async.later(1000, _this.updateMap);
 
             // Fake live
-            //Async.every(2 * 1000, _this.updateMap);
+            Async.every(2 * 1000, _this.updateMap);
         }
 
         this.constructor();
