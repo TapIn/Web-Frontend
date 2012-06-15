@@ -36,7 +36,7 @@ define([
 
     var showVideoForPin = function(pin)
     {
-        Api.get_stream_by_stream_id(pin.Data.stream_id, function(data){
+        Api.get_object_by_key("stream", pin.Data.stream_id, function(data){
             var server = 'rtmp://' + data.host + '/live/' + data.streamID;
             var endpoint = 'stream'
             Log('debug', 'Starting stream: ' + server + endpoint);
