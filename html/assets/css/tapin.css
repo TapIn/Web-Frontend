@@ -55,3 +55,16 @@
   margin-top: 33px;
   text-align:center;
 }
+
+#modal-page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 800px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.hidden {
+    display: none;
+}

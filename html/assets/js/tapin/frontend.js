@@ -18,10 +18,12 @@ define([
         this.player = null;
         this.timeslider = null;
 
+        var _modalPage = null;
+
         this.timescale;
         this.updateMap = function()
         {
-            var bounds = this.mainMap.getBounds();
+            var bounds = _this.mainMap.getBounds();
             var since_time = Math.floor(((new Date()).getTime()/1000) - this.timescale);
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
                 var new_pins = new PinCollection();
@@ -34,6 +36,12 @@ define([
 
                 _this.mainMap.Pins.replace(new_pins);
             })
+        }
+
+        this.showModalPage = function(html, onClose)
+        {
+            _modalPage.html(html);
+            _modalPage.removeClass('hidden');
         }
 
         this.showVideoForPin = function(pin)
@@ -53,6 +61,9 @@ define([
             this.mainMap = new Map($("#map"));
             this.player = new Player($("#player"));
             this.timeslider = new TimeSlider(JQuery('#time-slider'));
+            _modalPage = JQuery('<div class="hidden" id="modal-page"></div>');
+
+            JQuery(document).append(_modalPage);
 
             // Bind to time slider events
             this.timeslider.onTimeChange.register(function(new_time){

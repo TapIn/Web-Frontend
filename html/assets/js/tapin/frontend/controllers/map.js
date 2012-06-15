@@ -1,8 +1,4 @@
-define([
-       'jquery',
-       'documentcloud/backbone',
-       'tapin/frontend'],
-       function(JQuery, Backbone, Frontend)
+define(['jquery', 'documentcloud/backbone', 'tapin/frontend'], function(JQuery, Backbone, Frontend)
 {
     // And now the controller:
     var app = new (Backbone.Router.extend(new function(){

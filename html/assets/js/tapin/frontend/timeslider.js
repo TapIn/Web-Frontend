@@ -15,6 +15,9 @@ define(['jquery', 'tapin/util/event', 'tapin/util/log'], function(JQuery, Event,
         }
 
         this.onTimeChange = new Event();
+        this.getCurrentTime = function(){
+            return _elem.children('li.current').data('timename');
+        }
 
         this.selectTime = function(time)
         {
