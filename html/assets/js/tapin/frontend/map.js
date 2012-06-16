@@ -234,6 +234,16 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 onMouseUp();
             });
 
+            // Tracking
+            _this.onPan.register(function(){
+                mixpanel.track('pan');
+            });
+
+            _this.onZoom.register(function(){
+                mixpanel.track('zoom');
+                mixpanel.track('zoom_' + _this.getZoom());
+            });
+
             // TODO: We can't specify a max bounds in the map control, but it's annoying to have the map pan off the screen.
             //       We should implement something like this: http://stackoverflow.com/questions/3125065/how-do-i-limit-panning-in-google-maps-api-v3
 

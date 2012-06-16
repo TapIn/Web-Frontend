@@ -1,6 +1,4 @@
-var DEBUG = true;
-
-var config = {
+require.config({
     paths: {
         'flowplayer': 'flowplayer/flowplayer-3.2.10.min',
     },
@@ -15,18 +13,15 @@ var config = {
             deps: ['documentcloud/underscore', 'jquery'],
             exports: 'Backbone'
         },
-    }
-};
-if (DEBUG) {
-    config['urlArgs'] = 'noCache=' +  (new Date()).getTime();
-}
-
-require.config(config);
+    },
+    urlArgs: 'noCache=' + (new Date()).getTime()
+});
 
 define([
        'jquery',
        'documentcloud/backbone',
        'tapin/util/async',
+       'mixpanel',
        'tapin/frontend/controllers/map',
        'tapin/frontend/controllers/video',
        'tapin/frontend/controllers/static'],

@@ -9,6 +9,7 @@ define(['flowplayer', 'tapin/util/log'], function(Flowplayer, Log){
 
         this.playLive = function(server, uri)
         {
+            mixpanel.track('play-live');
             init_player({
                 provider: 'rtmp',
                 netConnectionUrl: server,
@@ -18,6 +19,7 @@ define(['flowplayer', 'tapin/util/log'], function(Flowplayer, Log){
 
         this.play = function(uri)
         {
+            mixpanel.track('play-dvr');
             init_player({
                 url: uri
             })

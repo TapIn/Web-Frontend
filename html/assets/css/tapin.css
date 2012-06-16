@@ -96,3 +96,9 @@
 .hidden {
     display: none;
 }
+
+#mixpanel-partner {
+    position: absolute;
+    right: 4px;
+    bottom: 0;
+}
