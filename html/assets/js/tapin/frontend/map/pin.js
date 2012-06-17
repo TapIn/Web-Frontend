@@ -1,4 +1,4 @@
-define([], function()
+define(['tapin/util/event'], function(Event)
 {
     var _pin = function(lat, lon, uid, data)
     {
@@ -8,7 +8,7 @@ define([], function()
         this.Uid = null;
         this.Data = null;
 
-        this.onClick = new TapIn.Event();
+        this.onClick = new Event();
 
         var constructor = function(lat, lon, uid, data)
         {
