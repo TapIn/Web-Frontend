@@ -17,7 +17,8 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log'],
         {
             Log('debug', 'Changing page to ' + path);
             JQuery.ajax({
-                url: 'assets/static/' + path,
+                cache: false,
+                url: 'assets/static/' + path + '?nocache=' + (new Date()).getTime(),
                 dataType: 'html',
                 success: function(html){
                     Frontend.showModalPage(html);

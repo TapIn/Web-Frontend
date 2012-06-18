@@ -56,6 +56,8 @@
   text-align:center;
 }
 
+
+
 #sidebar {
     position: absolute;
     right: 0;
@@ -101,4 +103,50 @@
     position: absolute;
     right: 4px;
     bottom: 0;
+}
+
+.navbar .search {
+    float: right;
+}
+
+.navbar .user {
+    float: right;
+    padding: 10px 10px 11px;
+    line-height: 19px;
+    color: #db9994;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.navbar .user:hover {
+    color: #fff;
+}
+
+.navbar .container {
+    width: 93%;
+    margin: 0 2% 0 5%;
+}
+
+.navbar .user.active {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #9e0500;
+}
+
+.navbar .user img {
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: -5px 4px -5px;
+}
+
+#map-preloader {
+    position: absolute;
+    right: 300px;
+    top: 40px;
+    width: 64px;
+    height: 64px;
+    background: url('../img/moving-map-loader.png');
+    background-position-x: -1px;
+    z-index: 1000;
+    display: block;
 }

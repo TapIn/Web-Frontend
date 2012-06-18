@@ -18,15 +18,27 @@ define([
         this.sidebar = null;
         this.timeslider = null;
 
+        var preloader = null;
         var _modalPage = null;
         var _modalPageContent = null;
 
-        this.timescale;
+        this.timescale = 10*60*1000;
+        var showPreloaderRef;
         this.updateMap = function()
         {
             var bounds = _this.mainMap.getBounds();
             var since_time = Math.floor(((new Date()).getTime()/1000) - this.timescale);
+
+            // Show the preloader if the request takes too long
+            showPreloaderRef = Async.later(400, function(){
+                _this.showPreloader();
+            });
+
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
+                // Don't show the preloader/remove the preloader when we're done
+                clearTimeout(showPreloaderRef);
+                _this.hidePreloader();
+
                 var new_pins = new PinCollection();
                 for (var i in streams) {
                     var stream = streams[i];
@@ -63,6 +75,26 @@ define([
             _modalPage.removeClass('hidden');
         }
 
+        this.showPreloader = function() {
+            Async.poll(50, function(){
+                var pos = preloader.css('background-position-x');
+                pos = pos.substring(0, pos.length - 2);
+                return (pos == "-1");
+            }, function(){
+                preloader.removeClass('hidden');
+            })
+        }
+
+        this.hidePreloader = function() {
+            Async.poll(50, function(){
+                var pos = preloader.css('background-position-x');
+                pos = pos.substring(0, pos.length - 2);
+                return (pos == "-1");
+            }, function(){
+                preloader.addClass('hidden');
+            })
+        }
+
         this.showVideo = function(stream_id)
         {
             Api.get_stream_by_stream_id(stream_id, function(data){
@@ -81,6 +113,11 @@ define([
         this.constructor = function(){
             api = new Api();
 
+            Api.onApiError.register(function(){
+                clearTimeout(showPreloaderRef);
+                _this.hidePreloader();
+            })
+
             // Initialize frontend elements
             this.mainMap = new Map(JQuery("#map"));
             this.sidebar = new Sidebar(JQuery("#sidebar"));
@@ -89,9 +126,18 @@ define([
             _modalPageContent = JQuery('<div id="modal-content"></div>');
             _modalPage.append(_modalPageContent);
 
+            preloader = JQuery("#map-preloader");
+
             this.timeslider.selectTime('now');
 
             JQuery("html").append(_modalPage);
+
+            Async.every(50, function(){
+                var previous_location = preloader.css('background-position-x');
+                previous_location = previous_location.substring(0, previous_location.length - 2);
+                var new_location = (previous_location - 68) % 952;
+                preloader.css('background-position-x', new_location + 'px');
+            })
 
             // Bind to time slider events
             this.timeslider.onTimeChange.register(function(new_time){

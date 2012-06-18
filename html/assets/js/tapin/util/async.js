@@ -1,18 +1,19 @@
 define([], function()
 {
     return new (function(){
+        var _this = this;
         var delegates = {};
 
         var getId = function(milli) {
-            return (new Date()).getTime() + "+" + milli + "-" + Math.floor(Math.random());
+            return (new Date()).getTime() + "+" + milli + "-" + Math.floor(Math.random() * 10000);
         }
 
         var returningLater = function(id, noGc) {
             return function(){
                 delegates[id]();
-                if(typeof(noGc) !== undefined && !noGc) {
+                /*if(typeof(noGc) !== undefined && !noGc) {
                     delegates[id] = null;
-                }
+                }*/
             }
         }
 
@@ -24,7 +25,7 @@ define([], function()
         this.later = function(milli, delegate) {
             var id = getId(milli);
             delegates[id] = delegate;
-            setTimeout(returningLater(id), milli);
+            return setTimeout(returningLater(id), milli);
         }
 
         /**
@@ -49,7 +50,7 @@ define([], function()
                 if(condition()) {
                     delegate();
                 } else {
-                    this.later(milli, lambda);
+                    _this.later(milli, lambda);
                 }
             };
             lambda();
