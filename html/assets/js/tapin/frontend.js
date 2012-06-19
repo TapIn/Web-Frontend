@@ -27,7 +27,13 @@ define([
         this.updateMap = function()
         {
             var bounds = _this.mainMap.getBounds();
-            var since_time = Math.floor(((new Date()).getTime()/1000) - this.timescale);
+
+            var timescale = this.timescale;
+            if (typeof(this.timescale) === 'undefined') { // TODO: For some reason this.timescale isn't being set correctly.
+                timescale = 10 * 60 * 1000;
+            }
+
+            var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
             // Show the preloader if the request takes too long
             showPreloaderRef = Async.later(400, function(){

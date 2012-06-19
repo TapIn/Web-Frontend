@@ -182,9 +182,9 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 map: _map
             });
 
-            google.maps.event.addListener(_markers[pin.Uid], "click", pin.OnClick.apply);
+            google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
 
-            pin.OnClick.register(function(){
+            pin.onClick.register(function(){
                 _this.onPinClick.apply(pin);
             });
         }

@@ -1,4 +1,4 @@
-define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQuery){
+define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], function(Log, Event, JQuery, Config){
     var _staticApi = function(token)
     {
         var _this = this;
@@ -45,13 +45,8 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
     }
 
     var previous_requests = {};
-    _staticApi.base = "http://api.tapin.tv/web/";
 
     _staticApi.onApiError = new Event();
-
-    _staticApi.stage = function(){
-        _staticApi.base = "http://stage.api.tapin.tv/web/";
-    }
 
     _staticApi.call = function(endpoint, params, lambda, type) {
         if (typeof(type) !== 'string') {
@@ -72,7 +67,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery'], function(Log, Event, JQ
         }
 
         var xhttp = JQuery.ajax({
-            url: _staticApi.base + endpoint + '?' + params,
+            url: Config['api']['base'] + endpoint + '?' + params,
             dataType: 'json',
             type: type,
             success: function(data) {
