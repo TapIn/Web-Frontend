@@ -7,8 +7,9 @@ define([
        'tapin/frontend/timeslider',
        'tapin/api',
        'tapin/util/async',
-       'tapin/util/log'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Api, Async, Log)
+       'tapin/util/log',
+       'tapin/config'],
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Api, Async, Log, Config)
 {
     return new (function(){
         var _this = this;
@@ -22,7 +23,7 @@ define([
         var _modalPage = null;
         var _modalPageContent = null;
 
-        this.timescale = 10*60*1000;
+        this.timescale = 10*60;
         var showPreloaderRef;
         this.updateMap = function()
         {
@@ -30,13 +31,13 @@ define([
 
             var timescale = this.timescale;
             if (typeof(this.timescale) === 'undefined') { // TODO: For some reason this.timescale isn't being set correctly.
-                timescale = 10 * 60 * 1000;
+                timescale = 10 * 60;
             }
 
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
             // Show the preloader if the request takes too long
-            showPreloaderRef = Async.later(400, function(){
+            showPreloaderRef = Async.later(600, function(){
                 _this.showPreloader();
             });
 
@@ -76,7 +77,7 @@ define([
 
         this.showModalPage = function(html)
         {
-            Log('debug', "Showing fullpage modal: ", html);
+            Log('info', "Showing fullpage modal: ", html);
             _modalPageContent.html(html);
             _modalPage.removeClass('hidden');
         }
@@ -106,9 +107,14 @@ define([
             Api.get_stream_by_stream_id(stream_id, function(data){
                 var server = 'rtmp://' + data.host + '/live/' + data.streamID;
                 var endpoint = 'stream'
-                Log('debug', 'Starting stream: ' + server + endpoint);
+                Log('info', 'Starting stream: ' + server + endpoint);
                 _this.sidebar.player.playLive(server, endpoint);
             });
+        }
+
+        window.inStage = function() {
+            Log('info', 'Switching API calls to stage.');
+            Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
         }
 
         var showVideoForPin = function(pin)
@@ -120,8 +126,7 @@ define([
             api = new Api();
 
             Api.onApiError.register(function(){
-                clearTimeout(showPreloaderRef);
-                _this.hidePreloader();
+                Log('warn', 'Request timed out')
             })
 
             // Initialize frontend elements

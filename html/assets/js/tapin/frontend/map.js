@@ -23,7 +23,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
          */
         this.center = function(lat, lon)
         {
-            Log('debug', 'Centering map on [' + lat + ',' + lon + ']');
+            Log('debug', 'Attempting to change center to [' + lat + ',' + lon + ']');
             _map.panTo(new google.maps.LatLng(lat, lon));
             return this;
         }
@@ -35,7 +35,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
          */
         this.zoom = function(level)
         {
-            Log('debug', 'Zooming map to ' + level);
+            Log('debug', 'Attempting to change zoom to ' + level);
             _map.setZoom(level);
             return this;
         }
@@ -50,7 +50,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
          */
         this.goBound = function(north, east, south, west)
         {
-            Log('Moving map to [' + north + ',' + east + '],[' + south + ',' + west + ']');
+            Log('info', 'Moving map to [' + north + ',' + east + '],[' + south + ',' + west + ']');
             _map.panToBounds(new google.maps.LatLng(south, west), new google.maps.LatLng(north, east));
             return this;
         }
@@ -210,7 +210,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             _elem = elem;
 
-            Log('debug', "Map initialized!");
+            Log('info', "Map initialized!");
 
             // 40.0024331757129, 269.88193994140624, 5 => All of US
             // 37.70751808422908, -122.1353101196289, 11 => Bay Area
@@ -236,10 +236,12 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             // Tracking
             _this.onPan.register(function(){
+                Log('info', 'Centering map on [' + _this.getCenter()[0] + ',' + _this.getCenter()[1] + ']');
                 mixpanel.track('pan');
             });
 
             _this.onZoom.register(function(){
+                Log('info', 'Zooming map to ' + _this.getZoom());
                 mixpanel.track('zoom');
                 mixpanel.track('zoom_' + _this.getZoom());
             });
