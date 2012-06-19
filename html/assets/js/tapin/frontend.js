@@ -160,7 +160,7 @@ define([
             this.mainMap.onBoundsChange.register(_this.updateMap);
 
             // Show video when we click a pin
-            this.mainMap.onPinClick.register(_this.showVideoForPin);
+            this.mainMap.onPinClick.register(showVideoForPin);
 
             // Get an initial update
             Async.later(1000, _this.updateMap);
