@@ -56,7 +56,58 @@
   text-align:center;
 }
 
+/* Make pages fancy */
+#modal-page #modal-content, #modal-page #modal-content p {
+    color: #222;
+    background-color: #fff;
+    font-family: "ff-meta-serif-web-pro", Georgia, serif;
+    line-height: 1.4;
+    font-size: 14px;
+}
 
+#modal-page h1 a {
+    padding-bottom: 1.25rem;
+}
+
+#modal-page h1, #modal-page h1 {
+    color: #222;
+    display: block;
+    width: 100%;
+    font-weight: 400;
+    font-size: 3rem;
+    border-bottom: .25rem solid #B70600;
+}
+
+#modal-page a {
+    color: #222;
+    text-decoration: none;
+    border-bottom: 1px dashed #000;
+}
+
+#modal-page a:hover {
+    border-bottom: 1px dashed #B70600;
+}
+
+#modal-page h1, #modal-page h2, #modal-page h3, #modal-page h4, #modal-page h5, #modal-page h6 {
+    font-family: "league-gothic", sans-serif;
+    text-transform: uppercase;
+    word-spacing:7px;
+    font-size: 30px;
+    line-height: 0.9em;
+    margin: 36px 0 10px 0;
+    padding-bottom: 0;
+    letter-spacing: 1.5px;
+    font-weight: 400;
+}
+
+#modal-page blockquote {
+    font-size: 18px;
+    line-height: 26px;
+    margin-left: 40px;
+    border-left: 2px dashed #ccc;
+}
+
+/* Interface Positions */
 
 #sidebar {
     position: absolute;
@@ -65,6 +116,10 @@
     bottom: 0;
     width: 300px;
     background: #B70600;
+}
+
+#sidebar #player {
+    height: 225px;
 }
 
 #map {

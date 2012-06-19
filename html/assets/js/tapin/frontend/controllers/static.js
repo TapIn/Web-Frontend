@@ -22,11 +22,11 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log'],
                 dataType: 'html',
                 success: function(html){
                     Frontend.showModalPage(html);
-                    Frontend.updateNav('page/' + path);
+                    Frontend.updateNav('#page/' + path);
                 }
             })
         }
     }));
 
-    window.y = app;
+    return app;
 });

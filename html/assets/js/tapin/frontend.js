@@ -23,16 +23,11 @@ define([
         var _modalPage = null;
         var _modalPageContent = null;
 
-        this.timescale = 10*60;
+        var timescale = 10*60;
         var showPreloaderRef;
         this.updateMap = function()
         {
             var bounds = _this.mainMap.getBounds();
-
-            var timescale = this.timescale;
-            if (typeof(this.timescale) === 'undefined') { // TODO: For some reason this.timescale isn't being set correctly.
-                timescale = 10 * 60;
-            }
 
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
@@ -60,7 +55,7 @@ define([
 
         this.updateNav = function(page)
         {
-            var matchingPage = JQuery('ul.nav li a[href="#' + page + '"]');
+            var matchingPage = JQuery('ul.nav li a[href="' + page + '"]');
             if (matchingPage.length > 0) {
                 JQuery('ul.nav li').each(function(){
                     $(this).removeClass('active');
@@ -105,21 +100,28 @@ define([
         this.showVideo = function(stream_id)
         {
             Api.get_stream_by_stream_id(stream_id, function(data){
-                var server = 'rtmp://' + data.host + '/live/' + data.streamID;
-                var endpoint = 'stream'
+                if (data.streamend == 0) {
+                    var server = 'rtmp://' + data.host + '/live/' + data.streamid;
+                    var endpoint = 'stream';
+                    _this.sidebar.player.playLive(server, endpoint);
+                } else {
+                    var server = 'rtmp://recorded.stream.tapin.tv/cfx/st/';
+                    var endpoint = 'mp4:' + stream_id + '/stream';
+                    _this.sidebar.player.playLive(server, endpoint);
+                }
+
                 Log('info', 'Starting stream: ' + server + endpoint);
-                _this.sidebar.player.playLive(server, endpoint);
             });
         }
 
-        window.inStage = function() {
+        window.onStage = function() {
             Log('info', 'Switching API calls to stage.');
             Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
         }
 
         var showVideoForPin = function(pin)
         {
-            Backbone.history.navigate('video/' + pin.Data.stream_id + '/now');
+            window.location.hash = 'video/' + pin.Data.stream_id + '/now';
         }
 
         this.constructor = function(){
@@ -148,11 +150,35 @@ define([
                 previous_location = previous_location.substring(0, previous_location.length - 2);
                 var new_location = (previous_location - 68) % 952;
                 preloader.css('background-position-x', new_location + 'px');
-            })
+            });
+
+            $("a").live('click', function(event){
+                var href = $(this).attr('href');
+                if (href == '#') {
+                    event.stopPropagation();
+                    _this.closeModalPage();
+                    _this.updateNav(href);
+                    $(window).trigger('hashchange');
+                    return false;
+                } else if (href.substring(0, 6) == '#page/') {
+                    event.stopPropagation();
+                    JQuery.ajax({
+                        cache: false,
+                        url: 'assets/static/' + href.substring(6) + '?nocache=' + (new Date()).getTime(),
+                        dataType: 'html',
+                        success: function(html){
+                            _this.showModalPage(html);
+                            _this.updateNav(href);
+                        }
+                    });
+                    $(window).trigger('hashchange');
+                    return false;
+                }
+            });
 
             // Bind to time slider events
             this.timeslider.onTimeChange.register(function(new_time){
-                _this.timescale = new_time;
+                timescale = new_time;
                 _this.updateMap();
             });
 

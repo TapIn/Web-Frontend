@@ -120,9 +120,9 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
     {
          var params = null
 
-        _staticApi.call(('get/' + obj + "/" + "key"), params, function(data){
+        _staticApi.call(('get/' + obj + "/" + key), params, function(data){
             Log('debug', 'response data:', data.data);
-            lambda(data.data);
+            lambda(data);
         })
     }
 
@@ -130,9 +130,10 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
     {
          var params = null
 
+         console.log(key);
         _staticApi.call(('get/' + obj + "by" + secondary + "/" + key), params, function(data){
             Log('debug', 'response data:', data.data);
-            lambda(data.data);
+            lambda(data);
         })
     }
 
