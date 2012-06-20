@@ -88,6 +88,10 @@
     border-bottom: 1px dashed #B70600;
 }
 
+#modal-page a img, #modal-page a:hover img {
+    border-bottom: none;
+}
+
 #modal-page h1, #modal-page h2, #modal-page h3, #modal-page h4, #modal-page h5, #modal-page h6 {
     font-family: "league-gothic", sans-serif;
     text-transform: uppercase;

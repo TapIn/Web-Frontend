@@ -186,6 +186,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             pin.onClick.register(function(){
                 _this.onPinClick.apply(pin);
+                Log('debug', 'Pin clicked!', pin);
             });
         }
 
@@ -232,6 +233,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             $(document).mouseup(function(){
                 onMouseUp();
+                Log('debug', 'Mouse up!');
             });
 
             // Tracking

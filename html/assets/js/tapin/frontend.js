@@ -99,6 +99,7 @@ define([
 
         this.showVideo = function(stream_id)
         {
+            Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
                 if (data.streamend == 0) {
                     var server = 'rtmp://' + data.host + '/live/' + data.streamid;
