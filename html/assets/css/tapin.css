@@ -95,7 +95,6 @@
 .modal-content h1, .modal-content h2, .modal-content h3, .modal-content h4, .modal-content h5, .modal-content h6 {
     font-family: "league-gothic", sans-serif;
     text-transform: uppercase;
-    word-spacing:7px;
     font-size: 30px;
     line-height: 0.9em;
     margin: 36px 0 10px 0;
@@ -143,7 +142,8 @@
     z-index: 1000;
     margin: 0 auto;
     background-color:rgba(0,0,0,0.8);
-    overflow: hidden scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal-content {
