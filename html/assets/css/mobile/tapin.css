@@ -1,0 +1,84 @@
+/* User pages! */
+h1 {
+    font: 40px 'proxima nova', helvetica, sans-serif;
+    color: white;
+    text-shadow:1px 1px 4px #333333;
+    margin: 0;
+}
+
+#canvas {
+    position: absolute;
+    left: 0;
+    right: 960px;
+    top: 0;
+    bottom: 640px;
+    padding: 20px;
+    background: #cc1509;
+    background: -moz-radial-gradient(center, ellipse cover,  #cc1509 0%, #7a0700 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cc1509), color-stop(100%,#7a0700));
+    background: -webkit-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    background: -o-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    background: radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc1509', endColorstr='#7a0700',GradientType=1 );
+}
+
+.credit {
+    padding: 3px;
+    margin-top: -3px;
+    font-size: 8px;
+    text-transform: uppercase;
+    color: #fff;
+    font-family: 'proxima nova',helvetica,sans-serif;
+    background: #000;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.credit a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.level {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-family: 'proxima nova', helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+#canvas .level h1 {
+    font-size: 9px;
+    text-align: center;
+}
+
+.level .previous, .level .next {
+    font-size: 8px;
+    width: 50%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.level .previous {
+    text-align: left;
+}
+
+.level .next {
+    text-align: right
+}
+
+.levelbar {
+    width: 120px;
+    height: 10px;
+    border: 1px solid 
+    white;
+    padding: 1px;
+}
+
+.levelbarfill {
+    height: 10px;
+    background-color: #fff;
+}

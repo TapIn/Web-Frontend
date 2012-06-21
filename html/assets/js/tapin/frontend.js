@@ -22,7 +22,10 @@ define([
         this.sidebar = new Sidebar(JQuery("#sidebar"));
         this.timeslider = new TimeSlider(JQuery('#time-slider'));
         this.modal = new Modal(JQuery('#modal-page'));
-        this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/');
+        this.userModal = new Modal(JQuery('#user-modal'));
+        this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/moving-map-loader.png', [952, 65], [14, 1], 50);
+        this.api = false;
+        this.user = false;
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -67,6 +70,46 @@ define([
             }
         }
 
+        this.login = function(username, password, lambda, lambda_error) {
+            if (typeof(lambda) === 'undefined') {
+                lmabda = function(){};
+            }
+
+            if (typeof(lambda_error) === 'undefined') {
+                lambda_error = function(){};
+            }
+
+            Api.login(username, password, function(data) {
+                if ('error' in data) {
+                    Log('info', 'Could not log in: ' + data.error);
+                    lambda_error(data.error);
+                } else {
+                    localStorage.token = data.token;
+                    localStorage.username = username;
+                    _this.tokenLogin(username, data.token);
+                    lambda();
+                }
+            });
+        }
+
+        this.tokenLogin = function(username, token) {
+            _this.api = new Api(token);
+            _this.api.get_object_by_key('user', username, function(userdata) {
+                userdata.username = username;
+                _this.user = new User(userdata);
+                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName();
+                JQuery('.navbar a.user').html(html).attr('href', '#user/' + _this.user.username);
+            }, true);
+        }
+
+        this.logout = function() {
+            _this.api = false;
+            _this.user = false;
+            delete localStorage.token;
+            delete localStorage.username;
+            JQuery('.navbar a.user').html('Log in').attr('href', '#page/login.html');
+        }
+
 
         this.showVideo = function(stream_id)
         {
@@ -81,17 +124,26 @@ define([
             window.location.hash = 'video/' + pin.Data.stream_id + '/now';
         }
 
-        // Used for debugging - sets the window mode to debug
+        // Used for debugging
         window.onStage = function() {
             Log('info', 'Switching API calls to stage.');
             Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
         }
+        window.onProd = function() {
+            Log('info', 'Switching API calls to prod.');
+            Config['api']['base'] = 'http://api.tapin.tv/web/';
+        }
+
 
         this.constructor = function(){
-            api = new Api();
-
             this.timeslider.selectTime('now');
 
+            if (typeof(localStorage.token) !== 'undefined') {
+                console.log(typeof(localStorage.token), localStorage.token);
+                this.tokenLogin(localStorage.username, localStorage.token);
+            } else {
+                this.logout();
+            }
 
             $("a").live('click', function(event){
                 var href = $(this).attr('href');
@@ -116,6 +168,8 @@ define([
                     return false;
                 }
             });
+
+            window.fe = _this;
 
             // Bind to time slider events
             this.timeslider.onTimeChange.register(function(new_time){

@@ -57,7 +57,7 @@
 }
 
 /* Make pages fancy */
-.modal-content, .modal-content p {
+#modal-page .modal-content, #modal-page .modal-content p {
     color: #222;
     background-color: #fff;
     font-family: "ff-meta-serif-web-pro", Georgia, serif;
@@ -65,11 +65,11 @@
     font-size: 14px;
 }
 
-.modal-content h1 a {
+#modal-page .modal-content h1 a {
     padding-bottom: 1.25rem;
 }
 
-.modal-content h1, .modal-content h1 {
+#modal-page .modal-content h1 {
     color: #222;
     display: block;
     width: 100%;
@@ -78,21 +78,21 @@
     border-bottom: .25rem solid #B70600;
 }
 
-.modal-content a {
+#modal-page .modal-content a {
     color: #222;
     text-decoration: none;
     border-bottom: 1px dashed #000;
 }
 
-.modal-content a:hover {
+#modal-page .modal-content a:hover {
     border-bottom: 1px dashed #B70600;
 }
 
-.modal-content a img, .modal-content a:hover img {
+#modal-page .modal-content a img, #modal-page .modal-content a:hover img {
     border-bottom: none;
 }
 
-.modal-content h1, .modal-content h2, .modal-content h3, .modal-content h4, .modal-content h5, .modal-content h6 {
+#modal-page .modal-content h1, #modal-page .modal-content h2, #modal-page .modal-content h3, #modal-page .modal-content h4, #modal-page .modal-content h5, #modal-page .modal-content h6 {
     font-family: "league-gothic", sans-serif;
     text-transform: uppercase;
     font-size: 30px;
@@ -103,7 +103,7 @@
     font-weight: 400;
 }
 
-.modal-content blockquote {
+#modal-page .modal-content blockquote {
     font-size: 18px;
     line-height: 26px;
     margin-left: 40px;
@@ -118,7 +118,7 @@
     top: 40px;
     bottom: 0;
     width: 300px;
-    background: #B70600;
+    background: #000;
 }
 
 #sidebar #player {
@@ -146,12 +146,106 @@
     overflow-x: hidden;
 }
 
-.modal-content {
+#modal-page .modal-content {
     background-color: white;
     width: 800px;
     margin: 0 auto;
     padding: 10px 10px;
     position: relative;
+}
+
+
+/* User pages! */
+#user-modal {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    left: 0;
+    right: 300px;
+    z-index: 1000;
+    overflow-y: : auto;
+    overflow-x: hidden;
+    text-align: left;
+    background: #cc1509;
+    background: -moz-radial-gradient(center, ellipse cover,  #cc1509 0%, #7a0700 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cc1509), color-stop(100%,#7a0700));
+    background: -webkit-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    background: -o-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    background: radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc1509', endColorstr='#7a0700',GradientType=1 );
+
+}
+
+#user-modal .modal-content {
+    overflow: hidden;
+    margin: 10px 10px;
+}
+
+#user-modal h1 {
+    font: 80px 'proxima nova', helvetica, sans-serif;
+    color: white;
+    text-shadow:1px 1px 4px #333333
+}
+
+.credit {
+    padding: 3px;
+    margin-top: -3px;
+    font-size: 8px;
+    text-transform: uppercase;
+    color: #fff;
+    font-family: 'proxima nova',helvetica,sans-serif;
+    background: #000;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.credit a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.level {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-family: 'proxima nova', helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+#user-modal .level h1 {
+    font-size: 9px;
+    text-align: center;
+}
+
+.level .previous, .level .next {
+    font-size: 8px;
+    width: 50%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.level .previous {
+    text-align: left;
+}
+
+.level .next {
+    text-align: right
+}
+
+.levelbar {
+    width: 120px;
+    height: 10px;
+    border: 1px solid 
+    white;
+    padding: 1px;
+}
+
+.levelbarfill {
+    height: 10px;
+    background-color: #fff;
 }
 
 .hidden {
@@ -199,14 +293,10 @@
     margin: -5px 4px -5px;
 }
 
-#map-preloader {
+#map-loader {
     position: absolute;
     right: 300px;
     top: 40px;
-    width: 64px;
-    height: 64px;
-    background: url('../img/moving-map-loader.png');
-    background-position-x: -1px;
-    z-index: 1000;
+    z-index:1000;
     display: block;
 }

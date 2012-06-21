@@ -1,11 +1,5 @@
 require.config({
-    paths: {
-        'flowplayer': 'flowplayer/flowplayer-3.2.10.min',
-    },
     shim: {
-        'flowplayer': {
-            exports: 'flowplayer'
-        },
         'documentcloud/underscore': {
             exports: '_'
         },
@@ -21,13 +15,9 @@ define([
        'jquery',
        'documentcloud/backbone',
        'tapin/util/async',
-       'mixpanel',
        'handlebars',
-       'tapin/frontend/controllers/map',
-       'tapin/frontend/controllers/video',
-       'tapin/frontend/controllers/static',
-       'tapin/frontend/controllers/user'],
-       function(JQuery, Backbone, Async, Mixpanel)
+       'tapin/frontend/controllers/mobile/user'],
+       function(JQuery, Backbone, Async)
 {
     JQuery(document).ready(function(){
         // Start backbone

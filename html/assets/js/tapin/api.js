@@ -1,4 +1,4 @@
-define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/util/async'], function(Log, Event, JQuery, Config, Async){
+define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/util/async'], function(Log, Event, JQuery, Config, Async, Frontend){
     var _staticApi = function(token)
     {
         var _this = this;
@@ -15,17 +15,9 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
             return _staticApi.call(endpoint, params, lambda, error_lambda, type);
         }
 
-        this.update_object_by_key = function(obj, key, paramsDict, lambda, error_lambda)
+        this.update_object_by_key = function(obj, key, params, lambda, error_lambda)
         {
-            var params = '';
-
-            for (var key in paramsDict){
-                if (arr.hasOwnProperty(k)) {
-                    params = params + key + '=' + paramsDict[key] + '&'
-                }
-            }
-
-            Log('debug', 'Updating ' + key + '.', paramsDict);
+            Log('debug', 'Updating ' + key + '.', params);
 
             //Requires a token
             this.call(('update/' + obj + '/' + key), params, function(data){
@@ -42,6 +34,16 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
                 lambda(data.data);
             }, error_lambda, 'post');
         }
+
+        this.get_object_by_key = function(obj, key, lambda, error_lambda)
+        {
+            _staticApi.get_object_by_key(obj, key, lambda, error_lambda);
+        }
+
+        this.get_object_by_secondary_key = function(obj, secondary, key, lambda, error_lambda)
+        {
+            _staticApi.get_object_by_secondary_key(obj, secondary, key, lambda, error_lambda);
+        }
     }
 
     var previous_requests = {};
@@ -56,7 +58,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         if (error_lambda === true) {
             error_lambda = function(err) {
                 Log('warn', 'API call failed, but retrying...', err, endpoint, params, lambda, type);
-                Async.later(500, function(){
+                Async.later(2000, function(){
                     _staticApi.call(endpoint, params, lambda, error_lambda, type);
                 });
             };
@@ -68,17 +70,8 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
             previous_requests[endpoint].abort();
         }
 
-        var _params = params;
-        if (typeof(params) === 'object')
-        {
-            params = "";
-            for (var i in _params) {
-                params = params + _params[i] + '&';
-            }
-        }
-
-        var xhttp = JQuery.ajax({
-            url: Config['api']['base'] + endpoint + '?' + params,
+        var conf = {
+            url: Config['api']['base'] + endpoint,
             dataType: 'json',
             type: type,
             success: function(data) {
@@ -88,7 +81,23 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
                 error_lambda(error);
                 _staticApi.onApiError.apply(error);
             }
-        });
+        };
+
+        if (type.toLowerCase() !== 'get') {
+            conf['data'] = params;
+        } else {
+            var _params = params;
+            if (typeof(params) === 'object')
+            {
+                params = "";
+                for (var i in _params) {
+                    params = params + _params[i] + '&';
+                }
+            }
+            conf['url'] += '?' + params;
+        }
+
+        var xhttp = JQuery.ajax(conf);
 
         previous_requests[endpoint] = xhttp;
         return xhttp;
@@ -99,7 +108,6 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         var params = 'topleft=' + north + '&topleft=' + east + '&bottomright=' + south + '&bottomright=' + west + '&start=' + start + '&end=' + end;
 
         _staticApi.call('get/streambylocation', params, function(data){
-            Log('debug', 'Stream data recieved: ', data.data.streams);
             lambda(data.data.streams);
         }, error_lambda);
     }
@@ -112,8 +120,8 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         _staticApi.call('login', params, function(data){
             Log('debug', 'response data:', data.data);
             mixpanel.track('login');
-            lambda(data.data);
-        }, error_lambda)
+            lambda(data);
+        }, error_lambda, 'post')
     }
 
     _staticApi.register = function(username, password, lambda, error_lambda)
@@ -124,8 +132,8 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         _staticApi.call('register', params, function(data){
             mixpanel.track('register');
             Log('debug', 'response data:', data.data);
-            lambda(data.data);
-        }, error_lambda)
+            lambda(data);
+        }, error_lambda, 'post')
     }
 
     _staticApi.get_object_by_key = function(obj, key, lambda, error_lambda)

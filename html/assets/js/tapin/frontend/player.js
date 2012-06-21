@@ -42,7 +42,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             }
         }
 
-        var _volume = 0;
+        var _volume = 100;
         this.mute = function()
         {
             _player.setVolume(0);

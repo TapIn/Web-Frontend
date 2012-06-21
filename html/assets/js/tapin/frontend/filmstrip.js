@@ -7,7 +7,15 @@ define(['tapin/util/async'], function(Async) {
 
         var isInStandardPosition = function(){
             var pos = getCurrentPosition();
-            return ([pos[0], pos[1]] == [_initialPos[0], _initialPos[1]]);
+            return (pos[0] == _initialPos[0]) && (pos[1] == _initialPos[1]);
+        }
+
+        var getRawPosition = function(pos) {
+            return pos.substring(0, pos.length - 2);
+        }
+
+        var getCurrentPosition = function() {
+            return [getRawPosition(_elem.css('background-position-x')), getRawPosition(_elem.css('background-position-y'))];
         }
 
         this.hide = function() {
@@ -22,25 +30,18 @@ define(['tapin/util/async'], function(Async) {
             });
         }
 
-        var getRawPosition = function(pos) {
-            return pos.substring(0, pos.length - 2);
-        }
-
-        var getCurrentPosition = function() {
-            return [getRawPosition(_elem.css('background-position-x')), getRawPosition(_elem.css('background-position-y'))];
-        }
-
         this.constructor = function(elem, image, dimensions, frames, speed) {
             _elem = elem;
+            _elem.css('background-image', "url('" + image + "')");
+            _elem.css('background-position-x', '0px');
+            _elem.css('background-position-y', '0px');
             _speed = speed;
 
-            _initialPos = getCurrentPosition();
-
-            if (typeof(dimensions) !== 'array') {
+            if (typeof(dimensions) !== 'object') {
                 dimensions = [dimensions, dimensions];
             }
 
-            if (typeof(frames) !== 'array') {
+            if (typeof(frames) !== 'object') {
                 frames = [frames, 1];
             }
 
@@ -48,18 +49,23 @@ define(['tapin/util/async'], function(Async) {
                 speed = 50;
             }
 
-            var frameSize = [dimensions[0] / frames[0], dimensions[1] / frames[1]];
+            var frameSize = [Math.floor(dimensions[0] / frames[0]), Math.floor(dimensions[1] / frames[1])];
+
+            _elem.css('width', frameSize[0]);
+            _elem.css('height', frameSize[1]);
+
+            _initialPos = getCurrentPosition();
 
             Async.every(speed, function(){
                 var previous_location = getCurrentPosition();
 
                 var new_location = [
-                    (previous_location[0] - frameSize[0]) % frames[0],
-                    (previous_location[1] - frameSize[1]) % frames[1]
+                    (previous_location[0] - frameSize[0]) % dimensions[0],
+                    (previous_location[1] - frameSize[1]) % dimensions[1]
                 ];
 
                 _elem.css('background-position-x', new_location[0] + 'px');
-                _elem.css('background-position-y', new_location[0] + 'px');
+                _elem.css('background-position-y', new_location[1] + 'px');
             });
         }
 
