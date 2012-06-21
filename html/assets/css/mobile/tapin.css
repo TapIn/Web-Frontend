@@ -1,17 +1,22 @@
 /* User pages! */
-h1 {
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+}
+
+.headline h1 {
     font: 40px 'proxima nova', helvetica, sans-serif;
     color: white;
     text-shadow:1px 1px 4px #333333;
     margin: 0;
+    float: left;
+    display: inline;
 }
 
 #canvas {
-    position: absolute;
-    left: 0;
-    right: 960px;
-    top: 0;
-    bottom: 640px;
+    width: 920px;
+    height: 600px;
     padding: 20px;
     background: #cc1509;
     background: -moz-radial-gradient(center, ellipse cover,  #cc1509 0%, #7a0700 100%);
@@ -42,9 +47,7 @@ h1 {
 }
 
 .level {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    float: right;
     color: white;
     font-family: 'proxima nova', helvetica, sans-serif;
     text-transform: uppercase;
@@ -73,8 +76,7 @@ h1 {
 .levelbar {
     width: 120px;
     height: 10px;
-    border: 1px solid 
-    white;
+    border: 1px solid white;
     padding: 1px;
 }
 

@@ -13,7 +13,7 @@ define([], function(){
     };
 
     // Auto-enable debug settings
-    if (window.location.hostname !== 'tapin.tv' || window.location.protocol === 'file:') {
+    if (window.location.hostname !== 'www.tapin.tv' || window.location.protocol === 'file:') {
         config['mixpanel']['key'] = 'ad2c04ad65bc38f15c4bfd34a6732da6';
         config['logs']['level'] = 'debug';
         config['logs']['send'] = false;
