@@ -26,6 +26,7 @@ define(['jquery'], function(JQuery) {
         {
             this.page = elem;
             this.content = JQuery('<div class="modal-content"></div>');
+            this.page.append(this.content);
         }
         this.constructor(elem);
     }

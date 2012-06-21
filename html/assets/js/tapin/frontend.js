@@ -24,9 +24,6 @@ define([
         this.modal = new Modal(JQuery('#modal-page'));
         this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/');
 
-        var _modalPage = null;
-        var _modalPageContent = null;
-
         var timescale = 10*60;
         var showLoaderRef;
         this.updateMap = function()
@@ -95,14 +92,12 @@ define([
 
             this.timeslider.selectTime('now');
 
-            JQuery("html").append(_modalPage);
-
 
             $("a").live('click', function(event){
                 var href = $(this).attr('href');
                 if (href == '#') {
                     event.stopPropagation();
-                    _this.modal.close();
+                    _this.modal.hide();
                     _this.updateNav(href);
                     $(window).trigger('hashchange');
                     return false;
@@ -113,7 +108,7 @@ define([
                         url: 'assets/static/' + href.substring(6) + '?nocache=' + (new Date()).getTime(),
                         dataType: 'html',
                         success: function(html){
-                            _this.showModalPage(html);
+                            _this.modal.show(html);
                             _this.updateNav(href);
                         }
                     });
