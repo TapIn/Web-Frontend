@@ -5,41 +5,42 @@ define([
        'tapin/frontend/map/pincollection',
        'tapin/frontend/sidebar',
        'tapin/frontend/timeslider',
+       'tapin/frontend/modal',
+       'tapin/frontend/filmstrip',
        'tapin/api',
        'tapin/util/async',
        'tapin/util/log',
-       'tapin/config'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Api, Async, Log, Config)
+       'tapin/config',
+       'tapin/user'],
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Api, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
 
-        this.mainMap = null;
+        this.mainMap = new Map(JQuery("#map"));
         this.api = null;
-        this.sidebar = null;
-        this.timeslider = null;
-
-        var preloader = null;
-        var _modalPage = null;
-        var _modalPageContent = null;
+        this.sidebar = new Sidebar(JQuery("#sidebar"));
+        this.timeslider = new TimeSlider(JQuery('#time-slider'));
+        this.modal = new Modal(JQuery('#modal-page'));
+        this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/');
 
         var timescale = 10*60;
-        var showPreloaderRef;
+        var showLoaderRef;
         this.updateMap = function()
         {
             var bounds = _this.mainMap.getBounds();
 
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
-            // Show the preloader if the request takes too long
-            showPreloaderRef = Async.later(600, function(){
-                _this.showPreloader();
+            // Show the loader if the request takes too long
+            showLoaderRef = Async.later(600, function(){
+                _this.loader.show();
             });
 
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
-                // Don't show the preloader/remove the preloader when we're done
-                clearTimeout(showPreloaderRef);
-                _this.hidePreloader();
+                // Don't show the loader/remove the loader when we're done
+                clearTimeout(showLoaderRef);
+                _this.loader.hide();
 
                 var new_pins = new PinCollection();
                 for (var i in streams) {
@@ -50,6 +51,8 @@ define([
                 }
 
                 _this.mainMap.Pins.replace(new_pins);
+            }, function(){
+                Log('warn', 'Could not update the map');
             })
         }
 
@@ -64,60 +67,13 @@ define([
             }
         }
 
-        this.closeModalPage = function()
-        {
-            _modalPageContent.html('');
-            _modalPage.addClass('hidden');
-        }
-
-        this.showModalPage = function(html)
-        {
-            Log('info', "Showing fullpage modal: ", html);
-            _modalPageContent.html(html);
-            _modalPage.removeClass('hidden');
-        }
-
-        this.showPreloader = function() {
-            Async.poll(50, function(){
-                var pos = preloader.css('background-position-x');
-                pos = pos.substring(0, pos.length - 2);
-                return (pos == "-1");
-            }, function(){
-                preloader.removeClass('hidden');
-            })
-        }
-
-        this.hidePreloader = function() {
-            Async.poll(50, function(){
-                var pos = preloader.css('background-position-x');
-                pos = pos.substring(0, pos.length - 2);
-                return (pos == "-1");
-            }, function(){
-                preloader.addClass('hidden');
-            })
-        }
 
         this.showVideo = function(stream_id)
         {
             Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
-                if (data.streamend == 0) {
-                    var server = 'rtmp://' + data.host + '/live/' + data.streamid;
-                    var endpoint = 'stream';
-                    _this.sidebar.player.playLive(server, endpoint);
-                } else {
-                    var server = 'rtmp://recorded.stream.tapin.tv/cfx/st/';
-                    var endpoint = 'mp4:' + stream_id + '/stream';
-                    _this.sidebar.player.playLive(server, endpoint);
-                }
-
-                Log('info', 'Starting stream: ' + server + endpoint);
-            });
-        }
-
-        window.onStage = function() {
-            Log('info', 'Switching API calls to stage.');
-            Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
+                _this.sidebar.player.playStreamData(data);
+            }, true);
         }
 
         var showVideoForPin = function(pin)
@@ -125,39 +81,23 @@ define([
             window.location.hash = 'video/' + pin.Data.stream_id + '/now';
         }
 
+        // Used for debugging - sets the window mode to debug
+        window.onStage = function() {
+            Log('info', 'Switching API calls to stage.');
+            Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
+        }
+
         this.constructor = function(){
             api = new Api();
 
-            Api.onApiError.register(function(){
-                Log('warn', 'Request timed out')
-            })
-
-            // Initialize frontend elements
-            this.mainMap = new Map(JQuery("#map"));
-            this.sidebar = new Sidebar(JQuery("#sidebar"));
-            this.timeslider = new TimeSlider(JQuery('#time-slider'));
-            _modalPage = JQuery('<div class="hidden" id="modal-page"></div>');
-            _modalPageContent = JQuery('<div id="modal-content"></div>');
-            _modalPage.append(_modalPageContent);
-
-            preloader = JQuery("#map-preloader");
-
             this.timeslider.selectTime('now');
 
-            JQuery("html").append(_modalPage);
-
-            Async.every(50, function(){
-                var previous_location = preloader.css('background-position-x');
-                previous_location = previous_location.substring(0, previous_location.length - 2);
-                var new_location = (previous_location - 68) % 952;
-                preloader.css('background-position-x', new_location + 'px');
-            });
 
             $("a").live('click', function(event){
                 var href = $(this).attr('href');
                 if (href == '#') {
                     event.stopPropagation();
-                    _this.closeModalPage();
+                    _this.modal.hide();
                     _this.updateNav(href);
                     $(window).trigger('hashchange');
                     return false;
@@ -168,7 +108,7 @@ define([
                         url: 'assets/static/' + href.substring(6) + '?nocache=' + (new Date()).getTime(),
                         dataType: 'html',
                         success: function(html){
-                            _this.showModalPage(html);
+                            _this.modal.show(html);
                             _this.updateNav(href);
                         }
                     });

@@ -14,6 +14,5 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend'], function(JQuery, 
 
     Frontend.timeslider.onTimeChange.register(function(time, name){
         // TODO: We need to get some sort of subroutes before this will work well.
-        // app.navigate('map/' + name);
     })
 });

@@ -1,10 +1,10 @@
-define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], function(Log, Event, JQuery, Config){
+define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/util/async'], function(Log, Event, JQuery, Config, Async){
     var _staticApi = function(token)
     {
         var _this = this;
         var previous_requests = {};
 
-        this.call = function(endpoint, params, lambda, type)
+        this.call = function(endpoint, params, lambda, error_lambda, type)
         {
             if (typeof(params) === 'string') {
                 params += '&token=' + token + '&';
@@ -12,10 +12,10 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
                 params['token'] = token;
             }
 
-            return _staticApi.call(endpoint, params, lambda);
+            return _staticApi.call(endpoint, params, lambda, error_lambda, type);
         }
 
-        this.update_object_by_key = function(obj, key, paramsDict, lambda)
+        this.update_object_by_key = function(obj, key, paramsDict, lambda, error_lambda)
         {
             var params = '';
 
@@ -31,16 +31,16 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
             this.call(('update/' + obj + '/' + key), params, function(data){
                 Log('debug', 'Update response: ', data.data);
                 lambda(data.data);
-            }, 'post');
+            }, error_lambda, 'post');
         }
 
-        this.delete_object_by_key = function(obj, key, params, lambda)
+        this.delete_object_by_key = function(obj, key, params, lambda, error_lambda)
         {
             //Requires a token
             this.call(('delete/' + obj + '/' + key), params, function(data){
                 Log('debug', 'Delete response: ', data.data);
                 lambda(data.data);
-            }, 'post');
+            }, error_lambda, 'post');
         }
     }
 
@@ -48,9 +48,20 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
 
     _staticApi.onApiError = new Event();
 
-    _staticApi.call = function(endpoint, params, lambda, type) {
+    _staticApi.call = function(endpoint, params, lambda, error_lambda, type) {
         if (typeof(type) !== 'string') {
             type = 'get';
+        }
+
+        if (error_lambda === true) {
+            error_lambda = function(err) {
+                Log('warn', 'API call failed, but retrying...', err, endpoint, params, lambda, type);
+                Async.later(500, function(){
+                    _staticApi.call(endpoint, params, lambda, error_lambda, type);
+                });
+            };
+        } else if (typeof(error_lambda) !== 'function') {
+            error_lambda = function(){};
         }
 
         if (endpoint in previous_requests) {
@@ -74,6 +85,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
                 lambda(data);
             },
             error: function(s, error) {
+                error_lambda(error);
                 _staticApi.onApiError.apply(error);
             }
         });
@@ -82,17 +94,17 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
         return xhttp;
     }
 
-    _staticApi.get_streams_by_location = function(north, east, south, west, start, end, lambda)
+    _staticApi.get_streams_by_location = function(north, east, south, west, start, end, lambda, error_lambda)
     {
         var params = 'topleft=' + north + '&topleft=' + east + '&bottomright=' + south + '&bottomright=' + west + '&start=' + start + '&end=' + end;
 
         _staticApi.call('get/streambylocation', params, function(data){
             Log('debug', 'Stream data recieved: ', data.data.streams);
             lambda(data.data.streams);
-        });
+        }, error_lambda);
     }
 
-    _staticApi.login = function(username, password, lambda)
+    _staticApi.login = function(username, password, lambda, error_lambda)
     {
          var params = 'username=' + username + '&password=' + password
 
@@ -101,10 +113,10 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
             Log('debug', 'response data:', data.data);
             mixpanel.track('login');
             lambda(data.data);
-        })
+        }, error_lambda)
     }
 
-    _staticApi.register = function(username, password, lambda)
+    _staticApi.register = function(username, password, lambda, error_lambda)
     {
          var params = 'username=' + username + '&password=' + password
 
@@ -113,20 +125,20 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
             mixpanel.track('register');
             Log('debug', 'response data:', data.data);
             lambda(data.data);
-        })
+        }, error_lambda)
     }
 
-    _staticApi.get_object_by_key = function(obj, key, lambda)
+    _staticApi.get_object_by_key = function(obj, key, lambda, error_lambda)
     {
          var params = null
 
         _staticApi.call(('get/' + obj + "/" + key), params, function(data){
             Log('debug', 'response data:', data);
             lambda(data);
-        })
+        }, error_lambda)
     }
 
-    _staticApi.get_object_by_secondary_key = function(obj, secondary, key, lambda)
+    _staticApi.get_object_by_secondary_key = function(obj, secondary, key, lambda, error_lambda)
     {
          var params = null
 
@@ -134,12 +146,12 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config'], functio
         _staticApi.call(('get/' + obj + "by" + secondary + "/" + key), params, function(data){
             Log('debug', 'response data:', data);
             lambda(data);
-        })
+        }, error_lambda)
     }
 
-    _staticApi.get_stream_by_stream_id = function(id, lambda)
+    _staticApi.get_stream_by_stream_id = function(id, lambda, error_lambda)
     {
-        return _staticApi.get_object_by_key('stream', id, lambda);
+        return _staticApi.get_object_by_key('stream', id, lambda, error_lambda);
     }
 
     return _staticApi;

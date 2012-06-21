@@ -3,7 +3,7 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log'],
     // And now the controller:
     var app = new (Backbone.Router.extend(new function(){
         this.routes = {
-            'page/*path': 'showPage'
+            'user/*username': 'showPage'
         }
 
         this.initialize = function(){
@@ -13,18 +13,10 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log'],
             })
         }
 
-        this.showPage = function(path)
+        this.showPage = function(username)
         {
-            Log('debug', 'Changing page to ' + path);
-            JQuery.ajax({
-                cache: false,
-                url: 'assets/static/' + path + '?nocache=' + (new Date()).getTime(),
-                dataType: 'html',
-                success: function(html){
-                    Frontend.modal.show(html);
-                    Frontend.updateNav('#page/' + path);
-                }
-            })
+            Log('debug', 'Showing user page ' + username);
+            
         }
     }));
 
