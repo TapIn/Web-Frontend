@@ -37,13 +37,13 @@ define([
 
             // Show the loader if the request takes too long
             showLoaderRef = Async.later(600, function(){
-                _this.showLoader();
+                _this.loader.show();
             });
 
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
                 // Don't show the loader/remove the loader when we're done
                 clearTimeout(showLoaderRef);
-                _this.hideLoader();
+                _this.loader.hide();
 
                 var new_pins = new PinCollection();
                 for (var i in streams) {
@@ -54,6 +54,8 @@ define([
                 }
 
                 _this.mainMap.Pins.replace(new_pins);
+            }, function(){
+                Log('warn', 'Could not update the map');
             })
         }
 
@@ -73,18 +75,8 @@ define([
         {
             Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
-                if (data.streamend == 0) {
-                    var server = 'rtmp://' + data.host + '/live/' + data.streamid;
-                    var endpoint = 'stream';
-                    _this.sidebar.player.playLive(server, endpoint);
-                } else {
-                    var server = 'rtmp://recorded.stream.tapin.tv/cfx/st/';
-                    var endpoint = 'mp4:' + stream_id + '/stream';
-                    _this.sidebar.player.playLive(server, endpoint);
-                }
-
-                Log('info', 'Starting stream: ' + server + endpoint);
-            });
+                _this.sidebar.player.playStreamData(data);
+            }, true);
         }
 
         var showVideoForPin = function(pin)
@@ -101,20 +93,6 @@ define([
         this.constructor = function(){
             api = new Api();
 
-            Api.onApiError.register(function(){
-                Log('warn', 'Request timed out')
-            })
-
-            // Initialize frontend elements
-            this.mainMap = ;
-            this.sidebar = ;
-            this.timeslider = ;
-            _modalPage = JQuery('<div class="hidden" id="modal-page"></div>');
-            _modalPageContent = JQuery('<div id="modal-content"></div>');
-            _modalPage.append(_modalPageContent);
-
-            _this.loader = ;
-
             this.timeslider.selectTime('now');
 
             JQuery("html").append(_modalPage);
@@ -124,7 +102,7 @@ define([
                 var href = $(this).attr('href');
                 if (href == '#') {
                     event.stopPropagation();
-                    _this.closeModalPage();
+                    _this.modal.close();
                     _this.updateNav(href);
                     $(window).trigger('hashchange');
                     return false;

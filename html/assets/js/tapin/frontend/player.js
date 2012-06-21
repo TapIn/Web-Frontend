@@ -7,23 +7,39 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
 
         this.getPlayer = function(){return _player;}
 
-        this.playLive = function(server, uri)
+        this.playLive = function(server, stream_id)
         {
             Log('debug', 'Playing live');
             mixpanel.track('play-live');
             init_player({
                 provider: 'rtmp',
-                netConnectionUrl: server,
-                url: uri
+                netConnectionUrl: 'rtmp://' + server + '/live/' + stream_id,
+                url: 'stream',
+                isLive: true,
+                streamId: stream_id
             })
         }
 
-        this.play = function(uri)
+        this.playRecordedLive = function(stream_id)
         {
-            mixpanel.track('play-dvr');
+            Log('debug', 'Playing recorded');
+            mixpanel.track('play-recorded');
             init_player({
-                url: uri
+                provider: 'rtmp',
+                netConnectionUrl: 'rtmp://recorded.stream.tapin.tv/cfx/st/',
+                url: 'mp4:' + stream_id + '/stream',
+                isLive: false,
+                streamId: stream_id
             })
+        }
+
+        this.playStreamData = function(stream_data)
+        {
+            if (stream_data.streamend == 0) {
+                this.playLive(stream_data.host, stream_data.streamid);
+            } else {
+                this.playRecordedLive(stream_data.streamid);
+            }
         }
 
         var _volume = 0;
@@ -56,6 +72,12 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                 },
                 onFinish: function() {
                     return false;
+                },
+                onError: function() {
+                    Log('error', 'Could not play ' + (clip.isLive? 'live' : 'recorded') + ' stream', clip);
+                    if (clip.isLive) {
+                        _this.playRecordedLive(clip.streamId);
+                    }
                 },
                 onEnded: null,
                 clip: clip,

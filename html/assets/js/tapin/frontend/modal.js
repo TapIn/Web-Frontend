@@ -1,6 +1,9 @@
 define(['jquery'], function(JQuery) {
-    return new (function()
+    return function(elem)
     {
+
+        this.page = null;
+        this.content = null;
 
         this.show = function(html, data)
         {
@@ -9,20 +12,21 @@ define(['jquery'], function(JQuery) {
                 html = template(data);
             }
 
-            JQuery('#modal-page #modal-content').html(html);
-            JQuery('#modal-page').removeClass('hidden');
+            this.content.html(html);
+            this.page.removeClass('hidden');
         }
 
         this.hide = function()
         {
-            JQuery('#modal-page').addClass('hidden');
-            JQuery('#modal-page #modal-content').html('');
+            this.page.addClass('hidden');
+            this.content.html('');
         }
 
-        this.constructor = function()
+        this.constructor = function(elem)
         {
-
+            this.page = elem;
+            this.content = JQuery('<div class="modal-content"></div>');
         }
-        this.constructor();
-    })();
+        this.constructor(elem);
+    }
 })

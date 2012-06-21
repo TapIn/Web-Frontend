@@ -24,8 +24,9 @@ define([
        'mixpanel',
        'tapin/frontend/controllers/map',
        'tapin/frontend/controllers/video',
-       'tapin/frontend/controllers/static'],
-       function(JQuery, Backbone, Async, Mixpanel, MapController, VideoController, StaticController)
+       'tapin/frontend/controllers/static',
+       'tapin/frontend/controllers/user'],
+       function(JQuery, Backbone, Async, Mixpanel)
 {
 
 

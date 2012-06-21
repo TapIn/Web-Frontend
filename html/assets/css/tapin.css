@@ -162,6 +162,7 @@
     position: absolute;
     right: 4px;
     bottom: 0;
+    display: none;
 }
 
 .navbar .search {

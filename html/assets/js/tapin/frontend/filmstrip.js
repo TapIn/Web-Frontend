@@ -27,14 +27,12 @@ define(['tapin/util/async'], function(Async) {
         }
 
         var getCurrentPosition = function() {
-            return [getRawPosition(elem.css('background-position-x')), getRawPosition(elem.css('background-position-y'))];
+            return [getRawPosition(_elem.css('background-position-x')), getRawPosition(_elem.css('background-position-y'))];
         }
 
         this.constructor = function(elem, image, dimensions, frames, speed) {
             _elem = elem;
             _speed = speed;
-
-            console.log(_elem);
 
             _initialPos = getCurrentPosition();
 
@@ -60,8 +58,8 @@ define(['tapin/util/async'], function(Async) {
                     (previous_location[1] - frameSize[1]) % frames[1]
                 ];
 
-                preloader.css('background-position-x', new_location[0] + 'px');
-                preloader.css('background-position-y', new_location[0] + 'px');
+                _elem.css('background-position-x', new_location[0] + 'px');
+                _elem.css('background-position-y', new_location[0] + 'px');
             });
         }
 
