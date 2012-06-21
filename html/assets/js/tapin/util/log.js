@@ -10,16 +10,29 @@ define(['tapin/config'], function(Config){
             fatal: 5
         };
         level = level.toUpperCase();
+        var loglevel = levels[level.toLowerCase()];
 
-        if (levels[level.toLowerCase()] >= levels[Config.logs.level.toLowerCase()]) {
+        if (loglevel >= levels[Config.logs.level.toLowerCase()]) {
             context = [];
             Array.prototype.push.apply( context, arguments );
             context.shift();
             context.shift();
-            context = JSON.stringify(context);
+
+            if (context.length == 0) {
+                context = undefined;
+            }
 
             if (typeof(console) !== 'undefined') {
-                console.log(level + ": " + message, context);
+                var log_message = "[" + level + "] " + message;
+                if (loglevel >= 4) {
+                    console.error(log_message, context);
+                } else if(loglevel >= 3) {
+                    console.warn(log_message, context);
+                } else if(loglevel >= 2) {
+                    console.log(log_message, context);
+                } else {
+                    console.debug(log_message, context);
+                }
             }
 
             if (Config.logs.send === true) {

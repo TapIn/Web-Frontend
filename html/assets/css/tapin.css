@@ -57,7 +57,7 @@
 }
 
 /* Make pages fancy */
-#modal-page #modal-content, #modal-page #modal-content p {
+.modal-content, .modal-content p {
     color: #222;
     background-color: #fff;
     font-family: "ff-meta-serif-web-pro", Georgia, serif;
@@ -65,11 +65,11 @@
     font-size: 14px;
 }
 
-#modal-page h1 a {
+.modal-content h1 a {
     padding-bottom: 1.25rem;
 }
 
-#modal-page h1, #modal-page h1 {
+.modal-content h1, .modal-content h1 {
     color: #222;
     display: block;
     width: 100%;
@@ -78,21 +78,21 @@
     border-bottom: .25rem solid #B70600;
 }
 
-#modal-page a {
+.modal-content a {
     color: #222;
     text-decoration: none;
     border-bottom: 1px dashed #000;
 }
 
-#modal-page a:hover {
+.modal-content a:hover {
     border-bottom: 1px dashed #B70600;
 }
 
-#modal-page a img, #modal-page a:hover img {
+.modal-content a img, .modal-content a:hover img {
     border-bottom: none;
 }
 
-#modal-page h1, #modal-page h2, #modal-page h3, #modal-page h4, #modal-page h5, #modal-page h6 {
+.modal-content h1, .modal-content h2, .modal-content h3, .modal-content h4, .modal-content h5, .modal-content h6 {
     font-family: "league-gothic", sans-serif;
     text-transform: uppercase;
     word-spacing:7px;
@@ -104,7 +104,7 @@
     font-weight: 400;
 }
 
-#modal-page blockquote {
+.modal-content blockquote {
     font-size: 18px;
     line-height: 26px;
     margin-left: 40px;
@@ -146,7 +146,7 @@
     overflow: hidden scroll;
 }
 
-#modal-page #modal-content {
+.modal-content {
     background-color: white;
     width: 800px;
     margin: 0 auto;
@@ -162,6 +162,7 @@
     position: absolute;
     right: 4px;
     bottom: 0;
+    display: none;
 }
 
 .navbar .search {
