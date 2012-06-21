@@ -118,7 +118,7 @@
     top: 40px;
     bottom: 0;
     width: 300px;
-    background: #000;
+    background: url('../img/micro_carbon.png');
 }
 
 #sidebar #player {
