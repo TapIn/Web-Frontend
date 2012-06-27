@@ -17,6 +17,9 @@ define([], function(){
         config['mixpanel']['key'] = 'ad2c04ad65bc38f15c4bfd34a6732da6';
         config['logs']['level'] = 'debug';
         config['logs']['send'] = false;
+    }
+
+    if (window.location.hostname == 'stage.tapin.tv') {
         config['api']['base'] = 'http://stage.api.tapin.tv/web/';
     }
 
