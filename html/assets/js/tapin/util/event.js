@@ -2,11 +2,19 @@ define(['tapin/util'], function(Util){
     return function()
     {
         var _delegates = [];
+        /**
+         * Registers an event handler
+         * @param  callable delegate Event handler to register
+         */
         this.register = function(delegate)
         {
             _delegates.push(delegate);
         }
 
+        /**
+         * Removes an event handler
+         * @param  callable delegate Event handler to remove
+         */
         this.deregister = function(delegate)
         {
             for (var i in _delegates) {
@@ -16,6 +24,10 @@ define(['tapin/util'], function(Util){
             }
         }
 
+        /**
+         * Executes all the registered event handlers
+         * @params          Paramaters to pass to the event handlers
+         */
         this.apply = function()
         {
             for (var i in _delegates) {

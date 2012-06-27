@@ -1,4 +1,10 @@
 define(['tapin/config'], function(Config){
+    /**
+     * Adds a message to the event log
+     * @param  string   level   Event severity - 'debug', 'info', 'warn', 'error', 'fatal'
+     * @param  string   message Message to pass
+     * @params                  Additional context of the error
+     */
     return function(level, message)
     {
         levels = {

@@ -1,3 +1,6 @@
+/**
+ * Represents a user object
+ */
 define([], function(){
     return function(data) {
         this.username = null;
@@ -40,14 +43,26 @@ define([], function(){
             return name;
         }
 
+        /**
+         * Returns the level percent of the user
+         * @return float Percent to the next level
+         */
         this.getLevelPercent = function() {
             return (100 * (this.points - this.last))/(this.next - this.last);
         }
 
+        /**
+         * Returns the width of the level bar (1.5x the percent)
+         * @return float Width of the level bar, with 150 max
+         */
         this.getLevelBarWidth = function() {
             return Math.floor(1.5 * this.getLevelPercent());
         }
 
+        /**
+         * Returns the background URL
+         * @return string URL of the background
+         */
         this.getBackgroundUrl = function() {
             if (this.background === null || this.background == '' || this.background.substring(0, 7) == 'http://') {
                 return this.background;
@@ -56,6 +71,10 @@ define([], function(){
             }
         }
 
+        /**
+         * Returns a scaled version of the background URL if possible, otherwise the full background URL
+         * @return string URL of the background
+         */
         this.getSmallBackgroundUrl = function() {
             if (this.background === null || this.background == '' || this.background.substring(0, 7) == 'http://') {
                 return this.background;
@@ -64,6 +83,10 @@ define([], function(){
             }
         }
 
+        /**
+         * Populates the object with userdata
+         * @param  object   data Key-value pair of user data
+         */
         this.constructor = function(data)
         {
             for (var key in data) {

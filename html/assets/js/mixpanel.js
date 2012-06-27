@@ -1,3 +1,7 @@
+/**
+ * Mixpanel
+ * Loads Mixpanel from Mixpanel's servers
+ */
 define(['tapin/config', 'tapin/util/log'], function(Config, Log){
     (function(d,c){var a,b,g,e;a=d.createElement("script");a.type="text/javascript";
     a.async=!0;a.src=("https:"===d.location.protocol?"https:":"http:")+
