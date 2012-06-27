@@ -18,18 +18,32 @@ define(['tapin/util/async'], function(Async) {
             return [getRawPosition(_elem.css('background-position-x')), getRawPosition(_elem.css('background-position-y'))];
         }
 
+        /**
+         * Hides the filmstrip when displaying its first frame
+         */
         this.hide = function() {
             Async.poll(_speed, isInStandardPosition, function(){
                 _elem.addClass('hidden');
             });
         }
 
+        /**
+         * Shows the filmstrip when displaying its first frame
+         */
         this.show = function() {
             Async.poll(_speed, isInStandardPosition, function(){
                 _elem.removeClass('hidden');
             });
         }
 
+        /**
+         * Initializes a filmstrip
+         * @param  jQuery   elem       The element to convert to a filmstrip
+         * @param  string   image      Image URL to use for the filmstrip
+         * @param  array    dimensions Dimensions of the filmstrip [x, y]
+         * @param  array    frames     Number of frames in the filmstrip [x, y]. Either x or y must be 0.
+         * @param  float    speed      Seconds between frames
+         */
         this.constructor = function(elem, image, dimensions, frames, speed) {
             _elem = elem;
             _elem.css('background-image', "url('" + image + "')");

@@ -6,6 +6,10 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend'], function(JQuery, 
             'map/:time': 'showMap'
         }
 
+        /**
+         * Shows the map at the specified time
+         * @param  string   time Time to display the map at
+         */
         this.showMap = function(time)
         {
             Frontend.timeslider.selectTime(time);

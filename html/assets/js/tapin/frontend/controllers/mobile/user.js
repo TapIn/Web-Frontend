@@ -9,6 +9,10 @@ define(['jquery', 'documentcloud/backbone', 'tapin/api', 'tapin/user', 'tapin/ut
             'user/:username': 'showPage'
         }
 
+        /**
+         * Shows a user page
+         * @param  string   username Username to display a page for
+         */
         this.showPage = function(username)
         {
             JQuery.ajax({

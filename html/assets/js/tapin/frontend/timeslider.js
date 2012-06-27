@@ -14,11 +14,24 @@ define(['jquery', 'tapin/util/event', 'tapin/util/log'], function(JQuery, Event,
             now: 60*10
         }
 
+        /**
+         * Event for time changes. Passes the new time interval, and new time name
+         * @type {Event}
+         */
         this.onTimeChange = new Event();
+
+        /**
+         * Gets the name of the current time
+         * @return string Name of the current time
+         */
         this.getCurrentTime = function(){
             return _elem.children('li.current').data('timename');
         }
 
+        /**
+         * Selects a time on the timeslider
+         * @param  string   time The name of the time to select
+         */
         this.selectTime = function(time)
         {
             _elem.children('li.time-' + time).click();

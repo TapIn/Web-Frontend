@@ -13,6 +13,10 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log'],
             })
         }
 
+        /**
+         * Shows a modal page
+         * @param  string   path Path to the page to display
+         */
         this.showPage = function(path)
         {
             Log('debug', 'Changing page to ' + path);

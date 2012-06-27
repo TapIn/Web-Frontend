@@ -7,6 +7,11 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
 
         this.getPlayer = function(){return _player;}
 
+        /**
+         * Plays a live stream
+         * @param  string   server    Hostname of the server hosting the stream
+         * @param  string   stream_id ID of the stream
+         */
         this.playLive = function(server, stream_id)
         {
             Log('debug', 'Playing live');
@@ -20,6 +25,10 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             })
         }
 
+        /**
+         * Plays a recorded live stream
+         * @param  string   stream_id ID of the stream
+         */
         this.playRecordedLive = function(stream_id)
         {
             Log('debug', 'Playing recorded');
@@ -33,6 +42,10 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             })
         }
 
+        /**
+         * Starts the player based on stream data
+         * @param  object   stream_data Stream data to use
+         */
         this.playStreamData = function(stream_data)
         {
             if (stream_data.streamend == 0) {
@@ -43,16 +56,26 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         }
 
         var _volume = 100;
+        /**
+         * Mutes the player
+         */
         this.mute = function()
         {
             _player.setVolume(0);
         }
 
+        /**
+         * Returns the player to its volume before mute was called
+         */
         this.unmute = function()
         {
             _player.setVolume(_volume);
         }
 
+        /**
+         * Sets the volume of the player
+         * @param float    volume The new volume of the player, from 0 to 100
+         */
         this.setVolume = function(volume)
         {
             _volume = volume;

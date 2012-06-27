@@ -14,6 +14,10 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
             })
         }
 
+        /**
+         * Shows a user page
+         * @param  string   username Username to display a page for
+         */
         this.showPage = function(username)
         {
             Log('debug', 'Showing user page ' + username);
