@@ -55,7 +55,8 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             }
         }
 
-        var _volume = 100;
+        var _volume = 80;
+        var _isMuted = true;
         /**
          * Mutes the player
          */
@@ -82,6 +83,15 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             _player.setVolume(_volume);
         }
 
+        /**
+         * Gets the current volume of the player
+         * @return float   The current volume of the player
+         */
+        this.getVolume = function()
+        {
+            return (_isMuted? 0 : _volume);
+        }
+
         var init_player = function(clip)
         {
             Log('debug', 'Starting flowplayer');
@@ -91,7 +101,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                     return false;
                 },
                 onBegin: function () {
-                    this.setVolume(_volume);
+                    this.setVolume(_this.getVolume());
                 },
                 onFinish: function() {
                     return false;
@@ -121,6 +131,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         {
             player_div = JQuery('<div style="width:100%;height:100%"></div>');
             $(div).append(player_div);
+            init_player(null);
         }
         constructor(div);
     }

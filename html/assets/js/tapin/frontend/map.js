@@ -123,10 +123,10 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             // Google maps sometimes messes up on the bounds when we're close to a border (since 179E + 2 = -179E)
             if (this.getZoom() <= 4) {
-                n =   90;
-                s =  -90;
-                e =  180;
-                w = -180;
+                n =   89.99;
+                s =  -89.99;
+                e =  179.99;
+                w = -179.99;
             }
 
             n = n % 180;

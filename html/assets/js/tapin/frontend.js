@@ -7,20 +7,22 @@ define([
        'tapin/frontend/timeslider',
        'tapin/frontend/modal',
        'tapin/frontend/filmstrip',
+       'tapin/frontend/volume',
        'tapin/api',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Api, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Api, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
 
         this.mainMap = new Map(JQuery("#map"));
         this.api = null;
-        this.sidebar = new Sidebar(JQuery("#sidebar"));
         this.timeslider = new TimeSlider(JQuery('#time-slider'));
+        this.volume = new Volume(JQuery("#volume"));
+        this.sidebar = new Sidebar(JQuery("#sidebar"));
         this.modal = new Modal(JQuery('#modal-page'));
         this.userModal = new Modal(JQuery('#user-modal'));
         this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/moving-map-loader.png', [952, 65], [14, 1], 50);
@@ -170,6 +172,22 @@ define([
             });
 
             window.fe = _this;
+
+            // Bind to volume change events
+            this.volume.onVolumeChange.register(function(newVolume)
+            {
+                _this.sidebar.player.setVolume(newVolume);
+            });
+
+            this.volume.onMute.register(function(){
+                _this.sidebar.player.mute();
+            });
+
+            this.volume.onUnmute.register(function(volume){
+                this.sidebar.player.unMute();
+                _this.sidebar.player.setVolume(volume);
+            });
+
 
             // Bind to time slider events
             this.timeslider.onTimeChange.register(function(new_time){
