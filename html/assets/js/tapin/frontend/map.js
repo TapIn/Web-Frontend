@@ -217,8 +217,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             // 37.70751808422908, -122.1353101196289, 11 => Bay Area
 
             _map = new google.maps.Map(_elem, {
-                center: new google.maps.LatLng(37.53021200558681, -122.12295050048827),
-                zoom: 11,
+                center: new google.maps.LatLng(25.92996484891208, -80.3469174566269),
+                zoom: 9,
                 minZoom: 3,
                 panControl: false,
                 zoomControl: false,
