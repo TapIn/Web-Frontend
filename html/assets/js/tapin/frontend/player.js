@@ -56,7 +56,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         }
 
         var _volume = 80;
-        var _isMuted = true;
+        var _isMuted = false;
         /**
          * Mutes the player
          */
