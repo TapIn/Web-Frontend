@@ -11,7 +11,6 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="assets/css/tapin.css" rel="stylesheet">
-
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -31,15 +30,24 @@
             <a class="brand" href="#map">TapIn.tv</a>
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#page/about.html">About</a></li>
-              <li><a href="#page/app.html">Get the App</a></li>
+              <li><a id="about-page" href="assets/static/about.html">Get the App</a></li>
+              <li><a class="user" href="#"></a></li>
+
             </ul>
-            <a class="user" href="#"></a>
             <!--<input type="search" class="search" placeholder="Explore" name="search" id="search"/>-->
         </div>
       </div>
+        <div id="user-menu" class="hidden">
+            <li> </li>
+            <li><a>My Streams</a></li>
+            <hr>
+            <li><a>Followers</a></li>
+            <li><a>Following</a></li>
+            <hr>
+            <li><a>Change Password</a></li>
+            <li><a>Sign Out</a></li>
+        </div>
     </div>
-
     <div id="modal-page" class="hidden"></div>
     <div id="user-modal" class="hidden"></div>
     <div id="map-loader" class="hidden"></div>
@@ -57,8 +65,15 @@ window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https
 olark.identify('1862-781-10-3510');/*]]>{/literal}*/</script>
     <script data-main="assets/js/tapin" src="assets/js/require-jquery.js"></script>
     <script type="text/javascript" src="http://use.typekit.com/pff6rdk.js"></script>
+    <script src='assets/js/fancybox/jquery.fancybox-1.3.4.pack.js'></script>
+    <link rel="stylesheet" href="assets/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <script type="text/javascript">try{Typekit.load();}catch(e){}olark('api.box.hide');</script>
     <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("a#about-page").fancybox();
+        });
+
         $('#loginform').live('submit', function(event) {
             event.stopPropagation();
             var ret = window.fe.login($('#loginform #username').val(), $('#loginform #password').val(), function(){

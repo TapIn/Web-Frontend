@@ -26,6 +26,7 @@ define([
         this.modal = new Modal(JQuery('#modal-page'));
         this.userModal = new Modal(JQuery('#user-modal'));
         this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/moving-map-loader.png', [952, 65], [14, 1], 50);
+        this.userButton = JQuery('.navbar a.user');
         this.api = false;
         this.user = false;
 
@@ -172,7 +173,17 @@ define([
             });
 
             window.fe = _this;
+            //User hover
+            this.userButton.mouseover(function(){
+                $('#user-menu').removeClass('hidden');
+            });
 
+            $('#user-menu').mouseout(function(){
+                $('#user-menu').addClass('hidden');
+            });
+
+    
+           
             // Bind to volume change events
             this.volume.onVolumeChange.register(function(newVolume)
             {

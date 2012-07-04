@@ -7,6 +7,44 @@
   z-index: 999;
 }
 
+body {
+    font-size: 14px;
+}
+
+#user-menu {
+    left: 348px;
+    width: 150px;
+    height: 180px;
+    position:relative;
+    background: white;
+    font-size: 14px;
+    border-radius: 3px;
+    margin-top: -13px;
+    z-index: -1;
+    box-shadow: 0px 0px 6px gray;
+    text-shadow: 0.1em 0.1em 0.05em #DDD;
+}
+
+#user-menu hr {
+    margin: 3px 0px 0px 0px;
+    border-bottom:  solid #d0d0d0 0px;
+}
+
+#user-menu a:hover {
+    color:#506b93;
+    text-decoration: none;
+}
+#user-menu a {
+    color: #111;
+}
+
+#user-menu ul {}
+
+#user-menu li {
+    list-style: none;
+    padding: 8px 8px 4px 16px;
+}
+
 .time-slider .bar{
   width: 280px;
   height: 3px;
@@ -264,8 +302,8 @@
 }
 
 .navbar .user {
-    float: right;
-    padding: 10px 10px 11px;
+    float: left;
+    padding: 10px 100px 11px;
     line-height: 19px;
     color: #db9994;
     text-decoration: none;
