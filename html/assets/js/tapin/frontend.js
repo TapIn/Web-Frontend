@@ -43,7 +43,21 @@ define([
                 _this.loader.show();
             });
 
-            Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
+            //Temp hack, sorry Tyler
+            var startTime = null;
+            var endTime = null;
+
+            var frame = $('#time-slider-iframe');
+
+            $('#time-slider-iframe').each(function() {
+                startTime = $('#time-slider-value1', this.contentWindow.document||this.contentDocument);
+                endTime = $('#time-slider-value2', this.contentWindow.document||this.contentDocument);
+
+            });
+
+
+            // Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
+            Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], startTime.html(), endTime.html(), function(streams){
                 // Don't show the loader/remove the loader when we're done
                 clearTimeout(showLoaderRef);
                 _this.loader.hide();
@@ -101,7 +115,8 @@ define([
                 userdata.username = username;
                 _this.user = new User(userdata);
                 var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName();
-                JQuery('.navbar a.user').html(html).attr('href', '#user/' + _this.user.username);
+                JQuery('.navbar a.user').html(html).attr('href', '#username/' + _this.user.username);
+                JQuery('#fancybox-close').click();
             }, true);
         }
 
@@ -110,9 +125,9 @@ define([
             _this.user = false;
             delete localStorage.token;
             delete localStorage.username;
-            JQuery('.navbar a.user').html('Log in').attr('href', '#page/login.html');
+            JQuery('.navbar a.user').html('Login').attr('href', 'assets/static/login.html');
+            JQuery(".navbar a.user").fancybox();
         }
-
 
         this.showVideo = function(stream_id)
         {
@@ -173,12 +188,24 @@ define([
             });
 
             window.fe = _this;
-            //User hover
+            
+            //User menu
             this.userButton.mouseover(function(){
-                $('#user-menu').removeClass('hidden');
+                if(localStorage.username){
+                    $('#user-menu').removeClass('hidden');
+                }
             });
 
-            $('#user-menu').mouseout(function(){
+            //Anytime user selects an option, close menu
+            $('#user-menu').click(function(){
+                $('#user-menu').addClass('hidden');
+            });
+
+            $('a#signout').click(function(){
+                window.fe.logout();
+            });
+
+            $('#map').mouseover(function(){
                 $('#user-menu').addClass('hidden');
             });
 

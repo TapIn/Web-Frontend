@@ -11,10 +11,18 @@ body {
     font-size: 14px;
 }
 
+#time-slider-iframe
+{
+    border: none;
+    width: 500px;
+    bottom: -60px;
+    position:absolute;
+}
+
 #user-menu {
-    left: 348px;
+    left: 318px;
     width: 150px;
-    height: 180px;
+    height: 207px;
     position:relative;
     background: white;
     font-size: 14px;
@@ -33,6 +41,7 @@ body {
 #user-menu a:hover {
     color:#506b93;
     text-decoration: none;
+    cursor: pointer;
 }
 #user-menu a {
     color: #111;

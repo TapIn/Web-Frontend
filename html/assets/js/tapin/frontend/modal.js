@@ -4,7 +4,6 @@ define(['jquery'], function(JQuery) {
 
         this.page = null;
         this.content = null;
-
         /**
          * Shows the modal page
          * @param  string   html HTML data to draw in the modal
@@ -12,6 +11,8 @@ define(['jquery'], function(JQuery) {
          */
         this.show = function(html, data)
         {
+            console.log(this.page)
+            $(".navbar a.user").fancybox();
             if (typeof(data) === 'object') {
                 var template = Handlebars.compile(html);
                 html = template(data);
