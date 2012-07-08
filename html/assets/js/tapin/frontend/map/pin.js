@@ -1,4 +1,4 @@
-define(['tapin/util/event'], function(Event)
+define(['tapin/util/event', 'tapin/frontend/map/pinstyle', 'tapin/util/log'], function(Event, PinStyle, Log)
 {
     var _pin = function(lat, lon, uid, data)
     {
@@ -7,6 +7,9 @@ define(['tapin/util/event'], function(Event)
         this.Lon = null;
         this.Uid = null;
         this.Data = null;
+        this.PinStyle = null;
+        this.isPlaying = null;
+        this.isViewed = null;
 
         this.onClick = new Event();
 
@@ -22,6 +25,45 @@ define(['tapin/util/event'], function(Event)
             }
 
             _this.Data = data;
+            _this.PinStyle = PinStyle.Presets.Default;
+
+            _this.isPlaying = false;
+            _this.isViewed = false;
+
+            //Event handler for pin click
+            /*
+            _this.onClick.register(function () {
+                _this.setAsPlaying();
+            });
+            */
+        }
+
+        this.setAsPlaying = function()
+        {
+            Log('debug', "Pin set to playing");
+            isPlaying = true;
+            this.PinStyle = PinStyle.Presets.Playing;
+        }
+
+        this.setAsNotPlaying = function()
+        {
+            isPlaying = false;
+            if (isViewed)
+                this.PinStyle = PinStyle.Presets.Viewed;
+            else
+                this.PinStyle = PinStyle.Presets.Default
+        }
+
+        this.setAsViewed = function()
+        {
+            this.PinStyle = PinStyle.Presets.Viewed;
+            isViewed = true;
+        }
+
+        this.reset = function()
+        {
+            this.setAsNotViewed();
+            this.setAsNotPlaying();
         }
 
         /**

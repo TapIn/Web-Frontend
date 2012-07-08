@@ -179,7 +179,10 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             Log('debug', "Pin added");
             _markers[pin.Uid] = new google.maps.Marker({
                 position: new google.maps.LatLng(pin.Lat, pin.Lon),
-                map: _map
+                map: _map,
+                //PinStyles
+                //icon: pin.PinStyle.Icon,
+                //shadow: pin.PinStyle.Shadow
             });
 
             google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
