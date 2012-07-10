@@ -225,7 +225,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 zoom: 3,
                 minZoom: 3,
                 panControl: false,
-                zoomControl: false,
+                zoomControl: true,
                 mapTypeControl: false,
                 overviewMapControl: false,
                 rotateControl: false,
