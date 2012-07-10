@@ -11,6 +11,22 @@ body {
     font-size: 14px;
 }
 
+.container a {
+    cursor: pointer;
+}
+
+.datepicker {
+    background-color:rgba(255,0,0,0);
+    border: none;
+    color:white;
+    font-size: 14px;
+    margin-top: 6px;
+    position:relative;
+    text-align:right;
+    width: 80px;
+    cursor: pointer;
+}
+
 #time-slider-iframe
 {
     border: none;
@@ -20,7 +36,7 @@ body {
 }
 
 #user-menu {
-    left: 318px;
+    left: 22%;
     width: 150px;
     height: 207px;
     position:relative;
@@ -168,6 +184,51 @@ body {
     background: url('../img/micro_carbon.png');
 }
 
+.badge {
+    float:left;
+}
+
+#badge-case {
+    margin-bottom: 10px;
+}
+
+#badge-case img {
+    padding: 4px 4px 4px 4px;
+}
+
+.badge-info {
+    float:left;
+    margin-right: 11px;
+    margin-bottom: 11px;
+    width: 233px;
+    height: 50px;
+    padding-right: 5px;
+}
+
+.badge-info li {
+    list-style:none;
+    margin: 0 auto;
+    float:left;
+    padding: 0 auto;
+    top: -10px;
+    left:-8px;
+    position:relative;
+}
+
+.badge-info h2 {
+    font-size: 14px;
+    padding: 0;
+}
+
+.badge-info p {
+    
+}
+
+#badge-case {
+    width: 95%;
+    height: 110px;
+}
+
 #sidebar #player {
     height: 225px;
 }
@@ -231,9 +292,15 @@ body {
 
 #user-modal h1 {
     font: 80px 'proxima nova', helvetica, sans-serif;
-    color: white;
     text-shadow:1px 1px 4px #333333
 }
+
+
+.level h2 {
+    margin-top: -5px;
+}
+
+.badge
 
 .credit {
     padding: 3px;
@@ -257,10 +324,10 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    color: white;
     font-family: 'proxima nova', helvetica, sans-serif;
     text-transform: uppercase;
 }
+
 
 #user-modal .level h1 {
     font-size: 9px;
@@ -283,20 +350,25 @@ body {
 }
 
 .levelbar {
-    width: 120px;
+    width: 215px;
     height: 10px;
-    border: 1px solid 
-    white;
+    border: 1px solid black;
     padding: 1px;
 }
 
 .levelbarfill {
     height: 10px;
-    background-color: #fff;
+    background-color: red;
 }
 
 .hidden {
     display: none;
+}
+
+#hidden-data
+{
+    width: 800px;
+    height: 600px;
 }
 
 #mixpanel-partner {

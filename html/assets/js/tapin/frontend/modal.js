@@ -12,14 +12,16 @@ define(['jquery'], function(JQuery) {
         this.show = function(html, data)
         {
             console.log(this.page)
-            $(".navbar a.user").fancybox();
             if (typeof(data) === 'object') {
                 var template = Handlebars.compile(html);
                 html = template(data);
+
+                $('#hidden-data').append($(html));
+                $('#hidden-div').attr('href', '#hidden-data').fancybox().click();
             }
 
-            this.content.html(html);
-            this.page.removeClass('hidden');
+            // this.content.html(html);
+            // this.page.removeClass('hidden');
         }
 
         /**

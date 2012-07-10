@@ -30,6 +30,7 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
                         userdata.username = username;
                         var u = new User(userdata);
                         Frontend.userModal.show(html, u);
+
                     }, true);
                 },
                 error: function(s, err) {
@@ -41,6 +42,5 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
             });
         }
     }));
-
     return app;
 });
