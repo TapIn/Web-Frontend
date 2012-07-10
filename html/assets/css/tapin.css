@@ -241,6 +241,10 @@ body {
     right: 0;
 }
 
+#map img {
+    max-width: none;
+}
+
 #modal-page {
     position: absolute;
     top: 40px;

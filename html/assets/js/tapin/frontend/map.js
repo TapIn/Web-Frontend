@@ -179,7 +179,10 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             Log('debug', "Pin added");
             _markers[pin.Uid] = new google.maps.Marker({
                 position: new google.maps.LatLng(pin.Lat, pin.Lon),
-                map: _map
+                map: _map,
+                //PinStyles
+                //icon: pin.PinStyle.Icon,
+                //shadow: pin.PinStyle.Shadow
             });
 
             google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
@@ -216,12 +219,13 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             // 40.0024331757129, 269.88193994140624, 5 => All of US
             // 37.70751808422908, -122.1353101196289, 11 => Bay Area
 
+
             _map = new google.maps.Map(_elem, {
-                center: new google.maps.LatLng(25.92996484891208, -80.3469174566269),
-                zoom: 9,
+                center: new google.maps.LatLng(40.0024331757129, 269.88193994140624),
+                zoom: 3,
                 minZoom: 3,
                 panControl: false,
-                zoomControl: false,
+                zoomControl: true,
                 mapTypeControl: false,
                 overviewMapControl: false,
                 rotateControl: false,
@@ -229,6 +233,12 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 streetViewControl: false,
                 center_changed: onCenterChanged,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            $.getScript('http://j.maxmind.com/app/geoip.js', function()
+            {
+                _this.center(geoip_latitude(), geoip_longitude());
+                _this.zoom(9);
             });
 
             $(document).mouseup(function(){
