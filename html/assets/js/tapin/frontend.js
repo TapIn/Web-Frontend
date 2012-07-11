@@ -128,6 +128,7 @@ define([
         }
 
         this.tokenLogin = function(username, token) {
+            $("#streams").attr('href', '#stream/' + username)
             _this.api = new Api(token);
             _this.api.get_object_by_key('user', username, function(userdata) {
                 userdata.username = username;
@@ -285,6 +286,10 @@ define([
             
             $('a#signout').click(function(){
                 window.fe.logout();
+            });
+
+            $('a#stream').click(function(){
+                alert();
             });
            
             // Bind to volume change events

@@ -14,7 +14,7 @@ define([], function(){
         this.points = null;
         this.titles = [];
         this.badges = [];
-
+        this.streams = [];
         this.title = null;
         this.nexttitle = null;
 

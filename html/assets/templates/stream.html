@@ -1,0 +1,45 @@
+{{#if background}}
+    <style type="text/css">
+        #user-modal {
+            background-image: url('{{getBackgroundUrl}}');
+        }
+    </style>
+{{/if}}
+<div class="user-profile">
+    <div class="headline">
+        <h1 class='well'>{{getName}} (320)</h1>
+        {{#if tagline}}
+            <h2>{{tagline}}</h2>
+        {{/if}}
+    </div>
+</div>
+
+<h2>My Streams</h2>
+  {{#each streams}}
+  <li><a href='http://tapin.tv/#video/{{this.0.}}/now'>{{this.0.}}</a></li>
+
+  {{/each}}
+
+
+<!-- Level up bar! -->
+<div class="level">
+    <h2>Level Progress</h2>
+    <div class="levelbar">
+        <div class="levelbarfill" style="width:{{getLevelBarWidth}}px"></div>
+    </div>
+    <span class="previous">{{title}}</span><span class="next">{{nexttitle}}</span>
+</div>
+
+
+
+
+<!-- Background credit -->
+{{#if bgcreditname}}
+    <span class="credit">bg photo &copy;
+        {{#if bgcrediturl}}
+            <a href="{{bgcrediturl}}" target="_new">{{bgcreditname}}</a>
+        {{else}}
+            {{bgcreditname}}
+        {{/if}}
+    </span>
+{{/if}}
