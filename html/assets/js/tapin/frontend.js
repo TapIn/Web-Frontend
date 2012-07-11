@@ -179,7 +179,6 @@ define([
             this.timeslider.selectTime('now');
 
             if (typeof(localStorage.token) !== 'undefined') {
-                console.log(typeof(localStorage.token), localStorage.token);
                 this.tokenLogin(localStorage.username, localStorage.token);
             } else {
                 this.logout();
