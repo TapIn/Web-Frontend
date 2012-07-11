@@ -4,7 +4,6 @@ define(['jquery'], function(JQuery) {
 
         this.page = null;
         this.content = null;
-
         /**
          * Shows the modal page
          * @param  string   html HTML data to draw in the modal
@@ -12,13 +11,17 @@ define(['jquery'], function(JQuery) {
          */
         this.show = function(html, data)
         {
+            console.log(this.page)
             if (typeof(data) === 'object') {
                 var template = Handlebars.compile(html);
                 html = template(data);
+
+                $('#hidden-data').append($(html));
+                $('#hidden-div').attr('href', '#hidden-data').fancybox().click();
             }
 
-            this.content.html(html);
-            this.page.removeClass('hidden');
+            // this.content.html(html);
+            // this.page.removeClass('hidden');
         }
 
         /**

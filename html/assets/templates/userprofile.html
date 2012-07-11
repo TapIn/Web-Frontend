@@ -7,7 +7,7 @@
 {{/if}}
 <div class="user-profile">
     <div class="headline">
-        <h1>{{getName}}</h1>
+        <h1 class='well'>{{getName}} (320)</h1>
         {{#if tagline}}
             <h2>{{tagline}}</h2>
         {{/if}}
@@ -16,12 +16,110 @@
 
 <!-- Level up bar! -->
 <div class="level">
-    <h1>Level Progress</h1>
+    <h2>Level Progress</h2>
     <div class="levelbar">
         <div class="levelbarfill" style="width:{{getLevelBarWidth}}px"></div>
     </div>
     <span class="previous">{{title}}</span><span class="next">{{nexttitle}}</span>
 </div>
+<h3 style="margin-left: 3px">Ribbon Case</h3>
+<div id="badge-case" class='well'>
+    <div class="badge"><img src='assets/img/badges/b-02.png'></div>
+    <div class="badge"><img src='assets/img/badges/b-20.png'></div>
+    <div class="badge"><img src='assets/img/badges/b-25.png'></div>
+    <div class="badge"><img src='assets/img/badges/b-15.png'></div>
+    <div class="badge"><img src='assets/img/badges/b-05.png'></div>
+    <div class="badge"><img src='assets/img/badges/b-17.png'></div>
+    <div class="badge"><img src='assets/img/badges/b-34.png'></div>
+
+</div>
+<h3 style="margin-left: 3px">Ribbons Earned</h3>
+    <div class='well badge-info'>
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-02.png" alt="">
+        </a>
+    </li> 
+          <h4>Freelance Journalist</h4>
+          <p>tream content later featured in a TV report.</p>
+    </div>
+     <div class='well badge-info'>
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-20.png" alt="">
+        </a>
+    </li> 
+          <h4>Employee</h4>
+          <p>TapIn employee.</p>
+    </div>
+
+ <div class='well badge-info' style="margin-right:0px">
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-25.png" alt="">
+        </a>
+    </li> 
+          <h4>Brogrammer</h4>
+          <p>Stream a Brogrammer.</p>
+    </div>
+        <div class='well badge-info'>
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-15.png" alt="">
+        </a>
+    </li> 
+          <h4>YC</h4>
+          <p>Stream something YC related.</p>
+    </div>
+     <div class='well badge-info'>
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-05.png" alt="">
+        </a>
+    </li> 
+          <h4>Broadcaster</h4>
+          <p>More than 1,000 views.</p>
+    </div>
+
+ <div class='well badge-info' style="margin-right:0px">
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-17.png" alt="">
+        </a>
+    </li> 
+          <h4>pb</h4>
+          <p>Stream Paul Buchheit.</p>
+    </div>
+        <div class='well badge-info'>
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-34.png" alt="">
+        </a>
+    </li> 
+          <h4>Documentarian</h4>
+          <p>Multiple streams at the same location.</p>
+    </div>
+     <div class='well badge-info'>
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-30.png" alt="">
+        </a>
+    </li> 
+          <h4>Labcoat</h4>
+          <p>Stream something of scientific note.</p>
+    </div>
+
+ <div class='well badge-info' style="margin-right:0px">
+    <li class="span1">
+        <a href="#" class="thumbnail">
+          <img src="assets/img/badges/b-24.png" alt="">
+        </a>
+    </li> 
+          <h4>Tech Talk</h4>
+          <p>Stream a technical presentation.</p>
+    </div>
+
+
 
 <!-- Background credit -->
 {{#if bgcreditname}}

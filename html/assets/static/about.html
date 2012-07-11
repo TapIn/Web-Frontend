@@ -1,15 +1,27 @@
-<p>TapIn is the easiest way to go from seeing something interesting, to sharing something interesting. With our iPhone app, you can record, and instantly share with your Twitter followers and the world exactly what you’re seeing, and where you’re seeing it. On TapIn.tv, you can easily browse and search what’s happening and what has happened, anywhere in the world.</p>
-<div style="text-align:center;"><img src="assets/img/iphone_app.png" /></div>
-<p>To get in contact with us, use the <a href="#contact" onclick="olark('api.box.expand');return false;">contact form below</a>. If you're interested in working with us, check out our <a href="#page/jobs.html">jobs page</a>. Make sure to view our <a href="#page/privacy.html">Privacy Policy</a> and <a href="#page/tacos.html">Terms And Conditions Of Service</a>.</p>
-<script type="text/javascript">
-    (function(){
-        olark('api.box.shrink');
-        olark('api.box.show');
-        var isShown = true;
-        jQuery(window).bind('hashchange', function(){
-            if (isShown){
-                olark('api.box.hide');
-            }
-        });
-    })();
-</script>
+<html>
+<head>
+<style>
+    #appscreen {
+        width: 500px;
+        height: 255px;
+        background:url('assets/img/iphone_app.png');
+    }
+    #button {
+        float: right;
+        margin: 5px;
+        width: 200px;
+        height: 69px;
+        background:url('assets/img/appbutton.png');
+    }
+</style>
+</head>
+<body>
+    <h1>From seeing to sharing in 0 seconds</h1>
+    <center><div id="appscreen">
+    </div></center>
+    <a target = "_blank" href = "http://apple.com"><div id="button">
+    </div></a>
+    <p>TapIn.tv is the easiest way to go from seeing something to sharing video of it. With our iPhone app, you can record and instantly share exactly what you're seeing, and where you're seeing it.</p>
+    <br>
+</body>
+</html>

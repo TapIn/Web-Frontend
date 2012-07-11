@@ -7,25 +7,20 @@ body {
 
 .headline h1 {
     font: 40px 'proxima nova', helvetica, sans-serif;
-    color: white;
-    text-shadow:1px 1px 4px #333333;
     margin: 0;
     float: left;
+    padding-left: 15px;
     display: inline;
 }
 
+
+
 #canvas {
-    width: 920px;
-    height: 600px;
-    padding: 20px;
-    background: #cc1509;
-    background: -moz-radial-gradient(center, ellipse cover,  #cc1509 0%, #7a0700 100%);
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cc1509), color-stop(100%,#7a0700));
-    background: -webkit-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
-    background: -o-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
-    background: -ms-radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
-    background: radial-gradient(center, ellipse cover,  #cc1509 0%,#7a0700 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc1509', endColorstr='#7a0700',GradientType=1 );
+    width: 100%;
+    position:absolute;
+    height: 100%;
+    background: #F0F0F0;
+  
 }
 
 .credit {
@@ -48,19 +43,79 @@ body {
 
 .level {
     float: right;
-    color: white;
     font-family: 'proxima nova', helvetica, sans-serif;
     text-transform: uppercase;
 }
 
+
+.badge {
+    float:left;
+}
+
+#badge-case {
+
+    width:100%;
+    height: 100%;
+    background:white;
+}
+
+#badge-case img {
+}
+
+.badge-info h5 {
+    margin-top: -15px;
+    margin-left: 50px;
+}
+
+.badge-info {
+    float:left;
+    margin-left: 13px;
+    width: 180px;
+    height: 32px;
+    padding-left: 5px;
+
+}
+
+.badge-info li {
+    list-style:none;
+    margin: 0 auto;
+    float:left;
+    padding: 0 auto;
+    top: -15px;
+    left:-15px;
+    position:relative;
+
+}
+
+.badge-info h2 {
+    font-size: 14px;
+    padding: 0;
+}
+
+.badge-info p {
+    margin-top: 0px;
+    left: -9px;
+    width: 110%;
+    position:relative;
+}
+
+#canvas p {
+    font-size: 12px;
+}
+
+
+
 #canvas .level h1 {
     font-size: 9px;
     text-align: center;
+    margin-top: -7px;
+    margin-right: 15px;
+    margin-bottom: -10px;
 }
 
 .level .previous, .level .next {
     font-size: 8px;
-    width: 50%;
+    width: 46%;
     overflow: hidden;
     display: inline-block;
 }
@@ -76,11 +131,13 @@ body {
 .levelbar {
     width: 120px;
     height: 10px;
-    border: 1px solid white;
+    border: 1px solid #777;
     padding: 1px;
+    margin-right: 12px;
+
 }
 
 .levelbarfill {
     height: 10px;
-    background-color: #fff;
+    background-color: red;
 }

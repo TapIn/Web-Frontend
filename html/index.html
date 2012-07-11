@@ -9,9 +9,9 @@
     <meta name="author" content="FS Stack">
 
     <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="assets/css/tapin.css" rel="stylesheet">
-
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -25,27 +25,65 @@
   </head>
 
   <body>
+  <!-- Nav Bar -->
+  <div id="hidden-div"></div>
+  <div id="hidden-data"></div>
+
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="#map">TapIn.tv</a>
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#page/about.html">About</a></li>
-              <li><a href="#page/app.html">Get the App</a></li>
+              <li class="active"><a href="/">Home</a></li>
+              <li><a id="about-page" href="assets/static/about.html">Get the App</a></li>
+              <li><a id="about-page" href="assets/static/team.html">Team</a></li>
+            
+             <li class="dropdown" id="user">
+                <a id='dropdown-text' href="#"
+                      class="dropdown-toggle"
+                      >
+                      Login
+                </a>
+               
+
+             <ul class="dropdown-menu">
+                <li><a id='account'>My Account</a></li>
+                    <li><a id='streams'>My Streams</a></li>
+                        <li class="divider"></li>
+                    <li><a id ='followers'>Followers</a></li>
+                    <li><a id ='following'>Following</a></li>
+                        <li class="divider"></li>
+                    <li><a id='change-password'>Change Password</a></li>
+                    <li><a id ='signout'>Sign Out</a></li>
+                  </ul>
+                 </li>
             </ul>
-            <a class="user" href="#"></a>
-            <!--<input type="search" class="search" placeholder="Explore" name="search" id="search"/>-->
-        </div>
+             <ul class='nav pull-right' style="margin-right: 265px">
+                 <li id='timestart'><input class='datepicker' id='dpstart' type="text" value="Today" style="width:80px;"><i class="icon-calendar icon-white" id='firsticon'></i></li>
+                <li><a id='lastweek'>Range</a></li>
+                <li><a>All</a></li>
+                </ul>
+<!--             <input type="search" class="search" placeholder="Explore" name="search" id="search"/>
+
+ -->        </div>
+
       </div>
+        <div id="user-menu" class="hidden">
+            <li> </li>
+           
+        </div>
     </div>
 
+
+    
     <div id="modal-page" class="hidden"></div>
     <div id="user-modal" class="hidden"></div>
     <div id="map-loader" class="hidden"></div>
-    <div class="time-slider" id="time-slider"></div>
-    <div id="volume"></div>
+<!--     <div class="time-slider" id="time-slider"></div>
+ -->    <div id="volume"></div>
     <div id="map"></div>
+    <!--<iframe id='time-slider-iframe' src='assets/js/timeslider/timeslider.html'></iframe>-->
+
     <div id="sidebar">
         <div id="mixpanel-partner"><a href="https://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_light.png" alt="Mobile and Web Analytics" /></a></div>
     </div>
@@ -57,8 +95,18 @@ window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https
 olark.identify('1862-781-10-3510');/*]]>{/literal}*/</script>
     <script data-main="assets/js/tapin" src="assets/js/require-jquery.js"></script>
     <script type="text/javascript" src="http://use.typekit.com/pff6rdk.js"></script>
+    <script src='assets/js/fancybox/jquery.fancybox-1.3.4.js'></script>
+    <link rel="stylesheet" href="assets/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+    <link type="text/css" href="assets/js/datepicker/css/blitzer/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+    <script type="text/javascript" src="assets/js/datepicker/js/jquery-ui-1.8.21.custom.min.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}olark('api.box.hide');</script>
     <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("a#about-page").fancybox();
+           
+        });
+
         $('#loginform').live('submit', function(event) {
             event.stopPropagation();
             var ret = window.fe.login($('#loginform #username').val(), $('#loginform #password').val(), function(){
@@ -105,3 +153,5 @@ olark.identify('1862-781-10-3510');/*]]>{/literal}*/</script>
     </script>
   </body>
 </html>
+    <script src='assets/js/bootstrap/bootstrap.min.js'></script>
+
