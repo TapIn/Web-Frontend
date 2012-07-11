@@ -237,8 +237,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             $.getScript('http://j.maxmind.com/app/geoip.js', function()
             {
-                _this.center(geoip_latitude(), geoip_longitude());
-                _this.zoom(9);
+                var lat = geoip_latitude();
+                var lon = geoip_longitude();
+                Log('info', 'GeoIP detected as ' + lat + ', ' + lon);
+                _this.center(lat, lon);
+
             });
 
             $(document).mouseup(function(){
