@@ -111,7 +111,7 @@ define([
             if (typeof(lambda_error) === 'undefined') {
                 lambda_error = function(){};
             }
-
+            
             Api.login(username, password, function(data) {
                 if ('error' in data) {
                     Log('info', 'Could not log in: ' + data.error);
@@ -128,7 +128,7 @@ define([
         }
 
         this.tokenLogin = function(username, token) {
-            $("#streams").attr('href', '#stream/' + username)
+            $("#streams").attr('href', '#stream/' + username);
             _this.api = new Api(token);
             _this.api.get_object_by_key('user', username, function(userdata) {
                 userdata.username = username;
@@ -138,6 +138,7 @@ define([
                 JQuery('a#account').attr('href', '#user/' + _this.user.username);
                 $('#dropdown-text').attr('data-toggle', 'dropdown');
             }, true);
+
         }
 
         this.logout = function() {
@@ -178,8 +179,7 @@ define([
 
         this.constructor = function(){
             this.timeslider.selectTime('now');
-
-            if (typeof(localStorage.token) !== 'undefined') {
+            if (typeof(localStorage.token) !== 'undefined' && localStorage.token !== null) {
                 this.tokenLogin(localStorage.username, localStorage.token);
             } else {
                 this.logout();
