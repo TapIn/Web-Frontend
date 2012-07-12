@@ -5,7 +5,8 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
     var app = new (Backbone.Router.extend(new function(){
         _this = this;
         this.routes = {
-            'user/*username': 'showPage'
+            'user/*username': 'showPage',
+            'stream/*username': 'showStream'
         }
 
         this.initialize = function(){
@@ -37,6 +38,32 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
                     Log('error', "Couldn't get user page template, retrying!");
                     Async.later(5000, function(){
                         _this.showPage(username);
+                    });
+                }
+            });
+        }
+
+        this.showStream = function(username)
+        {
+            Log('debug', 'Showing user stream page ' + username);
+            JQuery.ajax({
+                url: 'assets/templates/stream.html',
+                cache: false,
+                success: function(html) {
+                    Api.get_object_by_secondary_key('stream', 'user', username, function(userdata) {
+                        Log('info', 'Showing user modal for ' + username);
+                        userdata.username = username;
+                        var u = new User(userdata);
+                        u.streams = userdata;
+                        console.log(u)
+                        Frontend.userModal.show(html, u);
+
+                    }, true);
+                },
+                error: function(s, err) {
+                    Log('error', "Couldn't get user page template, retrying!");
+                    Async.later(5000, function(){
+                        _this.showStream(username);
                     });
                 }
             });

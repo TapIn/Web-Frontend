@@ -7,10 +7,7 @@
 {{/if}}
 <div class="user-profile">
     <div class="headline">
-        <h1 class='well'>{{getName}} (320)</h1>
-        {{#if tagline}}
-            <h2>{{tagline}}</h2>
-        {{/if}}
+        <h1 class='well'>{{getName}}</h1>
     </div>
 </div>
 
@@ -118,16 +115,3 @@
           <h4>Tech Talk</h4>
           <p>Stream a technical presentation.</p>
     </div>
-
-
-
-<!-- Background credit -->
-{{#if bgcreditname}}
-    <span class="credit">bg photo &copy;
-        {{#if bgcrediturl}}
-            <a href="{{bgcrediturl}}" target="_new">{{bgcreditname}}</a>
-        {{else}}
-            {{bgcreditname}}
-        {{/if}}
-    </span>
-{{/if}}

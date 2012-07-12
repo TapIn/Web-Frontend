@@ -1,0 +1,15 @@
+{{#if background}}
+    <style type="text/css">
+        #user-modal {
+            background-image: url('{{getBackgroundUrl}}');
+        }
+    </style>
+{{/if}}
+<div class="user-profile">
+    <div class="headline">
+        <h1 class='well'>{{getName}}'s Streams</h1>
+    </div>
+</div>
+{{#each streams}}
+<li><a href='http://tapin.tv/#video/{{this.0.}}/now'>{{this.0.}}</a></li>
+{{/each}}

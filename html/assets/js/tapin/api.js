@@ -18,6 +18,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
          */
         this.call = function(endpoint, params, lambda, error_lambda, type)
         {
+            alert();
             if (typeof(params) === 'string') {
                 params += '&token=' + token + '&';
             } else if(typeof(params) === 'object') {
@@ -183,7 +184,6 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
     _staticApi.login = function(username, password, lambda, error_lambda)
     {
          var params = 'username=' + username + '&password=' + password
-
          //This will return a token if login succeeded
         _staticApi.call('login', params, function(data){
             Log('debug', 'response data:', data.data);
