@@ -95,7 +95,10 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         var init_player = function(clip)
         {
             Log('debug', 'Starting flowplayer');
-            _player = Flowplayer(player_div[0], "assets/swf/flowplayer.commercial-3.2.11.swf", {
+            _player = Flowplayer(player_div[0], {
+                src: 'assets/swf/flowplayer.commercial-3.2.11.swf',
+                wmode: 'opaque'
+            }, {
                 key: '#$671186fa04a44f30376',
                 onBeforePause: function() {
                     return false;
