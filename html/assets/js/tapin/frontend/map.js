@@ -225,7 +225,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 featureType: "water",
                 elementType: "geometry.fill",
                 stylers: [
-                { color: "#2dcedc" },
+                { color: "#94d5e6" },
                 { lightness: 40 },
                 { saturation: -40 }
                 ]
