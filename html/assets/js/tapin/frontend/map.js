@@ -220,6 +220,123 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             // 37.70751808422908, -122.1353101196289, 11 => Bay Area
 
 
+            var mapStyleArray = [
+            {
+                featureType: "water",
+                elementType: "geometry.fill",
+                stylers: [
+                { color: "#2dcedc" },
+                { lightness: 40 },
+                { saturation: -40 }
+                ]
+            },{
+                featureType: "all",
+                elementType: "labels.icon",
+                stylers: [
+                { visibility: "off" }
+                ]
+            },{
+                featureType: "road",
+                elementType: "geometry.stroke",
+                stylers: [
+                { visibility: "on" },
+                { color: "#cccccc" }
+                ]
+            },{
+                featureType: "road.highway",
+                elementType: "geometry.fill",
+                stylers: [
+                { lightness: 0 },
+                { color: "#ffccaa" },
+                { saturation: 0 }
+                ]
+            },{
+                featureType: "road.arterial",
+                elementType: "geometry.fill",
+                stylers: [
+                { color: "#f0f0f0" },
+                { lightness: 0 },
+                { saturation: 0 }
+                ]
+            },{
+                featureType: "road.local",
+                elementType: "geometry.fill",
+                stylers: [
+                { color: "#ffffff" }
+                ]
+            },{
+                elementType: "labels.text.stroke",
+                stylers: [
+                { visibility: "off" }
+                ]
+            },{
+                featureType: "poi",
+                stylers: [
+                { visibility: "off" }
+                ]
+            },{
+                featureType: "poi.park",
+                elementType: "geometry.fill",
+                stylers: [
+                { visibility: "on" },
+                { color: "#d6d9a1" },
+                { lightness: 50 }
+                ]
+            },{
+                featureType: "poi.park",
+                elementType: "labels.text",
+                stylers: [
+                { visibility: "on" }
+                ]
+            },{
+                featureType: "landscape",
+                elementType: "geometry",
+                stylers: [
+                { color: "#fffff0" }
+                ]
+            },{
+                featureType: "transit",
+                elementType: "all",
+                stylers: [
+                { visibility: "off" }
+                ]
+            },{
+                featureType: "transit.line",
+                elementType: "geometry",
+                stylers: [
+                { visibility: "off" }
+                ]
+            },{
+                featureType: "transit.station.airport",
+                elementType: "geometry.fill",
+                stylers: [
+                { visibility: "on" },
+                { color: "#ffffd6" }
+                ]
+            },{
+                featureType: "transit.station.airport",
+                elementType: "labels.text",
+                stylers: [
+                { visibility: "on" }
+                ]
+            },{
+                featureType: "road.highway",
+                elementType: "labels.text.stroke",
+                stylers: [
+                { weight: 0 }
+                ]
+            },{
+                featureType: "administrative",
+                elementType: "labels.text.stroke",
+                stylers: [
+                { weight: 0 }
+                ]
+            }
+            ];
+
+            var mapStyle = new google.maps.StyledMapType(mapStyleArray,
+                {name: "Styled Map"});
+
             _map = new google.maps.Map(_elem, {
                 center: new google.maps.LatLng(40.0024331757129, 269.88193994140624),
                 zoom: 3,
@@ -232,8 +349,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 scaleControl: false,
                 streetViewControl: false,
                 center_changed: onCenterChanged,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
             });
+
+            _map.mapTypes.set('map_style', mapStyle);
+            _map.setMapTypeId('map_style');
 
             $.getScript('http://j.maxmind.com/app/geoip.js', function()
             {
