@@ -339,8 +339,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             _map = new google.maps.Map(_elem, {
                 center: new google.maps.LatLng(40.0024331757129, 269.88193994140624),
-                zoom: 3,
-                minZoom: 3,
+                zoom: 2,
+                minZoom: 2,
                 panControl: false,
                 zoomControl: true,
                 mapTypeControl: false,
