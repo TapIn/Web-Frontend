@@ -158,6 +158,12 @@ define([
             Api.get_stream_by_stream_id(stream_id, function(data){
                 _this.sidebar.player.playStreamData(data);
             }, true);
+            Api.get_timestream_by_stream_id(stream_id, function(data){
+                Log('debug', "timestream success: ", data[0][1].coord[0]);
+                _this.mainMap.center(data[0][1].coord[0], data[0][1].coord[1]);
+            }, function(data){
+                Log('debug', "timestream fail: " + data)
+            });
         }
 
         var showVideoForPin = function(pin)
