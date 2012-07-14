@@ -48,30 +48,32 @@ define([
             var endTime = null;
 
             var date = $('.datepicker').val()
+            var currentTime = new Date();
+            var timeoffset = currentTime.getTimezoneOffset();
 
             switch(date) {
                 case 'Today':
-                    var currentTime = new Date();
+                
                     var month = currentTime.getMonth();
                     var day = currentTime.getDate();
                     var year = currentTime.getFullYear();
-                    startTime=Date.UTC(year,month,day) / 1000;
-                    endTime = startTime + 86400;
+                    startTime=Date.UTC(year,month,day) / 1000 + timeoffset*60 - 21600; //subtract 6 hours as a buffer
+                    endTime = startTime + 129600
                     break;
                 case 'All':
                     break;
                 default:
                     var date = $('#dpstart').val().split('/');
-                    startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000;
+                    startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000 + timeoffset*60 - 21600;
                     if($('#dpend').exists()){
                         var dpend = $('#dpend').val().split('/');
                         endTime=Date.UTC(dpend[2],dpend[0]-1,dpend[1]) / 1000;
                     }
                     else {
-                        endTime = startTime + 86400 ;    
+                        endTime = startTime + 129600; //add twelve hours + 24 hrs (6 hrs to negate the buffer, 6 to add to the buffer)
                     }
             }   
-
+            console.log('starttime ' + startTime);
             // Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], startTime, endTime, function(streams){
                 // Don't show the loader/remove the loader when we're done
@@ -234,6 +236,7 @@ define([
             //Handles what happens when you click 'lastweek' button
             $('#lastweek').click(function(){
                 var currentTime = new Date()
+                var timeoffset = currentTime.getTimezoneOffset();
                 var month = currentTime.getMonth()+1
                 var day = currentTime.getDate()
                 var weekPast = day-7
@@ -267,8 +270,8 @@ define([
                         .datepicker({onSelect: function(date){
                             var date = $('#dpstart').val().split('/');
                             var endDate = $(this).val().split('/')
-                            startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000;
-                            endTime=Date.UTC(endDate[2],endDate[0]-1,endDate[1]) / 1000;     
+                            startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000 + timeoffset*60 - 21600;
+                            endTime=Date.UTC(endDate[2],endDate[0]-1,endDate[1]) / 1000 + timeoffset*60 + 21600;     
                             if(endTime < startTime) {
                                 $('#dpstart').val($(this).val());
                            }
