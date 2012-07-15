@@ -306,6 +306,17 @@ define([
                 $('#comments').append(comment);
                 $('#comments').append(comment2);
             });
+
+            //Comment submission
+
+            $('#submit-comment').click(function(){
+                var comment = $('#comment-form').val();
+                var params = 'cookie=banana&cheese=taco';
+
+                _this.api.update_object_by_key('comment', '23432', params, function(data) {
+                    alert(data);
+                });
+            });
            
             // Bind to volume change events
             this.volume.onVolumeChange.register(function(newVolume)

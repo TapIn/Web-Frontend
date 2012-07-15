@@ -18,7 +18,6 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
          */
         this.call = function(endpoint, params, lambda, error_lambda, type)
         {
-            alert();
             if (typeof(params) === 'string') {
                 params += '&token=' + token + '&';
             } else if(typeof(params) === 'object') {
