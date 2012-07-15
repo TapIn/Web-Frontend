@@ -175,6 +175,7 @@ define([
             Config['api']['base'] = 'http://api.tapin.tv/web/';
         }
 
+
         $.fn.exists = function () {
             return this.length !== 0;
         }
@@ -231,6 +232,10 @@ define([
                        } 
                     }
                 }
+            });
+
+            $('#comment-form').click(function(){
+                document.getElementById('comment-form').style.height = '60px';
             });
 
             //Handles what happens when you click 'lastweek' button
