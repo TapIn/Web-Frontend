@@ -39,7 +39,7 @@
     background:url(../img/controls/track.png) no-repeat;
     text-align:left;
     cursor:pointer;
-    width:275px;
+    width:310px;
 }
 
 /* the draggable playhead */
@@ -77,9 +77,40 @@
 }
 
 
+#upvote {
+    position:absolute;
+    width:22px;
+    height:21px;
+    background: url(../img/upvote_hollow.png);
+    float:right;
+    right: 40px;
+    top: 8px;
+}
 
+#upvote:hover {
+    width:22px;
+    height:21px;
+    background: url(../img/upvote_filled.png) no-repeat;
+    background-position:center 0px;
 
+}
 
+#downvote {
+    position:absolute;
+    width:22px;
+    height:21px;
+    background: url(../img/downvote_hollow.png);
+    float:right;
+    right: 13px;
+    top: 8px;
+}
+
+#downvote:hover {
+    width:22px;
+    height:21px;
+    background: url(../img/downvote_filled.png) no-repeat;
+    background-position:center 0px;
+}
 
 .time-slider {
   width: 380px;
@@ -584,90 +615,28 @@ body {
 
 #volume {
     position: absolute;
-    bottom: 10px;
-    right: 300px;
+    bottom: 8px;
+    right: 70px;
     z-index: 100000;
 }
 
 #volume .bar {
     float: left;
-    width: 10px;
-    background: #F0F0F0;
+    width: 5px;
+    height: 13px;
+    background: #7d7d7d;
     margin: 0 4px 7px 0;
-    -moz-box-shadow:    1px 1px 2px 2px #ccc;
-    -webkit-box-shadow: 1px 1px 2px 2px #ccc;
-    box-shadow:         1px 1px 2px 2px #ccc;
+
 }
 
 #volume .bar.active, #volume .bar:hover {
-    background: #BB0600;
+    background: #F0F0F0;
 }
 
-#volume .bar-0 {
-    background: transparent;
-    -moz-box-shadow:    none;
-    -webkit-box-shadow: none;
-    box-shadow:         none;
-}
 
-#volume .bar-0 {
-    margin: 26px 4px 0 0;
-    height: 24px;
-    width: 32px;
-    background: url('../img/volume.png');
-    background-position: 32px;
-}
+
 
 #volume .bar-0.active, #volume .bar-0:hover {
     background: url('../img/volume.png');
     background-position: 0px;
-}
-
-#volume .bar-1 {
-    margin-top: 36px;
-    height: 5px;
-}
-
-#volume .bar-2 {
-    margin-top: 32px;
-    height: 9px;
-}
-
-#volume .bar-3 {
-    margin-top: 28px;
-    height: 13px;
-}
-
-#volume .bar-4 {
-    margin-top: 24px;
-    height: 17px;
-}
-
-#volume .bar-5 {
-    margin-top: 20px;
-    height: 21px;
-}
-
-#volume .bar-6 {
-    margin-top: 16px;
-    height: 25px;
-}
-
-#volume .bar-7 {
-    margin-top: 12px;
-    height: 29px;
-}
-
-#volume .bar-8 {
-    margin-top: 8px;
-    height: 33px;
-}
-
-#volume .bar-9 {
-    margin-top: 4px;
-    height: 37px;
-}
-
-#volume .bar-10 {
-    height: 41px;
 }

@@ -132,6 +132,10 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                         backgroundGradient: 'none'
                 }
             }).controls('controls');
+            $('.controls').append($('#volume'));
+            $('.controls').append($('#upvote'));
+            $('.controls').append($('#downvote'));
+
         }   
 
         var constructor = function(div)
