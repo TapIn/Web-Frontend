@@ -95,7 +95,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         var init_player = function(clip)
         {
             Log('debug', 'Starting flowplayer');
-            _player = Flowplayer(player_div[0], {
+            _player = Flowplayer(player_div[0]  , {
                 src: 'assets/swf/flowplayer.commercial-3.2.11.swf',
                 wmode: 'opaque'
             }, {
@@ -117,6 +117,10 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                 },
                 onEnded: null,
                 clip: clip,
+                play: {
+                    label: 'Start',
+                    replayLabel: 'Replay'
+                },
                 plugins: {
                     rtmp: {
                         url: "flowplayer.rtmp-3.2.10.swf"
@@ -127,12 +131,8 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                         background: '#B70600 no-repeat 30 10',
                         backgroundGradient: 'none'
                 }
-            });
+            }).controls('controls');
         }   
-
-        $('#player').mouseover(function(){
-            alert();
-        });
 
         var constructor = function(div)
         {

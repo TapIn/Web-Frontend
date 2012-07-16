@@ -1,3 +1,86 @@
+/* * * * * * * * * * */
+/* START PLAYER CSS */
+/* * * * * * * * * * */
+
+/* root element should be positioned relatively so that
+    child elements can be positioned absolutely */
+.controls {
+    position:relative;
+    height:35px;
+    margin: -45px 0 0;
+    padding:5px 0 0;
+    background-color:rgba(0,0,0,0.75);
+}
+
+/* when play button toggles between play/pause class
+    we move its background image */
+.controls .play, .controls .pause {
+    position:absolute;
+    width: 18px;
+    height:14px;
+    text-indent:-999em;
+    cursor:pointer;
+    overflow:hidden;
+    background:url(../img/playpause.png) center top no-repeat;
+    margin-top: 7px;
+    margin-left: 15px;
+}
+
+.controls .pause {
+    background-position:center -14px;
+}
+
+/* the track or "scrubber"  */
+.controls .track {
+    position:absolute;
+    height:18px;
+    top: 12px;
+    left:40px;
+    background:url(../img/controls/track.png) no-repeat;
+    text-align:left;
+    cursor:pointer;
+    width:275px;
+}
+
+/* the draggable playhead */
+.controls .playhead {
+    position:absolute;
+    height:12px;
+    background:url(../img/controls/playhead.png) no-repeat;
+    cursor:pointer;
+    top:0px;
+    width:12px;
+}
+
+/* buffer and controls are automatically resized, their initial width should be 0 */
+.controls .progress, .controls .buffer {
+    background-color:#fff;
+    height:7px;
+    margin:3px 4px;
+    width:0px;
+    position:absolute;
+    top:0;
+    font-size:0px;
+    border-radius: 0px;
+
+    /* this is the way to fine tune buffer and progress max width */
+    max-width:634px;
+}
+
+.controls .buffer {
+    background-color:#999;
+}
+
+/* hide time & mute */
+.controls .time, .controls .mute, .controls .unmute {
+    display:none;
+}
+
+
+
+
+
+
 .time-slider {
   width: 380px;
   height: 50px;
