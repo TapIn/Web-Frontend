@@ -7,7 +7,7 @@ define(['jquery', 'tapin/frontend/player', 'tapin/util/log'], function(JQuery, P
             Log('debug', 'Init sidebar');
             var playerElem = JQuery('<div id="player"></div>');
             _this.player = new Player(playerElem);
-            JQuery(elem).append(playerElem);
+            // JQuery(elem).append(playerElem); appended twice?
         }
 
         constructor(elem);

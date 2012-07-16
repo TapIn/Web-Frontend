@@ -6,6 +6,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         var _map = null;
         var _markers = {};
 
+        var _centerInitialized = false;
+
         // Properties
         this.Pins = new PinCollection();
 
@@ -26,6 +28,13 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             Log('debug', 'Attempting to change center to [' + lat + ',' + lon + ']');
             _map.panTo(new google.maps.LatLng(lat, lon));
             return this;
+        }
+
+        this.initCenter = function(lat, lon, zoom)
+        {
+            _this.center(lat, lon);
+            _this.zoom(zoom);
+            _centerInitialized = true;
         }
 
         /**
@@ -158,74 +167,17 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             return _map.getZoom();
         }
 
-
-        // Google maps "drag" event is broken. We'll fix it here:
-        var _center_changed = false;
-        var onCenterChanged = function()
+        /**
+        * Returns the styling options for the map
+        */
+        this.getStyle = function()
         {
-            _center_changed = true;
-        }
-
-        var onMouseUp = function()
-        {
-            if (_center_changed) {
-                _center_changed = false;
-                _this.onPan.apply();
-            }
-        }
-
-        var onPinAdd = function(pin)
-        {
-            Log('debug', "Pin added");
-            _markers[pin.Uid] = new google.maps.Marker({
-                position: new google.maps.LatLng(pin.Lat, pin.Lon),
-                map: _map,
-                //PinStyles
-                //icon: pin.PinStyle.Icon,
-                //shadow: pin.PinStyle.Shadow
-            });
-
-            google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
-
-            pin.onClick.register(function(){
-                _this.onPinClick.apply(pin);
-                Log('debug', 'Pin clicked!', pin);
-            });
-        }
-
-        var onPinUpdate = function(pin)
-        {
-            Log('debug', "Pin updated");
-            _markers[pin.Uid].setPosition(new google.maps.LatLng(pin.Lat, pin.Lon));
-        }
-
-        var onPinRemove = function(pin)
-        {
-            Log('debug', "Pin removed");
-            _markers[pin.Uid].setMap(null);
-            delete _markers[pin.Uid];
-        }
-
-        var constructor = function(elem)
-        {
-            if (elem instanceof jQuery) {
-                elem = elem[0];
-            }
-
-            _elem = elem;
-
-            Log('info', "Map initialized!");
-
-            // 40.0024331757129, 269.88193994140624, 5 => All of US
-            // 37.70751808422908, -122.1353101196289, 11 => Bay Area
-
-
             var mapStyleArray = [
             {
                 featureType: "water",
                 elementType: "geometry.fill",
                 stylers: [
-                { color: "#2dcedc" },
+                { color: "#94d5e6" },
                 { lightness: 40 },
                 { saturation: -40 }
                 ]
@@ -334,13 +286,79 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             }
             ];
 
-            var mapStyle = new google.maps.StyledMapType(mapStyleArray,
+            return new google.maps.StyledMapType(mapStyleArray,
                 {name: "Styled Map"});
+        }
+
+
+        // Google maps "drag" event is broken. We'll fix it here:
+        var _center_changed = false;
+        var onCenterChanged = function()
+        {
+            _center_changed = true;
+        }
+
+        var onMouseUp = function()
+        {
+            if (_center_changed) {
+                _center_changed = false;
+                _this.onPan.apply();
+            }
+        }
+
+        var onPinAdd = function(pin)
+        {
+            Log('debug', "Pin added");
+            _markers[pin.Uid] = new google.maps.Marker({
+                position: new google.maps.LatLng(pin.Lat, pin.Lon),
+                map: _map,
+                //PinStyles
+                //icon: pin.PinStyle.Icon,
+                //shadow: pin.PinStyle.Shadow
+            });
+
+            google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
+
+            pin.onClick.register(function(){
+                _this.onPinClick.apply(pin);
+                Log('debug', 'Pin clicked!', pin);
+            });
+        }
+
+        var onPinUpdate = function(pin)
+        {
+            Log('debug', "Pin updated");
+            _markers[pin.Uid].setPosition(new google.maps.LatLng(pin.Lat, pin.Lon));
+        }
+
+        var onPinRemove = function(pin)
+        {
+            Log('debug', "Pin removed");
+            _markers[pin.Uid].setMap(null);
+            delete _markers[pin.Uid];
+        }
+
+        var constructor = function(elem)
+        {
+            if (elem instanceof jQuery) {
+                elem = elem[0];
+            }
+
+            _elem = elem;
+
+            Log('info', "Map initialized!");
+
+            // 40.0024331757129, 269.88193994140624, 5 => All of US
+            // 37.70751808422908, -122.1353101196289, 11 => Bay Area
+            var lat = 40.0024331757129;
+            var lng = 269.88193994140624;
+
+            var mapStyle = _this.getStyle();
 
             _map = new google.maps.Map(_elem, {
-                center: new google.maps.LatLng(40.0024331757129, 269.88193994140624),
-                zoom: 3,
-                minZoom: 3,
+                center: new google.maps.LatLng(lat, lng),
+                zoom: 2,
+                minZoom: 2,
                 panControl: false,
                 zoomControl: true,
                 mapTypeControl: false,
@@ -349,7 +367,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 scaleControl: false,
                 streetViewControl: false,
                 center_changed: onCenterChanged,
-                mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+                mapTypeIds: 'mapStyle'
             });
 
             _map.mapTypes.set('map_style', mapStyle);
@@ -357,12 +375,16 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             $.getScript('http://j.maxmind.com/app/geoip.js', function()
             {
-                var lat = geoip_latitude();
-                var lon = geoip_longitude();
+                lat = geoip_latitude();
+                lon = geoip_longitude();
                 Log('info', 'GeoIP detected as ' + lat + ', ' + lon);
-                _this.center(lat, lon);
-                _this.zoom(9);
+                if (!_centerInitialized)
+                {
+                    _this.center(lat, lon);
+                    _this.zoom(9);
+                }
             });
+
 
             $(document).mouseup(function(){
                 onMouseUp();

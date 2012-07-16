@@ -128,12 +128,16 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                         backgroundGradient: 'none'
                 }
             });
-        }
+        }   
+
+        $('#player').mouseover(function(){
+            alert();
+        });
 
         var constructor = function(div)
         {
-            player_div = JQuery('<div style="width:100%;height:100%"></div>');
-            $(div).append(player_div);
+            player_div = JQuery('<div id="player"></div>');
+            $('#currently-playing').after(player_div)
             init_player(null);
         }
         constructor(div);
