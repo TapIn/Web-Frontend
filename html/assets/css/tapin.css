@@ -16,7 +16,7 @@
         position:relative;
         margin-top: 6px;
         float:right;
-        margin-right: -30px;
+        margin-right: -20px;
       }
       #date-range-field {
         width: 290px;
@@ -377,7 +377,7 @@ body {
     bottom: 0;
     width: 495px;
     padding: 10px 25px 10px 25px;
-    background: url('../img/tire.png');
+    background: url('../img/sidebarbg.png');
     -moz-box-shadow:  0px 2px 4px #000;
     -webkit-box-shadow: 0px 2px 4px #000;
     box-shadow:  0px 2px 4px #000;
@@ -385,7 +385,7 @@ body {
 }
 
 #sidebar h2 {
-    color: white;
+    color: #333;
     font-weight: 300;
     font-size: 20px;
     margin-bottom: -2px;
