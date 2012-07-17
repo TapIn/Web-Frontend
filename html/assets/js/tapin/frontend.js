@@ -47,33 +47,31 @@ define([
             var startTime = null;
             var endTime = null;
 
-            var date = $('.datepicker').val()
+
+            var date = $('#datepicker-invisible').text();
+
             var currentTime = new Date();
             var timeoffset = currentTime.getTimezoneOffset();
 
             switch(date) {
-                case 'Today':
-                
-                    var month = currentTime.getMonth();
-                    var day = currentTime.getDate();
-                    var year = currentTime.getFullYear();
+                case 'defauflt':
                     startTime=Date.UTC(year,month,day) / 1000 + timeoffset*60 - 21600; //subtract 6 hours as a buffer
                     endTime = startTime + 129600
                     break;
-                case 'All':
-                    break;
                 default:
-                    var date = $('#dpstart').val().split('/');
-                    startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000 + timeoffset*60 - 21600;
-                    if($('#dpend').exists()){
-                        var dpend = $('#dpend').val().split('/');
-                        endTime=Date.UTC(dpend[2],dpend[0]-1,dpend[1]) / 1000;
-                    }
-                    else {
-                        endTime = startTime + 129600; //add twelve hours + 24 hrs (6 hrs to negate the buffer, 6 to add to the buffer)
-                    }
+                    var date1 = date.split('|')[0].split('/')
+                    var date2 = date.split('|')[1].split('/')
+
+                    startTime=Date.UTC(date1[2],date1[1],date1[0]) / 1000 + timeoffset*60 -21600 ;
+                    endTime=Date.UTC(date2[2],date2[1],date2[0]) / 1000 + timeoffset*60 + 108000;
+
+                    // else {
+                    //     endTime = startTime + 129600; //add twelve hours + 24 hrs (6 hrs to negate the buffer, 6 to add to the buffer)
+                    // }
             }   
             console.log('starttime ' + startTime);
+             console.log('endttime ' + endTime);
+
             // Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], startTime, endTime, function(streams){
                 // Don't show the loader/remove the loader when we're done
@@ -219,78 +217,8 @@ define([
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
 
-            //Handles if is in week state and user selects start to be greater than end
-            $("#dpstart" ).datepicker({
-                onSelect: function(date) {
-                    if( $('#dpend').exists() ){
-                        var date = $('#dpstart').val().split('/');
-                        var endDate = $('#dpend').val().split('/')
-                        startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000;
-                        endTime=Date.UTC(endDate[2],endDate[0]-1,endDate[1]) / 1000;     
-                        if(startTime > endTime) {
-                            $('#dpend').val($('#dpstart').val());
-                       } 
-                    }
-                }
-            });
 
-            $('#comment-form').click(function(){
-                $('#comment-form').height(60);
-            });
-
-            //Handles what happens when you click 'lastweek' button
-            $('#lastweek').click(function(){
-                var currentTime = new Date()
-                var timeoffset = currentTime.getTimezoneOffset();
-                var month = currentTime.getMonth()+1
-                var day = currentTime.getDate()
-                var weekPast = day-7
-                var year = currentTime.getFullYear()
-
-                month = (month.length > 1) ? month : "0"+month;
-                day = (day.length > 1) ? day : "0"+day;
-                weekPast = (weekPast.length > 1) ? weekPast : "0"+weekPast;
-
-                //Set value of start time
-                $('#dpstart').val(month + "/" + weekPast + "/" + year)
-
-                var to = $('<li></li>').append($('<a>To</a>').attr({cursor : 'none', hover : 'none'}))
-                var whiteIcon = $('<i></i>')
-                    .attr({class : 'icon-remove icon-white', id : 'iconremove'})
-                    .click(function(){
-                        to.remove();
-                        datepicker.remove();
-                        $('#dpstart').after($('<i class="icon-calendar icon-white" id="firsticon"">'))
-                    });
-                console.log()
-                var te = $;
-                if($('#dpend').exists()){
-                    
-                }
-                else {
-                    //create and add new start time
-                    var datepicker = $('<li></li>')
-                    .append($('<input>')
-                        .attr({width: 80, class : 'datepicker', id : 'dpend', type : 'text', value : month + "/" + day + "/" + year})
-                        .datepicker({onSelect: function(date){
-                            var date = $('#dpstart').val().split('/');
-                            var endDate = $(this).val().split('/')
-                            startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000 + timeoffset*60 - 21600;
-                            endTime=Date.UTC(endDate[2],endDate[0]-1,endDate[1]) / 1000 + timeoffset*60 + 21600;     
-                            if(endTime < startTime) {
-                                $('#dpstart').val($(this).val());
-                           }
-                        }})
-                    )
-                    .append(whiteIcon);
-                    $('#timestart').after(to);
-                    to.after(datepicker);
-                    $('#firsticon').remove();
-                 }
-            });
-
-            //End calendar 
-            
+        
             $('a#signout').click(function(){
                 window.fe.logout();
             });
