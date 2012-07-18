@@ -25,13 +25,21 @@ define(['tapin/api', 'jquery'], function(Api, JQuery){
             var onUpdatedComments = function(data)
             {
                 var comments = [];
+
+                var sortable = [];
                 for (var i in data)
+                    sortable.push([i, data[i]])
+                sortable.sort(function(a, b) {return a[1][1]['timestamp'] - b[1][1]['timestamp']})
+
+                sortable.reverse();
+
+                for (var i in sortable)
                 {
                     var newDate = new Date();
-                    newDate.setTime( data[i][1]['timestamp']*1000);
+                    newDate.setTime( sortable[i][1][1]['timestamp']*1000);
 
-                    var comment = data[i][1];
-                    comment.id = data[i][0];
+                    var comment = sortable[i][1][1];
+                    comment.id = sortable[i][1][0];
                     comment.time = jQuery.timeago(newDate);
                     comments.push(comment);
                 }
