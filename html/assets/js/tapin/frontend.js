@@ -353,7 +353,7 @@ define([
             Async.later(1000, _this.updateMap);
 
             // Fake live
-            Async.every(2 * 1000, _this.updateMap);
+            Async.every(4 * 1000, _this.updateMap);
         }
 
         this.constructor();
