@@ -28,8 +28,11 @@ define([
         this.userModal = new Modal(JQuery('#user-modal'));
         this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/moving-map-loader.png', [952, 65], [14, 1], 50);
         this.userButton = JQuery('a#dropdown-text');
+        this.comments = new Comments(JQuery('#comments'));
         this.api = false;
         this.user = false;
+
+        var current_stream_id = '';
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -106,7 +109,7 @@ define([
             if (typeof(lambda_error) === 'undefined') {
                 lambda_error = function(){};
             }
-            
+
             Api.login(username, password, function(data) {
                 if ('error' in data) {
                     Log('info', 'Could not log in: ' + data.error);
@@ -150,6 +153,8 @@ define([
             Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
                 _this.sidebar.player.playStreamData(data);
+                _this.comments.updateCommentsFor(stream_id);
+                current_stream_id = stream_id;
             }, true);
         }
 
@@ -189,7 +194,7 @@ define([
                     _this.updateNav(href);
                     $(window).trigger('hashchange');
                     return false;
-                } else if (typeof(href) === 'string' && href.substring(0,6) === '#page/') {                    
+                } else if (typeof(href) === 'string' && href.substring(0,6) === '#page/') {
                     event.stopPropagation();
                     JQuery.ajax({
                         cache: false,
@@ -224,9 +229,12 @@ define([
             $('#submit-comment').click(function(){
                 var comment = $('#comment-form').val();
 
-                _this.api.post_comment_to_streamid('streamid', comment, function(data) {
-                    $("#comment-form").text('');
+                _this.api.post_comment_to_streamid(current_stream_id, comment, function(data) {
                     Log('info', 'Comment posted!');
+                    $("#comment-form").val('');
+                    Async.later(250, function(){
+                        _this.comments.updateCommentsFor(current_stream_id);
+                    });
                 });
             });
 
