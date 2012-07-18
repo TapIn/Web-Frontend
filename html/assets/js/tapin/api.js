@@ -3,6 +3,11 @@
  *
  */
 define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/util/async', 'tapin/util'], function(Log, Event, JQuery, Config, Async, Util){
+    /**
+     * User-specific API
+     * @param  {string}                                         token   Token
+     * @return {Object.<string,function|Object|string|number>}          API Instance
+     */
     var _staticApi = function(token)
     {
         var _this = this;

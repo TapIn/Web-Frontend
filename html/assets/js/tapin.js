@@ -27,11 +27,14 @@ define([
        'documentcloud/backbone',
        'tapin/util/async',
 
-       // Mixpanel is hardcoded to load into window scope.
+       // hardcoded to load into window scope.
        'mixpanel',
-
-       // Handlebars is hardcoded to load into window scope.
        'handlebars',
+       'datepicker/datepicker',
+       'fancybox/jquery.fancybox-1.3.4',
+       'timeago',
+       'bootstrap/carousel',
+       'bootstrap/bootstrap.min',
 
        // Loading these classes loads the routers automatically, due to the
        // stupid way Backbone handles routers in the window scope.
