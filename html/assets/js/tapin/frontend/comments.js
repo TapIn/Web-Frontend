@@ -39,7 +39,6 @@ define(['tapin/api', 'jquery'], function(Api, JQuery){
                     user: _this.user,
                     comments: comments
                 };
-                console.log(_data);
                 if (data.length > 0)
                 {
                     var new_html = template(_data);
