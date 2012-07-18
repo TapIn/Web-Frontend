@@ -2,20 +2,6 @@ define([], function()
 {
     return new (function(){
         var _this = this;
-        var delegates = {};
-
-        var getId = function(milli) {
-            return (new Date()).getTime() + "+" + milli + "-" + Math.floor(Math.random() * 10000);
-        }
-
-        var returningLater = function(id, noGc) {
-            return function(){
-                delegates[id]();
-                /*if(typeof(noGc) !== undefined && !noGc) {
-                    delegates[id] = null;
-                }*/
-            }
-        }
 
         /**
          * Executes a callback later
@@ -23,9 +9,7 @@ define([], function()
          * @param  function delegate The function to execute when the timeout expires
          */
         this.later = function(milli, delegate) {
-            var id = getId(milli);
-            delegates[id] = delegate;
-            return setTimeout(returningLater(id), milli);
+            return setTimeout(delegate, milli);
         }
 
         /**
@@ -34,9 +18,7 @@ define([], function()
          * @param  function delegate The function to execute
          */
         this.every = function(milli, delegate) {
-            var id = getId(milli);
-            delegates[id] = delegate;
-            setInterval(returningLater(id, true), milli);
+            setInterval(delegate, milli);
         }
 
         /**

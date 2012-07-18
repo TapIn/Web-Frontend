@@ -1,3 +1,6 @@
+/** @define {boolean} */
+var DEBUG = true;
+
 /**
  * Config
  *
@@ -21,7 +24,7 @@ define([], function(){
     };
 
     // Auto-enable debug settings if we're not on the main server
-    if (window.location.hostname !== 'www.tapin.tv') {
+    if (DEBUG) {
         config['mixpanel']['key'] = 'ad2c04ad65bc38f15c4bfd34a6732da6';
         config['logs']['level'] = 'debug';
         config['logs']['send'] = false;
