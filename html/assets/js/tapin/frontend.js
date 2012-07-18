@@ -152,8 +152,8 @@ define([
         {
             Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
-                _this.sidebar.player.playStreamData(data);
                 _this.comments.updateCommentsFor(stream_id);
+                _this.sidebar.player.playStreamData(data);
                 current_stream_id = stream_id;
             }, true);
         }

@@ -32,7 +32,7 @@ define(['tapin/api', 'jquery'], function(Api, JQuery){
 
                     var comment = data[i][1];
                     comment.id = data[i][0];
-                    comment.time = jQuery.timeago(newDate);  
+                    comment.time = jQuery.timeago(newDate);
                     comments.push(comment);
                 }
                 var _data = {

@@ -290,6 +290,16 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         _staticApi.get_object_by_secondary_key('comment', 'streamid', stream_id, lambda, error_lambda);
     }
 
+    /**
+    * Gets a stream's time and location details
+     * @param  {string}                             streamID     The ID of the stream to get
+     * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
+     * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
+    */
+    _staticApi.get_timestream_by_stream_id = function(id, lambda, error_lambda)
+    {
+        return _staticApi.get_object_by_secondary_key('timestream', "streamid", id, lambda, error_lambda);
+    }
 
     /**
      * Gets a stream by its id.

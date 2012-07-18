@@ -15,3 +15,5 @@ rm -rf ../html/assets/js-inprogress
 cp -r ../html ../html-compiled
 rm ../html/assets/js/tapin.min.js
 rm ../html/assets/js/tapin-mobile.min.js
+sed -i 's/require-jquery/tapin.min/g' ../html-compiled/index.html
+sed -i 's/require-jquery/tapin-mobile.min/g' ../html-compiled/mobile.html
