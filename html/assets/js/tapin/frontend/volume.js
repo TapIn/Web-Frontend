@@ -65,8 +65,8 @@ define(['jquery', 'tapin/util/log', 'tapin/util/event'], function(JQuery, Log, E
             Log('debug', 'Init volume');
             _elem = elem;
 
-            for (var i = 0; i <= 10; i++) {
-                var bar = JQuery('<div class="bar bar-' + i + ( i == 8? ' active' : '') + '"></div>').click(onBarClickFunction(i * 10));
+            for (var i = 0; i <= 5; i++) {
+                var bar = JQuery('<div class="bar' + ( i == 3? ' active' : '') + '"></div>').click(onBarClickFunction(i * 20));
                 _elem.append(bar);
             }
 

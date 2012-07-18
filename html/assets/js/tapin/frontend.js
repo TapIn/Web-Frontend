@@ -8,12 +8,13 @@ define([
        'tapin/frontend/modal',
        'tapin/frontend/filmstrip',
        'tapin/frontend/volume',
+       'tapin/frontend/comments',
        'tapin/api',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Api, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -27,8 +28,11 @@ define([
         this.userModal = new Modal(JQuery('#user-modal'));
         this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/moving-map-loader.png', [952, 65], [14, 1], 50);
         this.userButton = JQuery('a#dropdown-text');
+        this.comments = new Comments(JQuery('#comments'));
         this.api = false;
         this.user = false;
+
+        var current_stream_id = '';
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -47,33 +51,25 @@ define([
             var startTime = null;
             var endTime = null;
 
-            var date = $('.datepicker').val()
+
+            var date = $('#datepicker-invisible').text();
+
             var currentTime = new Date();
             var timeoffset = currentTime.getTimezoneOffset();
 
             switch(date) {
-                case 'Today':
-                
-                    var month = currentTime.getMonth();
-                    var day = currentTime.getDate();
-                    var year = currentTime.getFullYear();
+                case 'defauflt':
                     startTime=Date.UTC(year,month,day) / 1000 + timeoffset*60 - 21600; //subtract 6 hours as a buffer
                     endTime = startTime + 129600
                     break;
-                case 'All':
-                    break;
                 default:
-                    var date = $('#dpstart').val().split('/');
-                    startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000 + timeoffset*60 - 21600;
-                    if($('#dpend').exists()){
-                        var dpend = $('#dpend').val().split('/');
-                        endTime=Date.UTC(dpend[2],dpend[0]-1,dpend[1]) / 1000;
-                    }
-                    else {
-                        endTime = startTime + 129600; //add twelve hours + 24 hrs (6 hrs to negate the buffer, 6 to add to the buffer)
-                    }
-            }   
-            console.log('starttime ' + startTime);
+                    var date1 = date.split('|')[0].split('/')
+                    var date2 = date.split('|')[1].split('/')
+
+                    startTime=Date.UTC(date1[2],date1[1],date1[0]) / 1000 + timeoffset*60 -21600 ;
+                    endTime=Date.UTC(date2[2],date2[1],date2[0]) / 1000 + timeoffset*60 + 108000;
+            }
+
             // Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], startTime, endTime, function(streams){
                 // Don't show the loader/remove the loader when we're done
@@ -113,7 +109,7 @@ define([
             if (typeof(lambda_error) === 'undefined') {
                 lambda_error = function(){};
             }
-            
+
             Api.login(username, password, function(data) {
                 if ('error' in data) {
                     Log('info', 'Could not log in: ' + data.error);
@@ -156,7 +152,9 @@ define([
         {
             Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
+                _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
+                current_stream_id = stream_id;
             }, true);
         }
 
@@ -196,7 +194,7 @@ define([
                     _this.updateNav(href);
                     $(window).trigger('hashchange');
                     return false;
-                } else if (typeof(href) === 'string' && href.substring(0,6) === '#page/') {                    
+                } else if (typeof(href) === 'string' && href.substring(0,6) === '#page/') {
                     event.stopPropagation();
                     JQuery.ajax({
                         cache: false,
@@ -212,112 +210,117 @@ define([
                 }
             });
 
-            window.fe = _this;
-            
+            window['fe'] = _this;
 
             // * * * * * * * * * * * * * * * * * //
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
 
-            //Handles if is in week state and user selects start to be greater than end
-            $("#dpstart" ).datepicker({
-                onSelect: function(date) {
-                    if( $('#dpend').exists() ){
-                        var date = $('#dpstart').val().split('/');
-                        var endDate = $('#dpend').val().split('/')
-                        startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000;
-                        endTime=Date.UTC(endDate[2],endDate[0]-1,endDate[1]) / 1000;     
-                        if(startTime > endTime) {
-                            $('#dpend').val($('#dpstart').val());
-                       } 
-                    }
-                }
-            });
+            $
 
-            $('#comment-form').click(function(){
-                $('#comment-form').height(60);
-            });
-
-            //Handles what happens when you click 'lastweek' button
-            $('#lastweek').click(function(){
-                var currentTime = new Date()
-                var timeoffset = currentTime.getTimezoneOffset();
-                var month = currentTime.getMonth()+1
-                var day = currentTime.getDate()
-                var weekPast = day-7
-                var year = currentTime.getFullYear()
-
-                month = (month.length > 1) ? month : "0"+month;
-                day = (day.length > 1) ? day : "0"+day;
-                weekPast = (weekPast.length > 1) ? weekPast : "0"+weekPast;
-
-                //Set value of start time
-                $('#dpstart').val(month + "/" + weekPast + "/" + year)
-
-                var to = $('<li></li>').append($('<a>To</a>').attr({cursor : 'none', hover : 'none'}))
-                var whiteIcon = $('<i></i>')
-                    .attr({class : 'icon-remove icon-white', id : 'iconremove'})
-                    .click(function(){
-                        to.remove();
-                        datepicker.remove();
-                        $('#dpstart').after($('<i class="icon-calendar icon-white" id="firsticon"">'))
-                    });
-                console.log()
-                var te = $;
-                if($('#dpend').exists()){
-                    
-                }
-                else {
-                    //create and add new start time
-                    var datepicker = $('<li></li>')
-                    .append($('<input>')
-                        .attr({width: 80, class : 'datepicker', id : 'dpend', type : 'text', value : month + "/" + day + "/" + year})
-                        .datepicker({onSelect: function(date){
-                            var date = $('#dpstart').val().split('/');
-                            var endDate = $(this).val().split('/')
-                            startTime=Date.UTC(date[2],date[0]-1,date[1]) / 1000 + timeoffset*60 - 21600;
-                            endTime=Date.UTC(endDate[2],endDate[0]-1,endDate[1]) / 1000 + timeoffset*60 + 21600;     
-                            if(endTime < startTime) {
-                                $('#dpstart').val($(this).val());
-                           }
-                        }})
-                    )
-                    .append(whiteIcon);
-                    $('#timestart').after(to);
-                    to.after(datepicker);
-                    $('#firsticon').remove();
-                 }
-            });
-
-            //End calendar 
-            
             $('a#signout').click(function(){
-                window.fe.logout();
+                _this.logout();
             });
 
             $('a#stream').click(function(){
                 alert();
             });
 
-            $('#more').click(function(){
-                var comment = $("div id='comments'><div class='comment'><div class='user-icon'></div><div class='body'>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non!<div class='time'>about 20 minutes ago</div></div></div>");
-                var comment2 = $("div id='comments'><div class='comment'><div class='user-icon'></div><div class='body'>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non!<div class='time'>about 20 minutes ago</div></div></div>");
-
-                $('#comments').append(comment);
-                $('#comments').append(comment2);
-            });
-
             //Comment submission
+            $('#comment-form').click(function(){
+                $(this).height(60);
+            });
 
             $('#submit-comment').click(function(){
                 var comment = $('#comment-form').val();
-                var params = 'cookie=banana&cheese=taco';
 
-                _this.api.update_object_by_key('comment', '23432', params, function(data) {
-                    alert(data);
+                _this.api.post_comment_to_streamid(current_stream_id, comment, function(data) {
+                    Log('info', 'Comment posted!');
+                    $("#comment-form").val('');
+                    Async.later(250, function(){
+                        _this.comments.updateCommentsFor(current_stream_id);
+                    });
                 });
             });
-           
+
+            // Vu frontend stuff
+            $(document).ready(function() {
+
+                $("a#about-page").fancybox();
+
+                   /* Special date widget */
+                    var to = new Date();
+                    var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 7);
+
+                    $('#datepicker-invisible').text(from.getDate() + '/' + from.getMonth() + '/' + from.getFullYear() + '|' + 
+                    to.getDate() + '/' + to.getMonth() + '/' + to.getFullYear());
+
+                    $('#datepicker-calendar').DatePicker({
+                      inline: true,
+                      date: [from, to],
+                      calendars: 3,
+                      mode: 'range',
+                      current: new Date(to.getFullYear(), to.getMonth() - 1, 1),
+                      onChange: function(dates,el) {
+                        $('#datepicker-invisible').text(dates[0].getDate() + '/' + dates[0].getMonth() + '/' + dates[0].getFullYear() + '|' + 
+                            dates[1].getDate() + '/' + dates[1].getMonth() + '/' + dates[1].getFullYear());
+
+                        // update the range display
+                        $('#date-range-field span').text(dates[0].getDate()+' '+dates[0].getMonthName(true)+', '+dates[0].getFullYear()+' - '+
+                                                    dates[1].getDate()+' '+dates[1].getMonthName(true)+', '+dates[1].getFullYear());
+                      }
+                    });
+                    
+                    // initialize the special date dropdown field
+                    $('#date-range-field span').text(from.getDate()+' '+from.getMonthName(true)+', '+from.getFullYear()+' - '+
+                                                    to.getDate()+' '+to.getMonthName(true)+', '+to.getFullYear());
+                    
+                    $('#date-range-field').bind('click', function(){
+                      $('#datepicker-calendar').toggle();
+                      if($('#date-range-field a').text().charCodeAt(0) == 9660) {
+                        // switch to up-arrow
+                        $('#date-range-field a').html('&#9650;');
+                        $('#date-range-field').css({borderBottomLeftRadius:0, borderBottomRightRadius:0});
+                        $('#date-range-field a').css({borderBottomRightRadius:0});
+                      } else {
+                        // switch to down-arrow
+                        $('#date-range-field a').html('&#9660;');
+                        $('#date-range-field').css({borderBottomLeftRadius:5, borderBottomRightRadius:5});
+                        $('#date-range-field a').css({borderBottomRightRadius:5});
+                      }
+                      return false;
+                    });
+                    
+
+                    $('html').click(function() {
+                      if($('#datepicker-calendar').is(":visible")) {
+                        $('#datepicker-calendar').hide();
+                        $('#date-range-field a').html('&#9660;');
+                        $('#date-range-field').css({borderBottomLeftRadius:5, borderBottomRightRadius:5});
+                        $('#date-range-field a').css({borderBottomRightRadius:5});
+                      }
+                    });
+                    
+                    $('#datepicker-calendar').click(function(event){
+                      event.stopPropagation();
+                    });
+                  /* End special page widget */
+                    });
+
+                    $('#loginform').live('submit', function(event) {
+                        event.stopPropagation();
+                        var ret = window.fe.login($('#loginform #username').val(), $('#loginform #password').val(), function(){
+                            window.fe.modal.hide();
+                            $("#loginform #login").attr('disabled', '');
+                        }, function(err){
+                            alert(err);
+                            $("#loginform #login").attr('disabled', '');
+                        });
+                        $("#loginform #login").attr('disabled', 'true');
+                        return false;
+            })
+            // END Vu frontend stuff
+
             // Bind to volume change events
             this.volume.onVolumeChange.register(function(newVolume)
             {
@@ -350,7 +353,7 @@ define([
             Async.later(1000, _this.updateMap);
 
             // Fake live
-            Async.every(2 * 1000, _this.updateMap);
+            Async.every(4 * 1000, _this.updateMap);
         }
 
         this.constructor();

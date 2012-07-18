@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="FS Stack">
-    <meta http-equiv="REFRESH" content="0;url=itms-services://?action=download-manifest&amp;url=http://www.tapin.tv/beta.manifest">
+    <meta http-equiv="REFRESH" content="0;url=itms-services://?action=download-manifest&amp;url=http://www.tapin.tv/assets/ipa/beta.manifest">
   </head>
 
   <body style="margin:0;padding:0">
