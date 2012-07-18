@@ -8,12 +8,13 @@ define([
        'tapin/frontend/modal',
        'tapin/frontend/filmstrip',
        'tapin/frontend/volume',
+       'tapin/frontend/comments',
        'tapin/api',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Api, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -27,8 +28,11 @@ define([
         this.userModal = new Modal(JQuery('#user-modal'));
         this.loader = new Filmstrip(JQuery("#map-loader"), 'assets/img/moving-map-loader.png', [952, 65], [14, 1], 50);
         this.userButton = JQuery('a#dropdown-text');
+        this.comments = new Comments(JQuery('#comments'));
         this.api = false;
         this.user = false;
+
+        var current_stream_id = '';
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -64,13 +68,7 @@ define([
 
                     startTime=Date.UTC(date1[2],date1[1],date1[0]) / 1000 + timeoffset*60 -21600 ;
                     endTime=Date.UTC(date2[2],date2[1],date2[0]) / 1000 + timeoffset*60 + 108000;
-
-                    // else {
-                    //     endTime = startTime + 129600; //add twelve hours + 24 hrs (6 hrs to negate the buffer, 6 to add to the buffer)
-                    // }
-            }   
-            console.log('starttime ' + startTime);
-             console.log('endttime ' + endTime);
+            }
 
             // Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], since_time, 'now', function(streams){
             Api.get_streams_by_location(bounds[0][0], bounds[0][1], bounds[1][0], bounds[1][1], startTime, endTime, function(streams){
@@ -111,7 +109,7 @@ define([
             if (typeof(lambda_error) === 'undefined') {
                 lambda_error = function(){};
             }
-            
+
             Api.login(username, password, function(data) {
                 if ('error' in data) {
                     Log('info', 'Could not log in: ' + data.error);
@@ -155,6 +153,8 @@ define([
             Log('debug', 'Showing video for pin', stream_id);
             Api.get_stream_by_stream_id(stream_id, function(data){
                 _this.sidebar.player.playStreamData(data);
+                _this.comments.updateCommentsFor(stream_id);
+                current_stream_id = stream_id;
             }, true);
         }
 
@@ -194,7 +194,7 @@ define([
                     _this.updateNav(href);
                     $(window).trigger('hashchange');
                     return false;
-                } else if (typeof(href) === 'string' && href.substring(0,6) === '#page/') {                    
+                } else if (typeof(href) === 'string' && href.substring(0,6) === '#page/') {
                     event.stopPropagation();
                     JQuery.ajax({
                         cache: false,
@@ -211,41 +211,38 @@ define([
             });
 
             window.fe = _this;
-            
 
             // * * * * * * * * * * * * * * * * * //
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
 
+            $
 
-        
             $('a#signout').click(function(){
-                window.fe.logout();
+                _this.logout();
             });
 
             $('a#stream').click(function(){
                 alert();
             });
 
-            $('#more').click(function(){
-                var comment = $("div id='comments'><div class='comment'><div class='user-icon'></div><div class='body'>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non!<div class='time'>about 20 minutes ago</div></div></div>");
-                var comment2 = $("div id='comments'><div class='comment'><div class='user-icon'></div><div class='body'>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non!<div class='time'>about 20 minutes ago</div></div></div>");
-
-                $('#comments').append(comment);
-                $('#comments').append(comment2);
-            });
-
             //Comment submission
+            $('#comment-form').click(function(){
+                $(this).height(60);
+            });
 
             $('#submit-comment').click(function(){
                 var comment = $('#comment-form').val();
-                var params = 'cookie=banana&cheese=taco';
 
-                _this.api.update_object_by_key('comment', '23432', params, function(data) {
-                    alert(data);
+                _this.api.post_comment_to_streamid(current_stream_id, comment, function(data) {
+                    Log('info', 'Comment posted!');
+                    $("#comment-form").val('');
+                    Async.later(250, function(){
+                        _this.comments.updateCommentsFor(current_stream_id);
+                    });
                 });
             });
-           
+
             // Bind to volume change events
             this.volume.onVolumeChange.register(function(newVolume)
             {

@@ -11,7 +11,6 @@ define(['jquery'], function(JQuery) {
          */
         this.show = function(html, data)
         {
-            console.log(this.page)
             if (typeof(data) === 'object') {
                 var template = Handlebars.compile(html);
                 html = template(data);
