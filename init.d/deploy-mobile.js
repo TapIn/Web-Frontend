@@ -1,7 +1,7 @@
 ({
-    baseUrl: "../html/assets/js-inprogress",
+    baseUrl: "../html-compiled/assets/js-inprogress",
     name: 'tapin-mobile',
-    out: '../html/assets/js-inprogress/tapin-mobile.out.js',
+    out: '../html-compiled/assets/js-inprogress/tapin-mobile.out.js',
     paths: {
         'jquery': 'require-jquery'
     },

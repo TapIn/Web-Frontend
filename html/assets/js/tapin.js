@@ -45,4 +45,6 @@ define([
         // Start backbone
         Backbone.history.start();
     });
+    window['$'] = JQuery;
+    window['jQuery'] = JQuery;
 })

@@ -1,7 +1,7 @@
 ({
-    baseUrl: "../html/assets/js-inprogress",
+    baseUrl: "../html-compiled/assets/js-inprogress",
     name: 'tapin',
-    out: '../html/assets/js-inprogress/tapin.out.js',
+    out: '../html-compiled/assets/js-inprogress/tapin.out.js',
     paths: {
         // flowplayer should reference the latest version we have loaded
         'flowplayer': 'flowplayer/flowplayer-3.2.10.min',

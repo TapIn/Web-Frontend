@@ -6,3 +6,6 @@ clock.exe
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Compiled files
+/html-compiled/

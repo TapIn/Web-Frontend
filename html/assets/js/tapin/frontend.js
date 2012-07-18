@@ -210,7 +210,7 @@ define([
                 }
             });
 
-            window.fe = _this;
+            window['fe'] = _this;
 
             // * * * * * * * * * * * * * * * * * //
             // * *  START VU'S CALENDAR CODE * * //
