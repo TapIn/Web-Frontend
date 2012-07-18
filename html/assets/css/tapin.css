@@ -117,7 +117,6 @@
     height:18px;
     top: 12px;
     left:40px;
-    background:url(../img/controls/track.png) no-repeat;
     text-align:left;
     cursor:pointer;
     width:310px;
@@ -127,7 +126,6 @@
 .controls .playhead {
     position:absolute;
     height:12px;
-    background:url(../img/controls/playhead.png) no-repeat;
     cursor:pointer;
     top:0px;
     width:12px;
