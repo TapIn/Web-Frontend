@@ -101,7 +101,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             }, {
                 key: '#$671186fa04a44f30376',
                 onBeforePause: function() {
-                    return false;
+                    return true;
                 },
                 onBegin: function () {
                     this.setVolume(_this.getVolume());
