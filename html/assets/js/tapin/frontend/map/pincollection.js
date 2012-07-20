@@ -20,6 +20,7 @@ define(['tapin/frontend/map/pin', 'tapin/util/event'], function(Pin, Event){
                 if (pin.Lat !== oldPin.Lat || pin.Lon !== oldPin.Lon) {
                     this._pins[pin.Uid] = pin.clone();
                     this.onPinUpdate.apply(this._pins[pin.Uid]);
+                    
                 }
             } else {
                 this._pins[pin.Uid] = pin.clone();
