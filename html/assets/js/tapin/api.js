@@ -110,6 +110,32 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
 
             _this.update_object_by_key('comment', id, streamObject, lambda, error_lambda);
         }
+
+        /**
+         * Upvotes a stream, or cancels the upvote if one already exists
+         * @param  {string}             stream_id    The ID of the stream to upvote
+         * @param  {function(number)}   lambda       Function to execute on success, taking the new vote value, either
+         *                                           1 (upvote), 0 (neutral), or -1 (downvote)
+         * @param  {function()}         error_lambda Function to execute on failure
+         */
+        this.upvote_stream = function(stream_id, lambda, error_lambda)
+        {
+            Log('info', 'Upvoting stream');
+            _this.call('upvote/stream/' + stream_id, {}, lambda, error_lambda);
+        }
+
+        /**
+         * Downvotes a stream, or cancels the downvote if one already exists
+         * @param  {string}             stream_id    The ID of the stream to upvote
+         * @param  {function(number)}   lambda       Function to execute on success, taking the new vote value, either
+         *                                           1 (upvote), 0 (neutral), or -1 (downvote)
+         * @param  {function()}         error_lambda Function to execute on failure
+         */
+        this.downvote_stream = function(stream_id, lambda, error_lambda)
+        {
+            Log('info', 'Downvoting stream');
+            _this.call('downvote/stream/' + stream_id, {}, lambda, error_lambda);
+        }
     }
 
     /**
@@ -156,6 +182,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         var conf = {
             url: Config['api']['base'] + endpoint,
             dataType: 'json',
+            data: params,
             type: type,
             success: function(data) {
                 lambda(data);
@@ -165,20 +192,6 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
                 _staticApi.onApiError.apply(error);
             }
         };
-
-        if (type.toLowerCase() !== 'get') {
-            conf['data'] = params;
-        } else {
-            var _params = params;
-            if (typeof(params) === 'object')
-            {
-                params = "";
-                for (var i in _params) {
-                    params = params + _params[i] + '&';
-                }
-            }
-            conf['url'] += '?' + params;
-        }
 
         var xhttp = JQuery.ajax(conf);
 
@@ -315,6 +328,31 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
     _staticApi.get_stream_by_stream_id = function(id, lambda, error_lambda)
     {
         return _staticApi.get_object_by_key('stream', id, lambda, error_lambda);
+    }
+
+    /**
+     * Gets the thumbnail URL for a video, if one has been generated
+     * @param  {string}             id           ID of the stream
+     * @param  {function(string)}   lambda       Function to execute on success, taking response data
+     * @param  {function(string)}   error_lambda Function to execute if a thumbnail is not found
+     */
+    _staticApi.get_thumbnail_by_stream_id = function(id, timecode, lambda, no_lambda)
+    {
+        var url = 'http://thumbs.tapin.tv/' + id + '/latest.jpg?noCache=' + Util.randomString(30);
+        $.ajax({
+            url: url,
+            type: 'HEAD',
+            success: function()
+            {
+                lambda(url);
+            },
+            error: function()
+            {
+                if (typeof(no_lambda) === 'function') {
+                    no_lambda();
+                }
+            }
+        });
     }
 
     return _staticApi;

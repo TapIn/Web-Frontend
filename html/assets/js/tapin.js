@@ -35,6 +35,8 @@ define([
        'timeago',
        'bootstrap/carousel',
        'bootstrap/bootstrap.min',
+       'mousetrap/mousetrap',
+       'smore/clippy',
 
        // Loading these classes loads the routers automatically, due to the
        // stupid way Backbone handles routers in the window scope.
