@@ -10,11 +10,12 @@ define([
        'tapin/frontend/volume',
        'tapin/frontend/comments',
        'tapin/api',
+       'tapin/util',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -226,6 +227,21 @@ define([
 
             window['fe'] = _this;
 
+            // Clippy
+            Mousetrap.bind('up up down down left right left right b a enter', function(){
+                var agents = ['Clippy', 'Links', 'Bonzi'];
+                var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
+                clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
+                clippy.load(selected_agent, function(agent){
+                    agent.show();
+                    agent.gestureAt(0,0);
+                    agent.speak("You look like you're trying to watch a video. Would you like some help?");
+                    Async.every(20000, function(){
+                        agent.animate();
+                    });
+                });
+            });
+
             // * * * * * * * * * * * * * * * * * //
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
@@ -284,11 +300,33 @@ define([
                                                     dates[1].getDate()+' '+dates[1].getMonthName(true)+', '+dates[1].getFullYear());
                       }
                     });
-                    
+
+                    var resetUpvoteDownvote = function(newStatus)
+                    {
+                        if (newStatus == -1) {
+                            $('#upvote').removeClass('active');
+                            $('#downvote').addClass('active');
+                        } else if (newStatus == 1) {
+                            $('#upvote').removeClass('active');
+                            $('#downvote').removeClass('active');
+                        } else {
+                            $('#upvote').addClass('active');
+                            $('#downvote').removeClass('active');
+                        }
+                    }
+
+                    $('#upvote').bind('click', function(){
+                        _this.api.upvote_stream(current_stream_id, resetUpvoteDownvote);
+                    });
+
+                    $('#downvote').bind('click', function(){
+                        _this.api.downvote_stream(current_stream_id, resetUpvoteDownvote);
+                    });
+
                     // initialize the special date dropdown field
                     $('#date-range-field span').text(from.getDate()+' '+from.getMonthName(true)+', '+from.getFullYear()+' - '+
                                                     to.getDate()+' '+to.getMonthName(true)+', '+to.getFullYear());
-                    
+
                     $('#date-range-field').bind('click', function(){
                       $('#datepicker-calendar').toggle();
                       if($('#date-range-field a').text().charCodeAt(0) == 9660) {
@@ -304,7 +342,6 @@ define([
                       }
                       return false;
                     });
-                    
 
                     $('html').click(function() {
                       if($('#datepicker-calendar').is(":visible")) {
@@ -314,7 +351,7 @@ define([
                         $('#date-range-field a').css({borderBottomRightRadius:5});
                       }
                     });
-                    
+
                     $('#datepicker-calendar').click(function(event){
                       event.stopPropagation();
                     });
