@@ -354,7 +354,6 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 elem = elem[0];
             }
 
-            
             _elem = elem;
 
             Log('info', "Map initialized!");
@@ -394,7 +393,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             _oms.addListener('click', function(marker) {
                 iw.setContent(marker.desc);
                 iw.open(_map, marker);
-                var pin = _this.Pins.getPin(marker.markerID);
+                var pin = _this.Pins.getPinRef(marker.markerID);
                 pin.onClick.apply();
                 console.log(pin);
             });
