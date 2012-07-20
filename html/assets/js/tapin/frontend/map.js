@@ -5,6 +5,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         var _elem = null;
         var _map = null;
         var _markers = {};
+        var _markerCluster = null;
 
         var _centerInitialized = false;
 
@@ -47,6 +48,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             Log('debug', 'Attempting to change zoom to ' + level);
             _map.setZoom(level);
             return this;
+        }
+
+        this.map = function()
+        {
+            return _map;
         }
 
         /**
@@ -309,13 +315,15 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         var onPinAdd = function(pin)
         {
             Log('debug', "Pin added");
+
             _markers[pin.Uid] = new google.maps.Marker({
                 position: new google.maps.LatLng(pin.Lat, pin.Lon),
-                map: _map,
                 //PinStyles
                 //icon: pin.PinStyle.Icon,
                 //shadow: pin.PinStyle.Shadow
             });
+            _markerCluster.addMarker(_markers[pin.Uid]);
+
 
             google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
 
@@ -344,6 +352,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 elem = elem[0];
             }
 
+            
             _elem = elem;
 
             Log('info', "Map initialized!");
@@ -372,6 +381,10 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             _map.mapTypes.set('map_style', mapStyle);
             _map.setMapTypeId('map_style');
+
+            //Create clusterer object
+             _markerCluster = new MarkerClusterer(_map, [])
+
 
             $.getScript('http://j.maxmind.com/app/geoip.js', function()
             {

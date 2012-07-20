@@ -39,7 +39,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                 url: 'mp4:' + stream_id + '/stream',
                 isLive: false,
                 streamId: stream_id
-            })
+            });
         }
 
         /**
@@ -127,11 +127,13 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                     },
                     controls: null,
                 },
+
                 canvas: {
                         background: '#B70600 no-repeat 30 10',
                         backgroundGradient: 'none'
                 }
             }).controls('controls');
+            
             $('.controls').append($('#volume'));
             $('.controls').append($('#upvote'));
             $('.controls').append($('#downvote'));
@@ -140,9 +142,11 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
 
         var constructor = function(div)
         {
+
             player_div = JQuery('<div id="player"></div>');
             $('#currently-playing').after(player_div)
-            init_player(null);
+            // init_player(null);
+
         }
         constructor(div);
     }

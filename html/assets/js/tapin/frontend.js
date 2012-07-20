@@ -85,6 +85,20 @@ define([
                     new_pins.addOrUpdatePin(pin);
                 }
 
+                // var markers = [];
+                // for (var i in streams) {
+
+                //     var stream = streams[i];
+                //     var coords = stream[stream.length - 1]['coord'];
+                //     var latLng = new google.maps.LatLng(coords[0], coords[1]);
+                //     var marker = new google.maps.Marker({
+                //         position: latLng
+                //         });
+                    
+                //     markers.push(marker);
+                // }
+                // var markerCluster = new MarkerClusterer(_this.mainMap.map(), markers);
+
                 _this.mainMap.Pins.replace(new_pins);
             }, function(){
                 Log('warn', 'Could not update the map');

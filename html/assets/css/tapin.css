@@ -105,10 +105,12 @@
     background:url(../img/playpause.png) center top no-repeat;
     margin-top: 7px;
     margin-left: 15px;
+    background-position:center -14px;
+
 }
 
 .controls .pause {
-    background-position:center -14px;
+    background-position:center 0px;
 }
 
 /* the track or "scrubber"  */
