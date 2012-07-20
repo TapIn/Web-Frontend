@@ -35,7 +35,7 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
         {
             Api.get_timestream_by_stream_id(id, function(data){
                 Log('debug', "Centering video: ", data[0][1].coord[0]);
-                Frontend.mainMap.initCenter(data[0][1].coord[0], data[0][1].coord[1], 9);
+                Frontend.mainMap.initCenter(data[0][1].coord[0], data[0][1].coord[1], 16);
             }, true);
         }
     }));
