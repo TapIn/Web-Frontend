@@ -166,6 +166,15 @@
     float:right;
     right: 40px;
     top: 8px;
+    cursor: pointer;
+}
+
+#upvote.active {
+    width:22px;
+    height:21px;
+    background: url(../img/upvote_filled.png) no-repeat;
+    background-position:center 0px;
+    cursor: pointer;
 }
 
 #upvote:hover {
@@ -173,7 +182,7 @@
     height:21px;
     background: url(../img/upvote_filled.png) no-repeat;
     background-position:center 0px;
-
+    cursor: pointer;
 }
 
 #downvote {
@@ -184,13 +193,24 @@
     float:right;
     right: 13px;
     top: 8px;
+    cursor: pointer;
 }
+
+#downvote.active {
+    width:22px;
+    height:21px;
+    background: url(../img/downvote_filled.png) no-repeat;
+    background-position:center 0px;
+    cursor: pointer;
+}
+
 
 #downvote:hover {
     width:22px;
     height:21px;
     background: url(../img/downvote_filled.png) no-repeat;
     background-position:center 0px;
+    cursor: pointer;
 }
 
 .time-slider {

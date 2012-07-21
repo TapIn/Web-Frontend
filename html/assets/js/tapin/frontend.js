@@ -303,11 +303,12 @@ define([
 
                     var resetUpvoteDownvote = function(newStatus)
                     {
+                        console.log(newStatus);
                         if (newStatus == -1) {
                             $('#upvote').removeClass('active');
                             $('#downvote').addClass('active');
                         } else if (newStatus == 1) {
-                            $('#upvote').removeClass('active');
+                            $('#upvote').addClass('active');
                             $('#downvote').removeClass('active');
                         } else {
                             $('#upvote').addClass('active');
@@ -316,11 +317,11 @@ define([
                     }
 
                     $('#upvote').bind('click', function(){
-                        _this.api.upvote_stream(current_stream_id, resetUpvoteDownvote);
+                        _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
                     });
 
                     $('#downvote').bind('click', function(){
-                        _this.api.downvote_stream(current_stream_id, resetUpvoteDownvote);
+                        _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) });
                     });
 
                     // initialize the special date dropdown field
