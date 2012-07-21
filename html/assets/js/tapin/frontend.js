@@ -48,7 +48,7 @@ define([
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
             // Show the loader if the request takes too long
-            showLoaderRef = Async.later(600, function(){
+            showLoaderRef = Async.later(800, function(){
                 _this.loader.show();
             });
 
