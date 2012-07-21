@@ -332,7 +332,10 @@ define([
 
                     var onDoUpdateUpvoteDownvote = function()
                     {
-                        _this.api.get_stream_vote(_this.user.username, current_stream_id, resetUpvoteDownvote);
+                        if (typeof(_this.user) !== 'undefined' && _this.user !== null && current_stream_id !== '')
+                        {
+                            _this.api.get_stream_vote(_this.user.username, current_stream_id, resetUpvoteDownvote);
+                        }
                     }
 
                     _this.onLogin.register(onDoUpdateUpvoteDownvote);
