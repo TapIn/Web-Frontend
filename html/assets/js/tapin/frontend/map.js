@@ -35,7 +35,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         this.initCenter = function(lat, lon, zoom)
         {
             _this.center(lat, lon);
-            _this.zoom(zoom);
+
+            if (this.getZoom() < 12) {
+                _this.zoom(zoom);
+            }
+
             _centerInitialized = true;
         }
 
@@ -395,7 +399,6 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 iw.open(_map, marker);
                 var pin = _this.Pins.getPinRef(marker.markerID);
                 pin.onClick.apply();
-                console.log(pin);
             });
 
 
