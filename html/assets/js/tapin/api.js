@@ -114,8 +114,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         /**
          * Upvotes a stream, or cancels the upvote if one already exists
          * @param  {string}             stream_id    The ID of the stream to upvote
-         * @param  {function(number)}   lambda       Function to execute on success, taking the new vote value, either
-         *                                           1 (upvote), 0 (neutral), or -1 (downvote)
+         * @param  {function()}         lambda       Function to execute on success
          * @param  {function()}         error_lambda Function to execute on failure
          */
         this.upvote_stream = function(stream_id, lambda, error_lambda)
@@ -127,14 +126,28 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         /**
          * Downvotes a stream, or cancels the downvote if one already exists
          * @param  {string}             stream_id    The ID of the stream to upvote
-         * @param  {function(number)}   lambda       Function to execute on success, taking the new vote value, either
-         *                                           1 (upvote), 0 (neutral), or -1 (downvote)
-         * @param  {function()}         error_lambda Function to execute on failure
+         * @param  {function()}         lambda       Function to execute on success
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
          */
         this.downvote_stream = function(stream_id, lambda, error_lambda)
         {
             Log('info', 'Downvoting stream');
             _this.call('downvote/stream/' + stream_id, {}, lambda, error_lambda);
+        }
+
+        /**
+         * Gets the stream vote
+         * @param  {string}             username     The username to get the vote for
+         * @param  {string}             stream_id    The stream to get the vote for
+         * @param  {function(number)}   lambda       Function to execute on success, taking vote (1, 0, or -1)
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.get_stream_vote = function(username, stream_id, lambda, error_lambda)
+        {
+            _this.get_object_by_key('vote', stream_id + ':' + username, function(data)
+            {
+                lambda(data['vote']);
+            }, error_lambda);
         }
     }
 

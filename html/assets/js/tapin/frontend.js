@@ -11,11 +11,12 @@ define([
        'tapin/frontend/comments',
        'tapin/api',
        'tapin/util',
+       'tapin/util/event',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Event, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -32,6 +33,9 @@ define([
         this.comments = new Comments(JQuery('#comments'));
         this.api = false;
         this.user = false;
+
+        this.onLogin = new Event();
+        this.onStreamChange = new Event();
 
         var current_stream_id = '';
 
@@ -94,7 +98,6 @@ define([
                 //     var marker = new google.maps.Marker({
                 //         position: latLng
                 //         });
-                    
                 //     markers.push(marker);
                 // }
                 // var markerCluster = new MarkerClusterer(_this.mainMap.map(), markers);
@@ -136,6 +139,7 @@ define([
                     lambda();
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
+                    _this.onLogin.apply();
                 }
             });
         }
@@ -170,6 +174,7 @@ define([
                 _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
                 current_stream_id = stream_id;
+                _this.onStreamChange.apply(stream_id);
             }, true);
         }
 
@@ -250,8 +255,6 @@ define([
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
 
-            $
-
             $('a#signout').click(function(){
                 _this.logout();
             });
@@ -307,7 +310,6 @@ define([
 
                     var resetUpvoteDownvote = function(newStatus)
                     {
-                        console.log(newStatus);
                         if (newStatus == -1) {
                             $('#upvote').removeClass('active');
                             $('#downvote').addClass('active');
@@ -327,6 +329,14 @@ define([
                     $('#downvote').bind('click', function(){
                         _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) });
                     });
+
+                    var onDoUpdateUpvoteDownvote = function()
+                    {
+                        _this.api.get_stream_vote(_this.user.username, current_stream_id, resetUpvoteDownvote);
+                    }
+
+                    _this.onLogin.register(onDoUpdateUpvoteDownvote);
+                    _this.onStreamChange.register(onDoUpdateUpvoteDownvote);
 
                     // initialize the special date dropdown field
                     $('#date-range-field span').text(from.getDate()+' '+from.getMonthName(true)+', '+from.getFullYear()+' - '+
