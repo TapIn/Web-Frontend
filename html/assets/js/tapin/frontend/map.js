@@ -35,11 +35,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         this.initCenter = function(lat, lon, zoom)
         {
             _this.center(lat, lon);
-
-            if (this.getZoom() < 12) {
-                _this.zoom(zoom);
-            }
-
+            _this.zoom(zoom);
             _centerInitialized = true;
         }
 
@@ -349,6 +345,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         {
             Log('debug', "Pin removed");
             _markers[pin.Uid].setMap(null);
+            _markerCluster.removeMarker(_markers[pin.Uid])
+            _oms.removeMarker(_markers[pin.Uid])
             delete _markers[pin.Uid];
         }
 
@@ -399,6 +397,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 iw.open(_map, marker);
                 var pin = _this.Pins.getPinRef(marker.markerID);
                 pin.onClick.apply();
+                console.log(pin);
             });
 
 
