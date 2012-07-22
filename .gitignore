@@ -7,5 +7,8 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
+.orig
+*.orig
+
 # Compiled files
 /html-compiled/
