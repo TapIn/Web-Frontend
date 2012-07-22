@@ -712,10 +712,13 @@ body {
 
 #map-loader {
     position: absolute;
-    right: 300px;
+    right: 0px;
     top: 40px;
     z-index:1000;
     display: block;
+    background-repeat: repeat-x;
+    padding-top: 50px;
+    height: 60px;
 }
 
 #volume {
