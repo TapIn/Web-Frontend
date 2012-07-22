@@ -94,6 +94,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
 
         var init_player = function(clip)
         {
+            $("#controls-flow").html('');
             Log('debug', 'Starting flowplayer');
             _player = Flowplayer(player_div[0]  , {
                 src: 'assets/swf/flowplayer.commercial-3.2.11.swf',
@@ -132,11 +133,11 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                         background: '#B70600 no-repeat 30 10',
                         backgroundGradient: 'none'
                 }
-            }).controls('controls');
-            
-            $('.controls').append($('#volume'));
-            $('.controls').append($('#upvote'));
-            $('.controls').append($('#downvote'));
+            }).controls('controls-flow');
+
+            $('#controls').append($('#volume'));
+            $('#controls').append($('#upvote'));
+            $('#controls').append($('#downvote'));
 
         }   
 
