@@ -139,7 +139,17 @@ define([
                     lambda();
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
+<<<<<<< HEAD
+                    _this.modal.show("<html>Suck my deek</html>");
+
+                    if(!this.user.email){
+
+                        var email  = prompt('Please enter an email to associate your account with.')
+                        _this.api.update_object_by_key('User', username, {'email' : email}, null, null);
+                    }
+=======
                     _this.onLogin.apply();
+>>>>>>> fd4e1cd2c56a39728f47a5c3886921d918bd2080
                 }
             });
         }

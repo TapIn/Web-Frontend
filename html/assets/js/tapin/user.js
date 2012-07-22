@@ -17,7 +17,7 @@ define([], function(){
         this.streams = [];
         this.title = null;
         this.nexttitle = null;
-
+        this.email = null;
         this.level = null;
         this.last = null;
         this.next = null;
