@@ -317,17 +317,26 @@ define([
                             $('#upvote').addClass('active');
                             $('#downvote').removeClass('active');
                         } else {
-                            $('#upvote').addClass('active');
+                            $('#upvote').removeClass('active');
                             $('#downvote').removeClass('active');
                         }
                     }
 
                     $('#upvote').bind('click', function(){
-                        _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
+                        if ($(this).hasClass('active')) {
+                            _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                        } else {
+                            _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
+                        }
                     });
 
                     $('#downvote').bind('click', function(){
-                        _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) });
+                        if ($(this).hasClass('active')) {
+                            console.log($(this))
+                            _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                        } else {
+                            _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) } );
+                        }
                     });
 
                     var onDoUpdateUpvoteDownvote = function()

@@ -136,6 +136,18 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         }
 
         /**
+         * Downvotes a stream, or cancels the downvote if one already exists
+         * @param  {string}             stream_id    The ID of the stream to upvote
+         * @param  {function()}         lambda       Function to execute on success
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.neutralvote_stream = function(stream_id, lambda, error_lambda)
+        {
+            Log('info', 'Downvoting stream');
+            _this.call('neutralvote/stream/' + stream_id, {}, lambda, error_lambda);
+        }
+
+        /**
          * Gets the stream vote
          * @param  {string}             username     The username to get the vote for
          * @param  {string}             stream_id    The stream to get the vote for
