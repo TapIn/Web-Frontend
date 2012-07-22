@@ -136,6 +136,13 @@ define([
                     lambda();
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
+                    _this.modal.show("<html>Suck my deek</html>");
+
+                    if(!this.user.email){
+
+                        var email  = prompt('Please enter an email to associate your account with.')
+                        _this.api.update_object_by_key('User', username, {'email' : email}, null, null);
+                    }
                 }
             });
         }
@@ -150,6 +157,8 @@ define([
                 JQuery('a#dropdown-text').html(html);
                 JQuery('a#account').attr('href', '#user/' + _this.user.username);
                 $('#dropdown-text').attr('data-toggle', 'dropdown');
+                this.user = _this.user
+
             }, true);
 
         }
@@ -228,22 +237,18 @@ define([
             window['fe'] = _this;
 
             // Clippy
-            Async.later(500, function(){
-                if (typeof(Mousetrap) !== 'undefined') {
-                    Mousetrap.bind('up up down down left right left right b a enter', function(){
-                        var agents = ['Clippy', 'Links', 'Bonzi'];
-                        var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
-                        clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
-                        clippy.load(selected_agent, function(agent){
-                            agent.show();
-                            agent.gestureAt(0,0);
-                            agent.speak("You look like you're trying to watch a video. Would you like some help?");
-                            Async.every(20000, function(){
-                                agent.animate();
-                            });
-                        });
+            Mousetrap.bind('up up down down left right left right b a enter', function(){
+                var agents = ['Clippy', 'Links', 'Bonzi'];
+                var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
+                clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
+                clippy.load(selected_agent, function(agent){
+                    agent.show();
+                    agent.gestureAt(0,0);
+                    agent.speak("You look like you're trying to watch a video. Would you like some help?");
+                    Async.every(20000, function(){
+                        agent.animate();
                     });
-                }
+                });
             });
 
             // * * * * * * * * * * * * * * * * * //
@@ -281,6 +286,7 @@ define([
             $(document).ready(function() {
 
                 $("a#about-page").fancybox();
+                $("a#change-password").fancybox();
 
                    /* Special date widget */
                     var to = new Date();
