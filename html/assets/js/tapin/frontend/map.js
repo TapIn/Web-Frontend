@@ -35,7 +35,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         this.initCenter = function(lat, lon, zoom)
         {
             _this.center(lat, lon);
-            if (this.getZoom() < 12) {
+            if (this.getZoom() <= 4) {
                 _this.zoom(zoom);
             }
             _centerInitialized = true;

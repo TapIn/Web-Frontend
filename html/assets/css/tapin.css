@@ -91,6 +91,7 @@
     margin: -48px 0 0;
     padding:5px 0 0;
     background-color:rgba(0,0,0,0.75);
+    width: 500px;
 }
 
 /* when play button toggles between play/pause class
@@ -188,7 +189,7 @@
 #downvote {
     position:absolute;
     width:22px;
-    height:21px;
+    height:22px;
     background: url(../img/downvote_hollow.png);
     float:right;
     right: 13px;
@@ -533,6 +534,7 @@ body {
 
 #sidebar #player {
     height: 360px;
+    width: 500px;
     margin-bottom: 8px;
 }
 
