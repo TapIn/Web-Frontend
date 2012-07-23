@@ -181,6 +181,9 @@ define([
                 _this.sidebar.player.playStreamData(data);
                 current_stream_id = stream_id;
                 _this.onStreamChange.apply(stream_id);
+
+                //change video points
+                $('#points').html(data.points + ' pts')
             }, true);
         }
 
