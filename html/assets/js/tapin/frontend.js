@@ -11,11 +11,13 @@ define([
        'tapin/frontend/comments',
        'tapin/api',
        'tapin/util',
+       'tapin/util/storage',
+       'tapin/util/event',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Storage, Event, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -33,6 +35,10 @@ define([
         this.api = false;
         this.user = false;
 
+        this.onLogin = new Event();
+        this.onLogout = new Event();
+        this.onStreamChange = new Event();
+
         var current_stream_id = '';
 
         var timescale = 10*60;
@@ -44,7 +50,7 @@ define([
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
             // Show the loader if the request takes too long
-            showLoaderRef = Async.later(600, function(){
+            showLoaderRef = Async.later(800, function(){
                 _this.loader.show();
             });
 
@@ -94,7 +100,6 @@ define([
                 //     var marker = new google.maps.Marker({
                 //         position: latLng
                 //         });
-                    
                 //     markers.push(marker);
                 // }
                 // var markerCluster = new MarkerClusterer(_this.mainMap.map(), markers);
@@ -130,12 +135,20 @@ define([
                     Log('info', 'Could not log in: ' + data.error);
                     lambda_error(data.error);
                 } else {
-                    localStorage.token = data.token;
-                    localStorage.username = username;
+                    Storage.save('token', data.token);
+                    Storage.save('username', username);
+
                     _this.tokenLogin(username, data.token);
                     lambda();
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
+                    _this.onLogin.apply();
+                    // if(!this.user.email){
+
+                    //     var email  = prompt('Please enter an email to associate your account with.')
+                    //     _this.api.update_object_by_key('User', username, {'email' : email}, null, null);
+                    // }
+
                 }
             });
         }
@@ -146,10 +159,7 @@ define([
             _this.api.get_object_by_key('user', username, function(userdata) {
                 userdata.username = username;
                 _this.user = new User(userdata);
-                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
-                JQuery('a#dropdown-text').html(html);
-                JQuery('a#account').attr('href', '#user/' + _this.user.username);
-                $('#dropdown-text').attr('data-toggle', 'dropdown');
+                _this.onLogin.apply();
             }, true);
 
         }
@@ -157,9 +167,9 @@ define([
         this.logout = function() {
             _this.api = false;
             _this.user = false;
-            delete localStorage.token;
-            delete localStorage.username;
-            JQuery('a#dropdown-text').html('Login').attr('href', 'assets/static/login.html').fancybox();
+            Storage.erase('token');
+            Storage.erase('username');
+            _this.onLogout.apply();
             // $('#dropdown-text').removeAttr('data-toggle'); need to get this to work
         }
 
@@ -170,6 +180,7 @@ define([
                 _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
                 current_stream_id = stream_id;
+                _this.onStreamChange.apply(stream_id);
             }, true);
         }
 
@@ -194,13 +205,6 @@ define([
         }
 
         this.constructor = function(){
-            this.timeslider.selectTime('now');
-            if (typeof(localStorage.token) !== 'undefined' && localStorage.token !== null) {
-                this.tokenLogin(localStorage.username, localStorage.token);
-            } else {
-                this.logout();
-            }
-
             $("a").live('click', function(event){
                 var href = $(this).attr('href');
                 if (href == '#') {
@@ -227,26 +231,54 @@ define([
 
             window['fe'] = _this;
 
+            window['storage'] = Storage;
+
             // Clippy
-            Mousetrap.bind('up up down down left right left right b a enter', function(){
-                var agents = ['Clippy', 'Links', 'Bonzi'];
-                var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
-                clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
-                clippy.load(selected_agent, function(agent){
-                    agent.show();
-                    agent.gestureAt(0,0);
-                    agent.speak("You look like you're trying to watch a video. Would you like some help?");
-                    Async.every(20000, function(){
-                        agent.animate();
+            Async.later(500, function(){
+                if (typeof(Mousetrap) !== 'undefined') {
+                    Mousetrap.bind('up up down down left right left right b a enter', function(){
+                        var agents = ['Clippy', 'Links', 'Bonzi'];
+                        var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
+                        clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
+                        clippy.load(selected_agent, function(agent){
+                            agent.show();
+                            agent.gestureAt(0,0);
+                            agent.speak("You look like you're trying to watch a video. Would you like some help?");
+                            Async.every(20000, function(){
+                                agent.animate();
+                            });
+                        });
                     });
-                });
+                }
             });
 
             // * * * * * * * * * * * * * * * * * //
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
 
-            $
+            var oldLoginHtml = $('#user');
+            _this.onLogin.register(function(){
+                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
+                JQuery('a#dropdown-text').html(html);
+                JQuery('a#account').attr('href', '#user/' + _this.user.username);
+                $('#dropdown-text').attr('data-toggle', 'dropdown');
+
+                // Show upvote and downvote and comment post form
+                $('#upvote').removeClass('hidden');
+                $('#downvote').removeClass('hidden');
+                $('#commentbox').removeClass('hidden');
+            });
+
+            _this.onLogout.register(function(){
+                JQuery('a#dropdown-text').html('Login').attr('href', 'assets/static/login.html').fancybox();
+                $('#dropdown-text').attr('data-toggle', '');
+                $('#user').removeClass('open');
+
+                // Hide upvote/downvote and comment post
+                $('#upvote').addClass('hidden');
+                $('#downvote').addClass('hidden');
+                $('#commentbox').addClass('hidden');
+            });
 
             $('a#signout').click(function(){
                 _this.logout();
@@ -277,6 +309,7 @@ define([
             $(document).ready(function() {
 
                 $("a#about-page").fancybox();
+                $("a#change-password").fancybox();
 
                    /* Special date widget */
                     var to = new Date();
@@ -307,21 +340,41 @@ define([
                             $('#upvote').removeClass('active');
                             $('#downvote').addClass('active');
                         } else if (newStatus == 1) {
-                            $('#upvote').removeClass('active');
+                            $('#upvote').addClass('active');
                             $('#downvote').removeClass('active');
                         } else {
-                            $('#upvote').addClass('active');
+                            $('#upvote').removeClass('active');
                             $('#downvote').removeClass('active');
                         }
                     }
 
                     $('#upvote').bind('click', function(){
-                        _this.api.upvote_stream(current_stream_id, resetUpvoteDownvote);
+                        if ($(this).hasClass('active')) {
+                            _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                        } else {
+                            _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
+                        }
                     });
 
                     $('#downvote').bind('click', function(){
-                        _this.api.downvote_stream(current_stream_id, resetUpvoteDownvote);
+                        if ($(this).hasClass('active')) {
+                            console.log($(this))
+                            _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                        } else {
+                            _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) } );
+                        }
                     });
+
+                    var onDoUpdateUpvoteDownvote = function()
+                    {
+                        if (typeof(_this.user) !== 'undefined' && _this.user !== null && current_stream_id !== '')
+                        {
+                            _this.api.get_stream_vote(_this.user.username, current_stream_id, resetUpvoteDownvote);
+                        }
+                    }
+
+                    _this.onLogin.register(onDoUpdateUpvoteDownvote);
+                    _this.onStreamChange.register(onDoUpdateUpvoteDownvote);
 
                     // initialize the special date dropdown field
                     $('#date-range-field span').text(from.getDate()+' '+from.getMonthName(true)+', '+from.getFullYear()+' - '+
@@ -405,6 +458,13 @@ define([
 
             // Fake live
             Async.every(4 * 1000, _this.updateMap);
+
+            // Do login
+            if (Storage.has('username') && Storage.has('token')) {
+                _this.tokenLogin(Storage.read('username'), Storage.read('token'));
+            } else {
+                _this.logout();
+            }
         }
 
         this.constructor();

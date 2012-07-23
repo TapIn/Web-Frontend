@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,11 +37,10 @@
               <li class="active"><a href="/">Home</a></li>
               <li><a id="about-page" href="assets/static/about.html">Get the App</a></li>
               <li><a href="http://blog.tapin.tv/" target="_new">Blog</a></li>
-            
              <li class="dropdown" id="user">
                 <a id='dropdown-text' href="#"
                       class="dropdown-toggle"
-                      > 
+                      >
                       Login
                 </a>
 
@@ -50,10 +48,10 @@
                 <li><a id='account'>My Account</a></li>
                     <li><a id='streams'>My Streams</a></li>
                         <li class="divider"></li>
-                    <li><a id ='followers'>Followers</a></li>
+                    <!--<li><a id ='followers'>Followers</a></li>
                     <li><a id ='following'>Following</a></li>
-                        <li class="divider"></li>
-                    <li><a id='change-password'>Change Password</a></li>
+                        <li class="divider"></li>-->
+                    <li><a id='change-password' href="assets/static/changepass.html">Change Password</a></li>
                     <li><a id ='signout'>Sign Out</a></li>
                   </ul>
                  </li>
@@ -80,7 +78,7 @@
 
     <div id="modal-page" class="hidden"></div>
     <div id="user-modal" class="hidden"></div>
-    <div id="map-loader" class="hidden"></div>
+    <div id="map-loader" class="hidden">Loading...</div>
 <!--     <div class="time-slider" id="time-slider"></div>
  -->    
     <div id="map"></div>
@@ -88,7 +86,7 @@
 
     <div id="sidebar">
         <h2 id='currently-playing'>Currently Playing</h2>
-        <div id="controls" class="controls"></div>
+        <div id="controls" class="controls"><div id="controls-flow"></div></div>
         <div id='upvote'></div><div id='downvote'></div>
         <div id="volume"></div>
         <div id="mixpanel-partner"><a href="https://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_light.png" alt="Mobile and Web Analytics" /></a></div>
@@ -124,7 +122,7 @@
           <a class="carousel-control right" href="#myCarousel" data-slide="next"><p>&rsaquo;</p></a>
         </div> 
         <h2>Comment</h2>
-        <form>
+        <form id="commentbox">
             <div class='user-icon'></div>
             <textarea id='comment-form' class='span4' rows="10" cols="30" placeholder='Leave a comment...'></textarea> 
             <input id='submit-comment' class="btn btn-danger" type="button" value="Submit" style='margin-top: 5px'>
@@ -138,20 +136,18 @@
 window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){f[z]=function(){(a.s=a.s||[]).push(arguments)};var a=f[z]._={},q=c.methods.length;while(q--){(function(n){f[z][n]=function(){f[z]("call",n,arguments)}})(c.methods[q])}a.l=c.loader;a.i=nt;a.p={0:+new Date};a.P=function(u){a.p[u]=new Date-a.p[0]};function s(){a.P(r);f[z](r)}f.addEventListener?f.addEventListener(r,s,false):f.attachEvent("on"+r,s);var ld=function(){function p(hd){hd="head";return["<",hd,"></",hd,"><",i,' onl' + 'oad="var d=',g,";d.getElementsByTagName('head')[0].",j,"(d.",h,"('script')).",k,"='",l,"//",a.l,"'",'"',"></",i,">"].join("")}var i="body",m=d[i];if(!m){return setTimeout(ld,100)}a.P(1);var j="appendChild",h="createElement",k="src",n=d[h]("div"),v=n[j](d[h](z)),b=d[h]("iframe"),g="document",e="domain",o;n.style.display="none";m.insertBefore(n,m.firstChild).id=z;b.frameBorder="0";b.id=z+"-loader";if(/MSIE[ ]+6/.test(navigator.userAgent)){b.src="javascript:false"}b.allowTransparency="true";v[j](b);try{b.contentWindow[g].open()}catch(w){c[e]=d[e];o="javascript:var d="+g+".open();d.domain='"+d.domain+"';";b[k]=o+"void(0);"}try{var t=b.contentWindow[g];t.write(p());t.close()}catch(x){b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
 /* custom configuration goes here (www.olark.com/documentation) */
 olark.identify('1862-781-10-3510');/*]]>{/literal}*/</script>
-    <!-- Start requirejs -->
-        <script data-main="assets/js/tapin" src="assets/js/require-jquery.js"></script>
-        <!--<script data-main="assets/js/tapin" src="assets/js/tapin.min.js"></script>-->
-    <!-- End requirejs -->
     <script type="text/javascript" src="http://use.typekit.com/pff6rdk.js"></script>
     <link rel="stylesheet" href="assets/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <link rel="stylesheet" media="screen" type="text/css" href="assets/js/datepicker/base.css" />
     <link rel="stylesheet" media="screen" type="text/css" href="assets/js/datepicker/clean.css" />
 
     <!-- PIN CLUSTERING -->
+    <script type="text/javascript" src="assets/js/spiderfier.js"></script>
     <script type="text/javascript" src="assets/js/markercluster.js">
 
 
     <script type="text/javascript">try{Typekit.load();}catch(e){}olark('api.box.hide');</script>
+    <script data-main="assets/js/tapin" src="assets/js/require-jquery.js" defer="defer"></script>
     <script type="text/javascript">
         var _qevents = _qevents || [];
         (function() {

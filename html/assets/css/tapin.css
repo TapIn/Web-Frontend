@@ -91,6 +91,7 @@
     margin: -48px 0 0;
     padding:5px 0 0;
     background-color:rgba(0,0,0,0.75);
+    width: 500px;
 }
 
 /* when play button toggles between play/pause class
@@ -166,6 +167,15 @@
     float:right;
     right: 40px;
     top: 8px;
+    cursor: pointer;
+}
+
+#upvote.active {
+    width:22px;
+    height:21px;
+    background: url(../img/upvote_filled.png) no-repeat;
+    background-position:center 0px;
+    cursor: pointer;
 }
 
 #upvote:hover {
@@ -173,24 +183,35 @@
     height:21px;
     background: url(../img/upvote_filled.png) no-repeat;
     background-position:center 0px;
-
+    cursor: pointer;
 }
 
 #downvote {
     position:absolute;
     width:22px;
-    height:21px;
+    height:22px;
     background: url(../img/downvote_hollow.png);
     float:right;
     right: 13px;
     top: 8px;
+    cursor: pointer;
 }
+
+#downvote.active {
+    width:22px;
+    height:21px;
+    background: url(../img/downvote_filled.png) no-repeat;
+    background-position:center 0px;
+    cursor: pointer;
+}
+
 
 #downvote:hover {
     width:22px;
     height:21px;
     background: url(../img/downvote_filled.png) no-repeat;
     background-position:center 0px;
+    cursor: pointer;
 }
 
 .time-slider {
@@ -513,6 +534,7 @@ body {
 
 #sidebar #player {
     height: 360px;
+    width: 500px;
     margin-bottom: 8px;
 }
 
@@ -692,10 +714,13 @@ body {
 
 #map-loader {
     position: absolute;
-    right: 300px;
+    right: 0px;
     top: 40px;
     z-index:1000;
     display: block;
+    background-repeat: repeat-x;
+    padding-top: 50px;
+    height: 60px;
 }
 
 #volume {
