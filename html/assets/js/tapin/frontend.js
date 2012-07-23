@@ -11,12 +11,13 @@ define([
        'tapin/frontend/comments',
        'tapin/api',
        'tapin/util',
+       'tapin/util/storage',
        'tapin/util/event',
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Event, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Storage, Event, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -35,6 +36,7 @@ define([
         this.user = false;
 
         this.onLogin = new Event();
+        this.onLogout = new Event();
         this.onStreamChange = new Event();
 
         var current_stream_id = '';
@@ -133,13 +135,13 @@ define([
                     Log('info', 'Could not log in: ' + data.error);
                     lambda_error(data.error);
                 } else {
-                    localStorage.token = data.token;
-                    localStorage.username = username;
+                    Storage.save('token', data.token);
+                    Storage.save('username', username);
+
                     _this.tokenLogin(username, data.token);
                     lambda();
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
-                    _this.onLogin.apply();
                 }
             });
         }
@@ -150,12 +152,7 @@ define([
             _this.api.get_object_by_key('user', username, function(userdata) {
                 userdata.username = username;
                 _this.user = new User(userdata);
-                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
-                JQuery('a#dropdown-text').html(html);
-                JQuery('a#account').attr('href', '#user/' + _this.user.username);
-                $('#dropdown-text').attr('data-toggle', 'dropdown');
-                this.user = _this.user
-
+                _this.onLogin.apply();
             }, true);
 
         }
@@ -163,9 +160,9 @@ define([
         this.logout = function() {
             _this.api = false;
             _this.user = false;
-            delete localStorage.token;
-            delete localStorage.username;
-            JQuery('a#dropdown-text').html('Login').attr('href', 'assets/static/login.html').fancybox();
+            Storage.erase('token');
+            Storage.erase('username');
+            _this.onLogout.apply();
             // $('#dropdown-text').removeAttr('data-toggle'); need to get this to work
         }
 
@@ -201,13 +198,6 @@ define([
         }
 
         this.constructor = function(){
-            this.timeslider.selectTime('now');
-            if (typeof(localStorage.token) !== 'undefined' && localStorage.token !== null) {
-                this.tokenLogin(localStorage.username, localStorage.token);
-            } else {
-                this.logout();
-            }
-
             $("a").live('click', function(event){
                 var href = $(this).attr('href');
                 if (href == '#') {
@@ -252,6 +242,20 @@ define([
             // * * * * * * * * * * * * * * * * * //
             // * *  START VU'S CALENDAR CODE * * //
             // * * * * * * * * * * * * * * * * * //
+
+            var oldLoginHtml = $('#user');
+            _this.onLogin.register(function(){
+                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
+                JQuery('a#dropdown-text').html(html);
+                JQuery('a#account').attr('href', '#user/' + _this.user.username);
+                $('#dropdown-text').attr('data-toggle', 'dropdown');
+            });
+
+            _this.onLogout.register(function(){
+                JQuery('a#dropdown-text').html('Login').attr('href', 'assets/static/login.html').fancybox();
+                $('#dropdown-text').attr('data-toggle', '');
+                $('#user').removeClass('open');
+            });
 
             $('a#signout').click(function(){
                 _this.logout();
@@ -431,6 +435,13 @@ define([
 
             // Fake live
             Async.every(4 * 1000, _this.updateMap);
+
+            // Do login
+            if (Storage.has('username') && Storage.has('token')) {
+                _this.tokenLogin(Storage.read('username'), Storage.read('token'));
+            } else {
+                _this.logout();
+            }
         }
 
         this.constructor();
