@@ -31,7 +31,12 @@ define([], function(){
                 return null;
             }
 
-            return JSON.parse(value);
+            try{
+                return JSON.parse(value);
+            }catch(e){
+                _this.erase(key);
+                return null;
+            }
         }
 
         this.erase = function(key)
