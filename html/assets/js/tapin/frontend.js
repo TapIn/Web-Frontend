@@ -249,12 +249,22 @@ define([
                 JQuery('a#dropdown-text').html(html);
                 JQuery('a#account').attr('href', '#user/' + _this.user.username);
                 $('#dropdown-text').attr('data-toggle', 'dropdown');
+
+                // Show upvote and downvote and comment post form
+                $('#upvote').removeClass('hidden');
+                $('#downvote').removeClass('hidden');
+                $('#commentbox').removeClass('hidden');
             });
 
             _this.onLogout.register(function(){
                 JQuery('a#dropdown-text').html('Login').attr('href', 'assets/static/login.html').fancybox();
                 $('#dropdown-text').attr('data-toggle', '');
                 $('#user').removeClass('open');
+
+                // Hide upvote/downvote and comment post
+                $('#upvote').addClass('hidden');
+                $('#downvote').addClass('hidden');
+                $('#commentbox').addClass('hidden');
             });
 
             $('a#signout').click(function(){
