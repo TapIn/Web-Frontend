@@ -11,6 +11,7 @@ define([
        'tapin/frontend/comments',
        'tapin/api',
        'tapin/util',
+       'tapin/util/storage',
        'tapin/util/event',
        'tapin/util/async',
        'tapin/util/log',
@@ -142,11 +143,11 @@ define([
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
                     _this.onLogin.apply();
-                    if(!this.user.email){
+                    // if(!this.user.email){
 
-                        var email  = prompt('Please enter an email to associate your account with.')
-                        _this.api.update_object_by_key('User', username, {'email' : email}, null, null);
-                    }
+                    //     var email  = prompt('Please enter an email to associate your account with.')
+                    //     _this.api.update_object_by_key('User', username, {'email' : email}, null, null);
+                    // }
 
                 }
             });
