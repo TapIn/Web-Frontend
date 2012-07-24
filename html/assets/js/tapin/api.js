@@ -112,6 +112,17 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         }
 
         /**
+         * Features a stream
+         * @param  {string}                             stream_id    Stream ID
+         * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
+         * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
+         */
+        this.feature_stream = function(stream_id, lambda, error_lambda)
+        {
+            _this.update_object_by_key('stream', stream_id, {featured: 'true'}, lambda, error_lambda);
+        }
+
+        /**
          * Upvotes a stream, or cancels the upvote if one already exists
          * @param  {string}             stream_id    The ID of the stream to upvote
          * @param  {function()}         lambda       Function to execute on success
@@ -378,6 +389,16 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
                 }
             }
         });
+    }
+
+    /**
+     * Gets a list of featured streams
+     * @param  {function(Object.<string, string>)}  lambda       Function to execute on success
+     * @param  {function(string)}                   error_lambda Function to execute on error
+     */
+    _staticApi.get_featured_streams = function(lambda, error_lambda)
+    {
+        return _staticApi.get_object_by_secondary_key('stream', 'featured', 'true', lambda, error_lambda);
     }
 
     return _staticApi;
