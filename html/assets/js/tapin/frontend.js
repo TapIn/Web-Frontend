@@ -340,6 +340,14 @@ define([
                       }
                     });
 
+                    var addToPoints = function(amt)
+                    {
+                        var oldPoints = $('#points').text();
+                        oldPoints = oldPoints.substring(0,oldPoints.indexOf(' '));
+                        points = parseInt(oldPoints) + amt;
+                        $('#points').text(points + ' pt' + (points != 1? 's' : ''));
+                    }
+
                     var resetUpvoteDownvote = function(newStatus)
                     {
                         if (newStatus == -1) {
@@ -357,8 +365,10 @@ define([
                     $('#upvote').bind('click', function(){
                         if ($(this).hasClass('active')) {
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                            addToPoints(-1);
                         } else {
                             _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
+                            addToPoints(1);
                         }
                     });
 
@@ -366,8 +376,10 @@ define([
                         if ($(this).hasClass('active')) {
                             console.log($(this))
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                            addToPoints(1);
                         } else {
                             _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) } );
+                            addToPoints(-1);
                         }
                     });
 
@@ -393,8 +405,8 @@ define([
                             connectionCount = 0;
                         }
 
-                        $('#points').text(points + ' pts');
-                        $('#viewpoints').text(connectionCount + ' view' + (connectionCount != -1? 's' : ''));
+                        $('#points').text(points + ' pt' + (points != 1? 's' : ''));
+                        $('#viewpoints').text(connectionCount + ' view' + (connectionCount != 1? 's' : ''));
                     })
 
                     // initialize the special date dropdown field
