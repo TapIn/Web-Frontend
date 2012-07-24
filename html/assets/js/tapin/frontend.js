@@ -374,7 +374,6 @@ define([
 
                     $('#downvote').bind('click', function(){
                         if ($(this).hasClass('active')) {
-                            console.log($(this))
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
                             addToPoints(1);
                         } else {
