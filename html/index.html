@@ -26,8 +26,6 @@
 
   <body>
   <!-- Nav Bar -->
-  <div id="hidden-div"></div>
-  <div id="hidden-data"></div>
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -127,6 +125,9 @@
             <textarea id='comment-form' class='span4' rows="10" cols="30" placeholder='Leave a comment...'></textarea> 
             <input id='submit-comment' class="btn btn-danger" type="button" value="Submit" style='margin-top: 5px'>
         </form>
+        <div class="hidden" id="commentloggedout">
+            Log-in or create an account to comment!
+        </div>
         <div id='comments'>
         </div>
     </div>

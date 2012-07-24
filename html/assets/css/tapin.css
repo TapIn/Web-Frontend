@@ -428,6 +428,13 @@ body {
     position:absolute;
 }
 
+#commentloggedout {
+    margin: 0 0 18px;
+    text-align: center;
+    color: #504F4F;
+    text-shadow: 0px 2px 1px #BBBABA;
+}
+
 #more-button:hover {
     background:#999;
 }

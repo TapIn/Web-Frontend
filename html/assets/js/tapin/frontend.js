@@ -180,10 +180,9 @@ define([
                 _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
                 current_stream_id = stream_id;
-                _this.onStreamChange.apply(stream_id);
-
-                //change video points
-                $('#points').html(data.points + ' pts')
+                _this.onStreamChange.apply(stream_id, data);
+                // DO NOT PUT ANY CODE HERE!
+                // REGISTER IT IN AN ONSTREAMCHANGE EVENT
             }, true);
         }
 
@@ -269,7 +268,9 @@ define([
                 // Show upvote and downvote and comment post form
                 $('#upvote').removeClass('hidden');
                 $('#downvote').removeClass('hidden');
+                $('#volume').css('right', '95px');
                 $('#commentbox').removeClass('hidden');
+                $('#commentloggedout').addClass('hidden');
             });
 
             _this.onLogout.register(function(){
@@ -280,7 +281,9 @@ define([
                 // Hide upvote/downvote and comment post
                 $('#upvote').addClass('hidden');
                 $('#downvote').addClass('hidden');
+                $('#volume').css('right', '35px');
                 $('#commentbox').addClass('hidden');
+                $('#commentloggedout').removeClass('hidden');
             });
 
             $('a#signout').click(function(){
@@ -370,7 +373,7 @@ define([
 
                     var onDoUpdateUpvoteDownvote = function()
                     {
-                        if (typeof(_this.user) !== 'undefined' && _this.user !== null && current_stream_id !== '')
+                        if (typeof(_this.user) !== 'undefined' && _this.user !== false && _this.user !== null && current_stream_id !== '')
                         {
                             _this.api.get_stream_vote(_this.user.username, current_stream_id, resetUpvoteDownvote);
                         }
@@ -378,6 +381,21 @@ define([
 
                     _this.onLogin.register(onDoUpdateUpvoteDownvote);
                     _this.onStreamChange.register(onDoUpdateUpvoteDownvote);
+                    _this.onStreamChange.register(function(stream_id, data){
+                        //change video points
+                        var points = data.points;
+                        if (typeof(points) === 'undefined' || points === null) {
+                            points = 0;
+                        }
+
+                        var connectionCount = data.streamconnectioncount;
+                        if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
+                            connectionCount = 0;
+                        }
+
+                        $('#points').text(points + ' pts');
+                        $('#viewpoints').text(connectionCount + ' view' + (connectionCount != -1? 's' : ''));
+                    })
 
                     // initialize the special date dropdown field
                     $('#date-range-field span').text(from.getDate()+' '+from.getMonthName(true)+', '+from.getFullYear()+' - '+
