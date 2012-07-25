@@ -183,7 +183,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
          */
         this.change_password = function(username, old_pass, new_pass, lambda, error_lambda)
         {
-            _this.call('changepass', {username: username, password: old_pass, new: new_pass}, lambda, error_lambda, 'post');
+            _this.call('changepass', {username: username, password: old_pass, 'new': new_pass}, lambda, error_lambda, 'post');
         }
     }
 
