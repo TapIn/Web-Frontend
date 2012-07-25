@@ -172,6 +172,19 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
                 lambda(data['vote']);
             }, error_lambda);
         }
+
+        /**
+         * Changes the user's password.
+         * @param  {string}             username     The username
+         * @param  {string}             old_pass     The old password
+         * @param  {string}             new_pass     The new password
+         * @param  {function(number)}   lambda       Function to execute on success, taking vote (1, 0, or -1)
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.change_password = function(username, old_pass, new_pass, lambda, error_lambda)
+        {
+            _this.call('changepass', {username: username, password: old_pass, new: new_pass}, lambda, error_lambda, 'post');
+        }
     }
 
     /**
@@ -209,10 +222,6 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
             };
         } else if (typeof(error_lambda) !== 'function') {
             error_lambda = function(){};
-        }
-
-        if (endpoint in previous_requests) {
-            previous_requests[endpoint].abort();
         }
 
         var conf = {
@@ -369,26 +378,12 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
     /**
      * Gets the thumbnail URL for a video, if one has been generated
      * @param  {string}             id           ID of the stream
-     * @param  {function(string)}   lambda       Function to execute on success, taking response data
-     * @param  {function(string)}   error_lambda Function to execute if a thumbnail is not found
+     * @param  {function(string)}   lambda       Function to execute on success, taking url
      */
-    _staticApi.get_thumbnail_by_stream_id = function(id, timecode, lambda, no_lambda)
+    _staticApi.get_thumbnail_by_stream_id = function(id, lambda)
     {
-        var url = 'http://thumbs.tapin.tv/' + id + '/latest.jpg?noCache=' + Util.randomString(30);
-        $.ajax({
-            url: url,
-            type: 'HEAD',
-            success: function()
-            {
-                lambda(url);
-            },
-            error: function()
-            {
-                if (typeof(no_lambda) === 'function') {
-                    no_lambda();
-                }
-            }
-        });
+        var url = 'http://thumbs.tapin.tv/' + id + '/144x107/latest.jpg?noCache=' + Util.randomString(30);
+        lambda(url);
     }
 
     /**
