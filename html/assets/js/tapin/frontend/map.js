@@ -426,7 +426,29 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             //Create clusterer object
 
             var gm = google.maps;
-            _markerCluster = new MarkerClusterer(_map, [], {maxZoom:19})
+            _markerCluster = new MarkerClusterer(_map, [], {maxZoom:18, styles:[
+                {
+                    url: 'assets/img/groups/1.png',
+                    height: 60,
+                    width: 60,
+                    anchor: [25,30],
+                    textColor: '#ffffff'
+                },
+                {
+                    url: 'assets/img/groups/2.png',
+                    height: 65,
+                    width: 65,
+                    anchor: [25,29],
+                    textColor: '#ffffff'
+                },
+                {
+                    url: 'assets/img/groups/3.png',
+                    height: 75,
+                    width: 75,
+                    anchor: [30,30],
+                    textColor: '#ffffff'
+                }
+            ]})
 
             _oms = new OverlappingMarkerSpiderfier(_map);
             var iw = new gm.InfoWindow();
