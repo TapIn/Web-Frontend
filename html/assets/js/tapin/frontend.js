@@ -368,23 +368,39 @@ define([
                         }
                     }
 
+                    var getPreviousVote = function()
+                    {
+                        if ($('#upvote').hasClass('active')) {
+                            return 1;
+                        } else if ($('#downvote').hasClass('active')) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+
+                    function updateVote(currentVote)
+                    {
+                        addToPoints(-1 * (getPreviousVote() - currentVote));
+                    }
+
                     $('#upvote').bind('click', function(){
                         if ($(this).hasClass('active')) {
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
-                            addToPoints(-1);
+                            updateVote(0);
                         } else {
                             _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
-                            addToPoints(1);
+                            updateVote(1);
                         }
                     });
 
                     $('#downvote').bind('click', function(){
                         if ($(this).hasClass('active')) {
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
-                            addToPoints(1);
+                            updateVote(0);
                         } else {
                             _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) } );
-                            addToPoints(-1);
+                            updateVote(-1);
                         }
                     });
 
