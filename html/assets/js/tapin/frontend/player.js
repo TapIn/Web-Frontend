@@ -115,7 +115,8 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                     if (clip.isLive) {
                         _this.playRecordedLive(clip.streamId);
                     } else {
-                        player_div.html('<img src="assets/img/viderror.png" />')
+                        player_div.html('<img src="assets/img/viderror.png" />');
+                        mixpanel.track('play-broken-stream');
                     }
                 },
                 onEnded: null,

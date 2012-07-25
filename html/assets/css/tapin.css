@@ -105,7 +105,7 @@
     overflow:hidden;
     background:url(../img/playpause.png) center top no-repeat;
     margin-top: 7px;
-    margin-left: 15px;
+    margin-left: 10px;
     background-position:center -14px;
 
 }
@@ -139,6 +139,7 @@
     background-color:#fff;
     height:7px;
     margin:3px 4px;
+    margin-left: -5px;
     width:0px;
     position:absolute;
     top:0;
@@ -165,9 +166,17 @@
     height:21px;
     background: url(../img/upvote_hollow.png);
     float:right;
-    right: 40px;
+    right: 70px;
     top: 8px;
     cursor: pointer;
+}
+
+#points {
+    color:white;
+    float:right;
+    margin-top: 7px;
+    margin-right: 3px;
+    font-size: 12px;
 }
 
 #upvote.active {
@@ -189,10 +198,10 @@
 #downvote {
     position:absolute;
     width:22px;
-    height:22px;
+    height:21px;
     background: url(../img/downvote_hollow.png);
     float:right;
-    right: 13px;
+    right: 43px;
     top: 8px;
     cursor: pointer;
 }
@@ -417,6 +426,13 @@ body {
     width: 100%;
     bottom: 0px;
     position:absolute;
+}
+
+#commentloggedout {
+    margin: 0 0 18px;
+    text-align: center;
+    color: #504F4F;
+    text-shadow: 0px 2px 1px #BBBABA;
 }
 
 #more-button:hover {
@@ -726,7 +742,7 @@ body {
 #volume {
     position: absolute;
     bottom: 8px;
-    right: 70px;
+    right: 95px;
     z-index: 100000;
 }
 

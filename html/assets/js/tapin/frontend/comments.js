@@ -1,9 +1,10 @@
-define(['tapin/api', 'jquery'], function(Api, JQuery){
+define(['tapin/api', 'jquery', 'tapin/util/async'], function(Api, JQuery, Async){
     return function(elem)
     {
         var template;
         var _elem;
         this.user = null;
+        var last_stream_id = null;
         var _this = this;
 
         this.constructor = function(elem)
@@ -17,11 +18,18 @@ define(['tapin/api', 'jquery'], function(Api, JQuery){
                 success: function(html){
                     template = Handlebars.compile(html);
                 }
-            })
+            });
+
+            Async.every(10000, function(){
+                if (last_stream_id !== null) {
+                    _this.updateCommentsFor(last_stream_id);
+                }
+            });
         }
 
         this.updateCommentsFor = function(stream_id)
         {
+            last_stream_id = stream_id;
             var onUpdatedComments = function(data)
             {
                 var comments = [];

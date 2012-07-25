@@ -55,6 +55,7 @@
                     <li><a id ='signout'>Sign Out</a></li>
                   </ul>
                  </li>
+                <li><a href="assets/static/register.html" id="register">Register</a></li>
             </ul>
             <ul class="nav pull-right">
                  <li><a id='see-videos' >See videos from</a></li>
@@ -86,11 +87,11 @@
 
     <div id="sidebar">
         <h2 id='currently-playing'>Currently Playing</h2>
-        <div id="controls" class="controls"><div id="controls-flow"></div></div>
+        <div id="controls" class="controls"><div id="controls-flow"></div><div id='points'></div></div>
         <div id='upvote'></div><div id='downvote'></div>
         <div id="volume"></div>
         <div id="mixpanel-partner"><a href="https://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_light.png" alt="Mobile and Web Analytics" /></a></div>
-
+        <h4 id='viewpoints' style="float:right"></h4>
         <h2>Nearby Videos</h2>
             <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
@@ -127,6 +128,9 @@
             <textarea id='comment-form' class='span4' rows="10" cols="30" placeholder='Leave a comment...'></textarea> 
             <input id='submit-comment' class="btn btn-danger" type="button" value="Submit" style='margin-top: 5px'>
         </form>
+        <div class="hidden" id="commentloggedout">
+            Log-in or create an account to comment!
+        </div>
         <div id='comments'>
         </div>
     </div>

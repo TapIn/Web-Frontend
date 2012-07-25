@@ -84,25 +84,25 @@ define([
                 _this.loader.hide();
 
                 var new_pins = new PinCollection();
+                var successfulThumbCount = 0;
+                var thumbTryCount = 0;
+                $('.carousel-inner').html('');
                 for (var i in streams) {
                     var stream = streams[i];
+                    if (successfulThumbCount <= 6 && thumbTryCount <= 9) {
+                        thumbTryCount++;
+                        Api.get_thumbnail_by_stream_id(i, function(url){
+                            if (successfulThumbCount % 3 == 0) {
+                                $('.carousel-inner').append($('<div class="item ' + (successfulThumbCount === 0 ? 'active' : '') + '"><div class="video-preview-container"></div></div>'));
+                            }
+                            $('.carousel-inner .item .video-preview-container').last().append($('<a class="video-preview" href="#video/' + i + '/now"><img src="' + url + '"></a>'))
+                            successfulThumbCount++;
+                        });
+                    }
                     var coords = stream[stream.length - 1]['coord'];
                     var pin = new Pin(coords[0], coords[1], i, {stream_id: i});
                     new_pins.addOrUpdatePin(pin);
                 }
-
-                // var markers = [];
-                // for (var i in streams) {
-
-                //     var stream = streams[i];
-                //     var coords = stream[stream.length - 1]['coord'];
-                //     var latLng = new google.maps.LatLng(coords[0], coords[1]);
-                //     var marker = new google.maps.Marker({
-                //         position: latLng
-                //         });
-                //     markers.push(marker);
-                // }
-                // var markerCluster = new MarkerClusterer(_this.mainMap.map(), markers);
 
                 _this.mainMap.Pins.replace(new_pins);
             }, function(){
@@ -143,18 +143,12 @@ define([
                     JQuery('#fancybox-close').click();
                     JQuery('#dropdown-text').unbind('click.fb');
                     _this.onLogin.apply();
-                    // if(!this.user.email){
-
-                    //     var email  = prompt('Please enter an email to associate your account with.')
-                    //     _this.api.update_object_by_key('User', username, {'email' : email}, null, null);
-                    // }
-
                 }
             });
         }
 
         this.tokenLogin = function(username, token) {
-            $("#streams").attr('href', '#stream/' + username);
+            // STOP PUTTING STUFF HERE!!!
             _this.api = new Api(token);
             _this.api.get_object_by_key('user', username, function(userdata) {
                 userdata.username = username;
@@ -180,7 +174,9 @@ define([
                 _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
                 current_stream_id = stream_id;
-                _this.onStreamChange.apply(stream_id);
+                _this.onStreamChange.apply(stream_id, data);
+                // DO NOT PUT ANY CODE HERE!
+                // REGISTER IT IN AN ONSTREAMCHANGE EVENT
             }, true);
         }
 
@@ -258,6 +254,7 @@ define([
 
             var oldLoginHtml = $('#user');
             _this.onLogin.register(function(){
+                $("#streams").attr('href', '#stream/' + _this.user.username);
                 var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
                 JQuery('a#dropdown-text').html(html);
                 JQuery('a#account').attr('href', '#user/' + _this.user.username);
@@ -266,7 +263,14 @@ define([
                 // Show upvote and downvote and comment post form
                 $('#upvote').removeClass('hidden');
                 $('#downvote').removeClass('hidden');
+                $('#volume').css('right', '95px');
+
+                // Switch comment box
                 $('#commentbox').removeClass('hidden');
+                $('#commentloggedout').addClass('hidden');
+
+                // Hide register button
+                $('a#register').addClass('hidden');
             });
 
             _this.onLogout.register(function(){
@@ -277,7 +281,14 @@ define([
                 // Hide upvote/downvote and comment post
                 $('#upvote').addClass('hidden');
                 $('#downvote').addClass('hidden');
+                $('#volume').css('right', '35px');
+
+                // Switch comment box
                 $('#commentbox').addClass('hidden');
+                $('#commentloggedout').removeClass('hidden');
+
+                // Show register button
+                $('a#register').removeClass('hidden');
             });
 
             $('a#signout').click(function(){
@@ -310,6 +321,7 @@ define([
 
                 $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
+                $('a#register').fancybox();
 
                    /* Special date widget */
                     var to = new Date();
@@ -334,6 +346,14 @@ define([
                       }
                     });
 
+                    var addToPoints = function(amt)
+                    {
+                        var oldPoints = $('#points').text();
+                        oldPoints = oldPoints.substring(0,oldPoints.indexOf(' '));
+                        points = parseInt(oldPoints) + amt;
+                        $('#points').text(points + ' pt' + (points != 1? 's' : ''));
+                    }
+
                     var resetUpvoteDownvote = function(newStatus)
                     {
                         if (newStatus == -1) {
@@ -348,26 +368,45 @@ define([
                         }
                     }
 
+                    var getPreviousVote = function()
+                    {
+                        if ($('#upvote').hasClass('active')) {
+                            return 1;
+                        } else if ($('#downvote').hasClass('active')) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+
+                    function updateVote(currentVote)
+                    {
+                        addToPoints(-1 * (getPreviousVote() - currentVote));
+                    }
+
                     $('#upvote').bind('click', function(){
                         if ($(this).hasClass('active')) {
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                            updateVote(0);
                         } else {
                             _this.api.upvote_stream(current_stream_id, function(){ resetUpvoteDownvote(1) } );
+                            updateVote(1);
                         }
                     });
 
                     $('#downvote').bind('click', function(){
                         if ($(this).hasClass('active')) {
-                            console.log($(this))
                             _this.api.neutralvote_stream(current_stream_id, function(){ resetUpvoteDownvote(0) } );
+                            updateVote(0);
                         } else {
                             _this.api.downvote_stream(current_stream_id, function(){ resetUpvoteDownvote(-1) } );
+                            updateVote(-1);
                         }
                     });
 
                     var onDoUpdateUpvoteDownvote = function()
                     {
-                        if (typeof(_this.user) !== 'undefined' && _this.user !== null && current_stream_id !== '')
+                        if (typeof(_this.user) !== 'undefined' && _this.user !== false && _this.user !== null && current_stream_id !== '')
                         {
                             _this.api.get_stream_vote(_this.user.username, current_stream_id, resetUpvoteDownvote);
                         }
@@ -375,6 +414,21 @@ define([
 
                     _this.onLogin.register(onDoUpdateUpvoteDownvote);
                     _this.onStreamChange.register(onDoUpdateUpvoteDownvote);
+                    _this.onStreamChange.register(function(stream_id, data){
+                        //change video points
+                        var points = data.points;
+                        if (typeof(points) === 'undefined' || points === null) {
+                            points = 0;
+                        }
+
+                        var connectionCount = data.streamconnectioncount;
+                        if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
+                            connectionCount = 0;
+                        }
+
+                        $('#points').text(points + ' pt' + (points != 1? 's' : ''));
+                        $('#viewpoints').text(connectionCount + ' view' + (connectionCount != 1? 's' : ''));
+                    })
 
                     // initialize the special date dropdown field
                     $('#date-range-field span').text(from.getDate()+' '+from.getMonthName(true)+', '+from.getFullYear()+' - '+
@@ -395,6 +449,28 @@ define([
                       }
                       return false;
                     });
+
+                    $('#changepassform').live('submit', function(){
+                        if ($('#oldpass').val() && $('#newpass').val() && $('#newpass2').val()) {
+                            if ($('#newpass').val() == $('#newpass2').val()) {
+                                _this.api.change_password(_this.user.username, $('#oldpass').val(), $('#newpass').val(), function(data){
+                                    if (data.error) {
+                                        alert(data.error);
+                                    } else {
+                                        $('#fancybox-close').click();
+                                    }
+                                }, function(err){
+                                    log('error', 'Api error: ', err);
+                                    alert('Api error!');
+                                })
+                            } else {
+                                alert('Make sure your passwords match.');
+                            }
+                        } else {
+                            alert('Please make sure you fill out all fields.')
+                        }
+                        return false;
+                    })
 
                     $('html').click(function() {
                       if($('#datepicker-calendar').is(":visible")) {
@@ -418,11 +494,33 @@ define([
                             $("#loginform #login").attr('disabled', '');
                         }, function(err){
                             alert(err);
-                            $("#loginform #login").attr('disabled', '');
+                            $("#loginform #login").removeAttr('disabled');
                         });
                         $("#loginform #login").attr('disabled', 'true');
                         return false;
-            })
+                    });
+
+                    $('#registerform').live('submit', function(event){
+                        event.stopPropagation();
+                        Api.register($('#registerform #username').val(), $('#registerform #password').val(), function(data){
+                            if (data.error)
+                            {
+                                alert(data.error);
+                                $("#registerform #register").removeAttr('disabled');
+                            } else {
+                                Storage.save('token', data.token);
+                                Storage.save('username', $('#registerform #username').val());
+                                _this.tokenLogin($('#registerform #username').val(), data.token);
+                                JQuery('#fancybox-close').click();
+                                JQuery('#dropdown-text').unbind('click.fb');
+                            }
+                        }, function(err){
+                            alert(err);
+                                $("#registerform #register").removeAttr('disabled');
+                        });
+                        $("#registerform #register").attr('disabled', 'true');
+                        return false;
+                    })
             // END Vu frontend stuff
 
             // Bind to volume change events

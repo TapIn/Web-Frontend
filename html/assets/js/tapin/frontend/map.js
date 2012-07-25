@@ -1,4 +1,4 @@
-define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'], function(PinCollection, Log, Event){
+define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event', 'tapin/util/storage'], function(PinCollection, Log, Event, Storage){
     return function(elem)
     {
         var _this = this;
@@ -7,6 +7,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         var _markers = {};
         var _markerCluster = null;
         var _oms = null;
+        var _clickedMarkers = {};
+        var _currentStream = null;
 
         var _centerInitialized = false;
 
@@ -319,20 +321,49 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         {
             Log('debug', "Pin added");
 
+            // Pin styles temp
+            var watchingPin = "assets/img/pingreen.png";
+            var watchedPin = "assets/img/pingray.png";
+            var defaultPin =  "assets/img/pin.png";
+            
+            //Check if pin has been watched before
+            var imagePin = (pin.Uid in _clickedMarkers)? watchedPin : defaultPin;
+            if(pin.Uid == _currentStream) imagePin = watchingPin;
+
+            _currentStream = pin.Uid;
+
             _markers[pin.Uid] = new google.maps.Marker({
                 position: new google.maps.LatLng(pin.Lat, pin.Lon),
                 markerID: pin.Uid,
-                //PinStyles
-                //icon: pin.PinStyle.Icon,
-                //shadow: pin.PinStyle.Shadow
+                icon: imagePin
             });
+            //Handles pin clustering
             _markerCluster.addMarker(_markers[pin.Uid]);
-            _oms.addMarker(_markers[pin.Uid]);  // <-- here
-
-            // google.maps.event.addListener(_markers[pin.Uid], "click", pin.onClick.apply);
+            //This handles the spidifying of hte pins
+            _oms.addMarker(_markers[pin.Uid]);  
 
             pin.onClick.register(function(){
                 _this.onPinClick.apply(pin);
+
+                // Set all previous clicked markers to something else
+                for(e in _clickedMarkers) {
+                    var pinKey = _clickedMarkers[e];
+                    var _marker = _markers[pinKey]
+                    try {
+                        _marker.setIcon(watchedPin)
+                    }
+                    catch (err) {
+                        // surpress error
+                    }
+                }
+
+                // Set image of item clicked...
+                var marker = _markers[pin.Uid]
+                marker.setIcon(watchingPin)
+
+                _clickedMarkers[pin.Uid] = pin.Uid;
+                Storage.save('markersClicked', _clickedMarkers);
+
                 Log('debug', 'Pin clicked!', pin);
              });
         }
@@ -357,6 +388,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             if (elem instanceof jQuery) {
                 elem = elem[0];
             }
+
+            // read pins from storage
+            if (Storage.has('markersClicked')) {
+                _clickedMarkers = Storage.read('markersClicked');
+            } 
 
             _elem = elem;
 
