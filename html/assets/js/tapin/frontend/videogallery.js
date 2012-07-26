@@ -5,8 +5,18 @@ define(['jquery', 'tapin/util/log', 'tapin/util', 'tapin/util/async'], function(
         var _elem = null;
 
         var _ids = [];
+        var lastUpdate;
         this.commitUpdate = function()
         {
+            if (typeof(lastUpdate) !== 'undefined' && ((new Date()).getTime() - lastUpdate.getTime()) / 1000 < 10) {
+                Log('debug', 'Last thumb update was ' + ((new Date()).getTime() - lastUpdate.getTime()) / 1000 + ' seconds ago, skipping...');
+                _ids = [];
+                return;
+            }
+
+            Log('debug', 'Updating thumbs!');
+
+            lastUpdate = new Date();
             var groups = [];
             var lastFocused = _elem.children('.item').index(_elem.children('.item .active'));
             if (lastFocused < 0) {
@@ -40,7 +50,7 @@ define(['jquery', 'tapin/util/log', 'tapin/util', 'tapin/util/async'], function(
             }
 
             var temp = _elem.clone();
-            _elem.before(temp);
+            _elem.after(temp);
             temp.css('position', 'absolute');
             temp.css('background', $('#sidebar').css('background'));
             temp.offset(_elem.offset());
