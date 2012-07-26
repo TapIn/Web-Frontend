@@ -17,7 +17,7 @@ define([], function(){
         this.streams = [];
         this.title = null;
         this.nexttitle = null;
-
+        this.email = null;
         this.level = null;
         this.last = null;
         this.next = null;
@@ -56,7 +56,8 @@ define([], function(){
          * @return float Width of the level bar, with 150 max
          */
         this.getLevelBarWidth = function() {
-            return Math.floor(1.5 * this.getLevelPercent());
+            var r = Math.floor(1.5 * this.getLevelPercent())
+            return (r<0)?0:r;
         }
 
         /**

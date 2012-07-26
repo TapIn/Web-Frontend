@@ -55,7 +55,6 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
                         userdata.username = username;
                         var u = new User(userdata);
                         u.streams = userdata;
-                        console.log(u)
                         Frontend.userModal.show(html, u);
 
                     }, true);
