@@ -9,6 +9,7 @@ define([
        'tapin/frontend/filmstrip',
        'tapin/frontend/volume',
        'tapin/frontend/comments',
+       'tapin/frontend/videogallery',
        'tapin/api',
        'tapin/util',
        'tapin/util/storage',
@@ -17,7 +18,7 @@ define([
        'tapin/util/log',
        'tapin/config',
        'tapin/user'],
-       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, Api, Util, Storage, Event, Async, Log, Config, User)
+       function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, VideoGallery, Api, Util, Storage, Event, Async, Log, Config, User)
 {
     return new (function(){
         var _this = this;
@@ -34,6 +35,7 @@ define([
         this.comments = new Comments(JQuery('#comments'));
         this.api = false;
         this.user = false;
+        this.videoGallery = new VideoGallery($('#myCarousel'));
 
         this.onLogin = new Event();
         this.onLogout = new Event();
@@ -84,25 +86,18 @@ define([
                 _this.loader.hide();
 
                 var new_pins = new PinCollection();
-                var successfulThumbCount = 0;
-                var thumbTryCount = 0;
-                $('.carousel-inner').html('');
+                var c = 0;
                 for (var i in streams) {
                     var stream = streams[i];
-                    if (successfulThumbCount <= 6 && thumbTryCount <= 9) {
-                        thumbTryCount++;
-                        Api.get_thumbnail_by_stream_id(i, function(url){
-                            if (successfulThumbCount % 3 == 0) {
-                                $('.carousel-inner').append($('<div class="item ' + (successfulThumbCount === 0 ? 'active' : '') + '"><div class="video-preview-container"></div></div>'));
-                            }
-                            $('.carousel-inner .item .video-preview-container').last().append($('<a class="video-preview" href="#video/' + i + '/now"><img src="' + url + '"></a>'))
-                            successfulThumbCount++;
-                        });
+                    if (c < 6) {
+                        _this.videoGallery.addVideo(i);
                     }
                     var coords = stream[stream.length - 1]['coord'];
                     var pin = new Pin(coords[0], coords[1], i, {stream_id: i});
                     new_pins.addOrUpdatePin(pin);
+                    c++;
                 }
+                _this.videoGallery.commitUpdate();
 
                 _this.mainMap.Pins.replace(new_pins);
             }, function(){
@@ -555,7 +550,7 @@ define([
             Async.later(1000, _this.updateMap);
 
             // Fake live
-            Async.every(4 * 1000, _this.updateMap);
+            Async.every(8 * 1000, _this.updateMap);
 
             // Do login
             if (Storage.has('username') && Storage.has('token')) {

@@ -376,17 +376,6 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
     }
 
     /**
-     * Gets the thumbnail URL for a video, if one has been generated
-     * @param  {string}             id           ID of the stream
-     * @param  {function(string)}   lambda       Function to execute on success, taking url
-     */
-    _staticApi.get_thumbnail_by_stream_id = function(id, lambda)
-    {
-        var url = 'http://thumbs.tapin.tv/' + id + '/144x107/latest.jpg?noCache=' + Util.randomString(30);
-        lambda(url);
-    }
-
-    /**
      * Gets a list of featured streams
      * @param  {function(Object.<string, string>)}  lambda       Function to execute on success
      * @param  {function(string)}                   error_lambda Function to execute on error

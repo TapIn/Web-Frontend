@@ -426,26 +426,23 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             //Create clusterer object
 
             var gm = google.maps;
-            _markerCluster = new MarkerClusterer(_map, [], {maxZoom:18, styles:[
+            _markerCluster = new MarkerClusterer(_map, [], {maxZoom:19, styles:[
                 {
                     url: 'assets/img/groups/1.png',
-                    height: 60,
-                    width: 60,
-                    anchor: [25,30],
+                    height: 48,
+                    width: 48,
                     textColor: '#ffffff'
                 },
                 {
                     url: 'assets/img/groups/2.png',
-                    height: 65,
-                    width: 65,
-                    anchor: [25,29],
+                    height: 50,
+                    width: 50,
                     textColor: '#ffffff'
                 },
                 {
                     url: 'assets/img/groups/3.png',
-                    height: 75,
-                    width: 75,
-                    anchor: [30,30],
+                    height: 60,
+                    width: 60,
                     textColor: '#ffffff'
                 }
             ]})
