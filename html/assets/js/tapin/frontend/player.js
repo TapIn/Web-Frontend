@@ -129,7 +129,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                     rtmp: {
                         url: "flowplayer.rtmp-3.2.10.swf"
                     },
-                    controls: null,
+                    controls: null
                 },
 
                 canvas: {
@@ -142,7 +142,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             $('#controls').append($('#upvote'));
             $('#controls').append($('#downvote'));
 
-        }   
+        }
 
         var constructor = function(div)
         {

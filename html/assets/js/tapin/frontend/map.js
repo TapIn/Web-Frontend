@@ -325,7 +325,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             var watchingPin = "assets/img/pingreen.png";
             var watchedPin = "assets/img/pingray.png";
             var defaultPin =  "assets/img/pin.png";
-            
+
             //Check if pin has been watched before
             var imagePin = (pin.Uid in _clickedMarkers)? watchedPin : defaultPin;
             if(pin.Uid == _currentStream) imagePin = watchingPin;
@@ -340,7 +340,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             //Handles pin clustering
             _markerCluster.addMarker(_markers[pin.Uid]);
             //This handles the spidifying of hte pins
-            _oms.addMarker(_markers[pin.Uid]);  
+            _oms.addMarker(_markers[pin.Uid]);
 
             pin.onClick.register(function(){
                 _this.onPinClick.apply(pin);
@@ -383,6 +383,15 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             delete _markers[pin.Uid];
         }
 
+        this.isInitialized = function()
+        {
+            return (typeof(google) !== 'undefined'
+                    && typeof(google.maps) !== 'undefined'
+                    && typeof(_map) !== 'undefined'
+                    && typeof(_map.getBounds()) !== 'undefined'
+                    && _map.getBounds() !== null);
+        }
+
         var constructor = function(elem)
         {
             if (elem instanceof jQuery) {
@@ -392,7 +401,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             // read pins from storage
             if (Storage.has('markersClicked')) {
                 _clickedMarkers = Storage.read('markersClicked');
-            } 
+            }
 
             _elem = elem;
 
