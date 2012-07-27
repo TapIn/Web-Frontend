@@ -23,7 +23,11 @@ define([], function(){
             if (typeof(localStorage) === 'undefined') {
                 value = read_cookie(key);
             } else {
-                value = localStorage[key];
+                try {
+                    value = localStorage[key];
+                } catch (err) {
+                    value = undefined; // ie8 fix
+                }
             }
 
             if (typeof(value) === 'undefined' || value === null)
@@ -41,6 +45,10 @@ define([], function(){
 
         this.erase = function(key)
         {
+            if (!_this.has(key)) {
+                return;
+            }
+
             if (typeof(localStorage) === 'undefined') {
                 erase_cookie(name);
             } else {

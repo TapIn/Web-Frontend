@@ -16,7 +16,9 @@ require.config({
             deps: ['documentcloud/underscore', 'jquery'],
             exports: 'Backbone'
         }
-    }
+    },
+    // Prevent caching (this should probably be disabled in production!)
+    urlArgs: 'noCache=' + Math.round((new Date()).getTime() / (1000 * 120)) // Change 60 to the number of seconds the cache should be valid
 });
 
 // Initializes the app

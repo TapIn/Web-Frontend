@@ -592,6 +592,53 @@ body {
     margin-bottom: 5px;
 }
 
+#welcome-container {
+    position: absolute;
+    left: 545px;
+    right: 0;
+    top: 40px;
+    z-index: 1000;
+}
+
+#welcome {
+    width: 400px;
+    height: 200px;
+    margin: 0 auto;
+    background: url(../img/welcomepin.png);
+}
+
+#welcome #text {
+    font: 20px normal "helvetica", sans-serif;
+    width: 320px;
+    text-align: center;
+    padding: 20px 40px;
+    display: block;
+}
+
+#welcome #text small {
+    font-size: 10px;
+    display: block;
+    margin-top: 5px;
+}
+
+#welcome a{
+    font: 20px helvetica, sans-serif;
+    color: white;
+    position: relative;
+    top: -2px;
+    margin: 0;
+}
+
+#welcome a#register {
+    padding: 5px 67px 10px 40px;
+    left: 20px;
+}
+
+#welcome a#about-page {
+    padding: 5px 38px 10px 32px;
+    left: 17px;
+}
+
 #map {
     position: absolute;
     top: 40px;
@@ -749,7 +796,7 @@ body {
     position: absolute;
     bottom: 8px;
     right: 95px;
-    z-index: 100000;
+    z-index: 100;
 }
 
 #volume .bar {
