@@ -44,7 +44,7 @@ define([], function(){
             if (typeof(localStorage) === 'undefined') {
                 erase_cookie(name);
             } else {
-                delete localStorage[key];
+                localStorage.removeItem(key);
             }
         }
 

@@ -28,7 +28,7 @@ define(['tapin/config'], function(Config){
                 context = undefined;
             }
 
-            if (typeof(console) !== 'undefined') {
+            if (typeof(console) === 'object' && typeof(console.error) === 'function' && typeof(console.warn) === 'function' && typeof(console.log) === 'function' && typeof(console.debug) === 'function') {
                 var log_message = "[" + level + "] " + message;
                 if (loglevel >= 4) {
                     console.error(log_message, context);

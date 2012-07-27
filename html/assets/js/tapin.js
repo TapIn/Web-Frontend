@@ -2,7 +2,7 @@
 require.config({
     paths: {
         // flowplayer should reference the latest version we have loaded
-        'flowplayer': 'flowplayer/flowplayer-3.2.10.min',
+        'flowplayer': 'flowplayer/flowplayer-3.2.10.min'
     },
     // Shim the following apps so we can use them in local scope
     shim: {
@@ -15,10 +15,8 @@ require.config({
         'documentcloud/backbone': {
             deps: ['documentcloud/underscore', 'jquery'],
             exports: 'Backbone'
-        },
-    },
-    // Prevent caching (this should probably be disabled in production!)
-    urlArgs: 'noCache=' + (new Date()).getTime()
+        }
+    }
 });
 
 // Initializes the app

@@ -383,6 +383,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             delete _markers[pin.Uid];
         }
 
+        var isInitialized = function()
+        {
+            return (typeof(google) !== 'undefined' && typeof(google.maps) !== 'undefined' && typeof(_map) !== 'undefined');
+        }
+
         var constructor = function(elem)
         {
             if (elem instanceof jQuery) {
@@ -392,7 +397,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             // read pins from storage
             if (Storage.has('markersClicked')) {
                 _clickedMarkers = Storage.read('markersClicked');
-            } 
+            }
 
             _elem = elem;
 
