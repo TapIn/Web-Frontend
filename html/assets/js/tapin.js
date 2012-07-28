@@ -37,6 +37,7 @@ define([
        'bootstrap/bootstrap.min',
        'mousetrap/mousetrap',
        'smore/clippy',
+       'douglascrockford/json2', // For IE7
 
        // Loading these classes loads the routers automatically, due to the
        // stupid way Backbone handles routers in the window scope.
