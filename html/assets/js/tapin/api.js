@@ -232,11 +232,20 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
             success: function(data) {
                 lambda(data);
             },
-            error: function(s, error) {
-                error_lambda(error);
-                _staticApi.onApiError.apply(error);
+            error: function(s, error, thrown) {
+                error_lambda(error + ": " + thrown);
+                _staticApi.onApiError.apply(error + ": " + thrown);
             }
         };
+
+        // If we're using IE < 10 we need to use JSONP because they don't support CORS headers
+        // JSONP leaks memory, though, so it's not very optimal
+        if (navigator.appVersion.indexOf("MSIE") != -1) {
+            Log('debug', 'IE < 10 detected, using jsonp like an idiot');
+            conf['dataType'] = 'jsonp';
+        } else {
+            conf['dataType'] = 'json';
+        }
 
         var xhttp = JQuery.ajax(conf);
 

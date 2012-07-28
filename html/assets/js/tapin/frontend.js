@@ -104,8 +104,8 @@ define([
                 _this.videoGallery.commitUpdate();
 
                 _this.mainMap.Pins.replace(new_pins);
-            }, function(){
-                Log('warn', 'Could not update the map');
+            }, function(err){
+                Log('warn', 'Could not update the map', err);
             })
         }
 
@@ -323,7 +323,6 @@ define([
 
             // Vu frontend stuff
             $(document).ready(function() {
-
                 $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
