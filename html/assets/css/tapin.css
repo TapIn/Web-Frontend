@@ -615,6 +615,14 @@ body {
     display: block;
 }
 
+#upvote, #downvote, #volume {
+    display: none;
+}
+
+#controls #upvote, #controls #downvote, #controls #volume {
+    display: inline;
+}
+
 #welcome #text small {
     font-size: 10px;
     display: block;
