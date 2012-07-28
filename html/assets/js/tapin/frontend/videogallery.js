@@ -40,7 +40,7 @@ define(['jquery', 'tapin/util/log', 'tapin/util', 'tapin/util/async'], function(
 
                 var groupHtml = '<div class="item' + active + '">';
                 for (var j in groups[i]) {
-                    var url = 'http://thumbs.tapin.tv/' + groups[i][j] + '/144x107/latest.jpg?noCache=' + Util.randomString(30);
+                    var url = 'http://thumbs.tapin.tv/' + groups[i][j] + '/144x108/latest.jpg?noCache=' + Util.randomString(30);
                     var itemHtml = '<a href="#video/' + groups[i][j] + '/now"><img src="' + url + '" /></a>'
                     groupHtml += itemHtml;
                 }
