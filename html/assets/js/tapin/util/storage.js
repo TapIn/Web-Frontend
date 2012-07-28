@@ -1,11 +1,12 @@
 define([], function(){
+    // I just want to point this out. In IE8, typeof(localStorage) = 'unknown'. WTF?
     return new (function(){
         var _this = this;
         this.save = function(key, value)
         {
             value = JSON.stringify(value);
 
-            if (typeof(localStorage) === 'undefined') {
+            if (typeof(localStorage) !== 'object') {
                 write_cookie(key, value, 90);
             } else {
                 localStorage[key] = value;
@@ -20,10 +21,14 @@ define([], function(){
 
         this.read = function(key)
         {
-            if (typeof(localStorage) === 'undefined') {
+            if (typeof(localStorage) !== 'object') {
                 value = read_cookie(key);
             } else {
-                value = localStorage[key];
+                try {
+                    value = localStorage[key];
+                } catch (err) {
+                    value = undefined; // ie8 fix
+                }
             }
 
             if (typeof(value) === 'undefined' || value === null)
@@ -41,16 +46,20 @@ define([], function(){
 
         this.erase = function(key)
         {
-            if (typeof(localStorage) === 'undefined') {
+            if (!_this.has(key)) {
+                return;
+            }
+
+            if (typeof(localStorage) !== 'object') {
                 erase_cookie(name);
             } else {
-                delete localStorage[key];
+                localStorage.removeItem(key);
             }
         }
 
         var erase_cookie = function(name)
         {
-            createCookie(name,"",-1);
+            write_cookie(name,"",-1);
         }
 
         var write_cookie = function(name, value, days)

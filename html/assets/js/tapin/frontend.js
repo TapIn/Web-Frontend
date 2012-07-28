@@ -47,6 +47,10 @@ define([
         var showLoaderRef;
         this.updateMap = function()
         {
+            if (!_this.mainMap.isInitialized()) {
+                return;
+            }
+
             var bounds = _this.mainMap.getBounds();
 
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
@@ -100,8 +104,8 @@ define([
                 _this.videoGallery.commitUpdate();
 
                 _this.mainMap.Pins.replace(new_pins);
-            }, function(){
-                Log('warn', 'Could not update the map');
+            }, function(err){
+                Log('warn', 'Could not update the map', err);
             })
         }
 
@@ -266,6 +270,9 @@ define([
 
                 // Hide register button
                 $('a#register').addClass('hidden');
+
+                // Hide the welcome pintop
+                $('#welcome').addClass('hidden');
             });
 
             _this.onLogout.register(function(){
@@ -284,6 +291,9 @@ define([
 
                 // Show register button
                 $('a#register').removeClass('hidden');
+
+                // Show welcome pintop
+                $('#welcome').removeClass('hidden');
             });
 
             $('a#signout').click(function(){
@@ -313,7 +323,6 @@ define([
 
             // Vu frontend stuff
             $(document).ready(function() {
-
                 $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
