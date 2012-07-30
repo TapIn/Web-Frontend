@@ -10,7 +10,8 @@
         <h1 class='well'>{{getName}}'s Streams</h1>
     </div>
 </div>
+<div id='stream-container'>
 {{#each streams}}
-<li><a href='http://tapin.tv/#video/{{this.0.}}/now'>{{this.0.}} ({{this.1.points}} pts)</a></li>
-
+<div class='stream-preview'><a  href='http://tapin.tv/#video/{{this.0.}}/now'><img src='http://thumbs.tapin.tv/{{this.0.}}/144x108/latest.jpg'/></a></div>
 {{/each}}
+</div>

@@ -148,7 +148,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         {
 
             player_div = JQuery('<div id="player"></div>');
-            $('#currently-playing').after(player_div)
+            $('#video-meta').after(player_div)
             // init_player(null);
 
         }
