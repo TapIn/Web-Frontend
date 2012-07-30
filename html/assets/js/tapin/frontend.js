@@ -427,9 +427,8 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
-
                         $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
-                        if(typeof(data.user)!== 'undefined')
+                        if(data.user!== '')
                         {
                             $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
                         }
