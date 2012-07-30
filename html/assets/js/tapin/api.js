@@ -87,9 +87,9 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
          * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
          * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
          */
-        this.get_object_by_secondary_key = function(obj, secondary, key, lambda, error_lambda)
+        this.get_object_by_secondary_key = function(obj, secondary, key, lambda, error_lambda, params)
         {
-            _staticApi.get_object_by_secondary_key(obj, secondary, key, lambda, error_lambda);
+            _staticApi.get_object_by_secondary_key(obj, secondary, key, lambda, error_lambda, params);
         }
 
         /**
@@ -341,10 +341,8 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
      * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
      * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
      */
-    _staticApi.get_object_by_secondary_key = function(obj, secondary, key, lambda, error_lambda)
+    _staticApi.get_object_by_secondary_key = function(obj, secondary, key, lambda, error_lambda, params)
     {
-         var params = null
-
         _staticApi.call(('get/' + obj + "by" + secondary + "/" + key), params, function(data){
             Log('debug', 'response data:', data);
             lambda(data);

@@ -864,10 +864,21 @@ body {
     background: #F0F0F0;
 }
 
-
-
-
 #volume .bar-0.active, #volume .bar-0:hover {
     background: url('../img/volume.png');
     background-position: 0px;
+}
+
+#stream-container {
+    height: 495px;
+    overflow: auto;
+}
+
+#stream-container a  {
+    cursor: pointer;
+}
+
+.stream-preview {
+    float:left;
+    padding: 4px;
 }

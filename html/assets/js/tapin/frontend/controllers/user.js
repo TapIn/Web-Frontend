@@ -57,7 +57,7 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
                         u.streams = userdata;
                         Frontend.userModal.show(html, u);
 
-                    }, true);
+                    }, true, 'sortby=streamend');
                 },
                 error: function(s, err) {
                     Log('error', "Couldn't get user page template, retrying!");
