@@ -428,8 +428,15 @@ define([
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
 
-                        $('#video-meta #date').text('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamstart * 1000)));
-                        $('#video-meta #user').text('by  ' + (typeof(data.user) !== 'undefined' ? data.user : 'anonymous'));
+                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(typeof(data.user)!== 'undefined')
+                        {
+                            $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
+                        }
+                        else {
+                            $('#video-meta #user').html("by anonymous");
+                        }
+
 
                         var connectionCount = data.streamconnectioncount;
                         if (typeof(connectionCount) === 'undefined' || connectionCount === null) {

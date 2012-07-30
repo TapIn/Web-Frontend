@@ -747,6 +747,26 @@ body {
 
 }
 
+.user-profile #header {
+    margin-top: -12px;
+    float:left;
+}
+
+#under-bar li{
+    list-style: none;
+    float:left;
+    padding-right: 6px;
+}
+
+#under-bar {
+    margin-top: -8px;
+    left: 10px;
+}
+
+#followers {
+    margin-left: 8px;
+}
+
 .level {
     position: absolute;
     top: 10px;
@@ -858,6 +878,32 @@ body {
     background: #7d7d7d;
     margin: 0 4px 7px 0;
 
+}
+
+.user-profile #user-icon {
+    width: 50px;
+    height: 50px;
+    background: red;
+    float:left;
+    margin-left: -6px;
+    margin-right: 12px;
+    margin-top: -6px;
+}
+
+
+#under-bar b{
+    color: #555;
+    font-size: 17px;
+}
+
+.light {
+    color: #888;
+    font-size: 15px;
+
+}
+
+#video-meta {
+        font-size: 13px;
 }
 
 #volume .bar.active, #volume .bar:hover {
