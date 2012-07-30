@@ -86,7 +86,6 @@
             <span id="text">
                 TapIn is the easiest way to go from seeing to sharing. </br>
                 <span id='tip'>Click a pin on the map to watch a video.</span>
-                  
             </span>
              <a href="assets/static/register.html" id="register"><input class="btn btn-danger btn-large" type="button" value="Join TapIn" style='margin-top: 5px; font-weight: 700' href='http://www.google.com'></a>
              <a href="assets/static/about.html" id="about-page"><input class="btn btn-large" type="button" value="Get the app" style='margin-top: 5px; font-weight: 700'></a>
@@ -99,11 +98,17 @@
 
     <div id="sidebar">        
         <h2 id='currently-playing'>Currently Playing</h2>
-        <div id='video-meta'>
-            <div class='user-icon'></div>
-            <div id='date'>Recorded on 6/12/2012</div>
-            <div id='user'>by</div> 
+        <div id="video-share" class="hidden">
+            <a class="share fb" href="#"><img src="assets/img/share-fb.png" alt="Share on Facebook!" /></a>
+            <a class="share twitter" href="#"><img src="assets/img/share-twitter.png" alt="Share on Facebook!" /></a>
         </div>
+        <div id="video-meta" class="hidden">
+            <div class='user-icon'></div>
+            <div id='date'>Recorded</div>
+            <div id='user'>by</div>
+        </div>
+        <div id="player-container"></div>
+
         <div id="controls" class="controls"><div id="controls-flow"></div><div id='points'></div></div>
         <div id='upvote'></div><div id='downvote'></div>
         <div id="volume"></div>
@@ -160,10 +165,11 @@
 
     <!-- PIN CLUSTERING -->
     <script type="text/javascript" src="assets/js/spiderfier.js"></script>
-    <script type="text/javascript" src="assets/js/markercluster.js">
+    <script type="text/javascript" src="assets/js/markercluster.js"></script>
 
+    <script src='http://connect.facebook.net/en_US/all.js'></script>
 
-    <script type="text/javascript">try{Typekit.load();}catch(e){}olark('api.box.hide');</script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <script data-main="assets/js/tapin" src="assets/js/require-jquery.js" defer="defer"></script>
     <script type="text/javascript">
         var _qevents = _qevents || [];

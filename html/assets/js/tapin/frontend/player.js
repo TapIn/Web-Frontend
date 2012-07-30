@@ -146,9 +146,8 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
 
         var constructor = function(div)
         {
-
             player_div = JQuery('<div id="player"></div>');
-            $('#video-meta').after(player_div)
+            $('#player-container').html(player_div)
             // init_player(null);
 
         }
