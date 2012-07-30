@@ -14,10 +14,22 @@
     border: 0;
 }
 
+.clearfix {
+    clear: both;
+    visibility: hidden;
+}
+
 #see-videos {
     float:right;
 }
+#video-meta {
+    margin-bottom: 9px;
+    width: 400px;
+}
 
+#video-share {
+    float: right;
+}
  #date-range {
         position:relative;
         margin-top: 6px;
@@ -417,7 +429,8 @@ body {
     -moz-box-shadow:  0px 2px 4px #000;
     -webkit-box-shadow: 0px 2px 4px #000;
     box-shadow:  0px 2px 4px #000;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #sidebar h2 {

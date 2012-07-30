@@ -425,6 +425,12 @@ define([
                             points = 0;
                         }
 
+                        $('#video-meta').removeClass('hidden');
+                        $('#video-share').removeClass('hidden');
+
+                        $('#video-meta #date').text('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamstart * 1000)));
+                        $('#video-meta #user').text('by  ' + (typeof(data.user) !== 'undefined' ? data.user : 'anonymous'));
+
                         var connectionCount = data.streamconnectioncount;
                         if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
                             connectionCount = 0;
@@ -453,6 +459,28 @@ define([
                       }
                       return false;
                     });
+
+                    FB.init({appId: "468946679791837", status: true, cookie: true});
+
+                    $('.share.fb').live('click', function(event){
+                        event.stopPropagation();
+                        var obj = {
+                          method: 'feed',
+                          link: 'http://s.tapin.tv/fb/' + current_stream_id
+                        };
+
+                        FB.ui(obj);
+                        return false;
+                    });
+
+                    $('.share.twitter').live('click', function(event){
+                        event.stopPropagation();
+
+                        var url = 'https://twitter.com/share?text=Check%20out%20this%20stream!&url=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+                        newwindow=window.open(url,'','height=260,width=700');
+                        if (window.focus) {newwindow.focus()}
+                        return false;
+                    })
 
                     $('#changepassform').live('submit', function(){
                         if ($('#oldpass').val() && $('#newpass').val() && $('#newpass2').val()) {
