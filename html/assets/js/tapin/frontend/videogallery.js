@@ -53,7 +53,6 @@ define(['jquery', 'tapin/util/log', 'tapin/util', 'tapin/util/async'], function(
             _elem.after(temp);
             temp.css('position', 'absolute');
             temp.css('background', $('#sidebar').css('background'));
-            temp.offset(_elem.offset());
 
             _elem.html(html);
 

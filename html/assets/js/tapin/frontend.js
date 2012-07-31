@@ -128,7 +128,7 @@ define([
             if (typeof(lambda_error) === 'undefined') {
                 lambda_error = function(){};
             }
-
+ 
             Api.login(username, password, function(data) {
                 if ('error' in data) {
                     Log('info', 'Could not log in: ' + data.error);
@@ -427,9 +427,15 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
+                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(data.user!== '')
+                        {
+                            $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
+                        }
+                        else {
+                            $('#video-meta #user').html("by anonymous");
+                        }
 
-                        $('#video-meta #date').text('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamstart * 1000)));
-                        $('#video-meta #user').text('by  ' + (typeof(data.user) !== 'undefined' ? data.user : 'anonymous'));
 
                         var connectionCount = data.streamconnectioncount;
                         if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
@@ -534,22 +540,24 @@ define([
 
                     $('#registerform').live('submit', function(event){
                         event.stopPropagation();
-                        Api.register($('#registerform #username').val(), $('#registerform #password').val(), function(data){
-                            if (data.error)
-                            {
-                                alert(data.error);
-                                $("#registerform #register").removeAttr('disabled');
-                            } else {
-                                Storage.save('token', data.token);
-                                Storage.save('username', $('#registerform #username').val());
-                                _this.tokenLogin($('#registerform #username').val(), data.token);
-                                JQuery('#fancybox-close').click();
-                                JQuery('#dropdown-text').unbind('click.fb');
-                            }
-                        }, function(err){
-                            alert(err);
-                                $("#registerform #register").removeAttr('disabled');
-                        });
+                        if($('#registerform #email').val() == '') alert('Must enter a valid email');
+                        else {
+                            Api.register($('#registerform #username').val(), $('#registerform #password').val(), $('#registerform #email').val(), function(data){
+                                if (data.error)
+                                {
+                                    alert(data.error);
+                                    $("#registerform #register").removeAttr('disabled');
+                                } else {
+                                    Storage.save('token', data.token);
+                                    Storage.save('username', $('#registerform #username').val());
+                                    _this.tokenLogin($('#registerform #username').val(), data.token);
+                                    JQuery('#fancybox-close').click();
+                                    JQuery('#dropdown-text').unbind('click.fb');
+                                }
+                            }, function(err){
+                                alert(err);
+                                    $("#registerform #register").removeAttr('disabled');
+                            });}
                         $("#registerform #register").attr('disabled', 'true');
                         return false;
                     })

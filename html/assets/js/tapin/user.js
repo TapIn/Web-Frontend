@@ -22,6 +22,8 @@ define([], function(){
         this.last = null;
         this.next = null;
         this.points = null;
+        this.followers = null;
+        this.following = null;
 
         /**
          * Returns the display name of the user

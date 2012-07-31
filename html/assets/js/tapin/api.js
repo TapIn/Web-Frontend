@@ -158,6 +158,31 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
             _this.call('neutralvote/stream/' + stream_id, {}, lambda, error_lambda);
         }
 
+
+        /**
+         * Follows a user
+         * @param  {string}             username     Username of person to follow
+         * @param  {function()}         lambda       Function to execute on success
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.follow = function(username, lambda, error_lambda)
+        {
+            Log('info', 'Following ' + username);
+            _this.call('follow?username='+username +'&token=' + token, {}, lambda, error_lambda);
+        }
+
+        /**
+         * Unfollows a user
+         * @param  {string}             username     Username of person to unfollow
+         * @param  {function()}         lambda       Function to execute on success
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.unfollow = function(username, lambda, error_lambda)
+        {
+            Log('info', 'Unfollowing ' + username);
+            _this.call('unfollow?username='+username +'&token=' + token, {}, lambda, error_lambda);
+        }
+
         /**
          * Gets the stream vote
          * @param  {string}             username     The username to get the vote for
@@ -304,9 +329,9 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
      * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
      * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
      */
-    _staticApi.register = function(username, password, lambda, error_lambda)
+    _staticApi.register = function(username, password, email, lambda, error_lambda)
     {
-         var params = 'username=' + username + '&password=' + password
+         var params = 'username=' + username + '&password=' + password + '&email=' + email
 
          //This will return a token
         _staticApi.call('register', params, function(data){
