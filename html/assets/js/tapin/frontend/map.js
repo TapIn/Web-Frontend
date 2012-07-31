@@ -492,8 +492,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             _this.onZoom.register(function(){
                 Log('info', 'Zooming map to ' + _this.getZoom());
-                mixpanel.track('zoom');
-                mixpanel.track('zoom_' + _this.getZoom());
+                mixpanel.track('zoom', {level: _this.getZoom()});
             });
 
             // TODO: We can't specify a max bounds in the map control, but it's annoying to have the map pan off the screen.
