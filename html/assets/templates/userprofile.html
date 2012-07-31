@@ -1,3 +1,23 @@
+  <script>
+    var user = window.fe.user.username;
+    if(user !=undefined){
+    if('{{getName}}' == user) {
+    }
+    else { 
+      var followers = '{{followers}}';
+      var followersArr = followers.split(',');
+      if ($.inArray(user, followersArr)==0){
+        var btn = $('<li><input class="btn" onClick="" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
+      }
+      else {
+        var btn = $('<li><input class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
+     }
+      $('#under-bar').prepend(btn);
+
+    }
+  }
+    </script>
+
 {{#if background}}
     <style type="text/css">
         #user-modal {
@@ -7,10 +27,20 @@
 {{/if}}
 <div class="user-profile">
     <div class="headline">
-        <div class='well'><h1>{{getName}} ({{points}} pts)</h1>
-        <a href='#stream/{{getName}}'>View  {{getName}}'s streams</a>
+        <div class='well' style='height: 45px'>
+          <div id='user-icon'>
+          </div>
+
+        <div id='header' style='display:block'> <h1>{{getName}} ({{points}} pts)</h1>  <a href='#stream/{{getName}}'>View  {{getName}}'s streams</a>
+
+    </div>
+
       </div>
     </div>
+</div>
+<div id='under-bar'>
+  <li><div id='followers'><b>{{followers.length}}</b><span class='light'> followers | </span></div></li>
+  <li id='afterthis'><div id='following'><b>{{following.length}}</b><span class='light'> following</span></div></li>
 </div>
 
 <!-- Level up bar! -->
@@ -21,6 +51,7 @@
     </div>
     <span class="previous">{{title}}</span><span class="next">{{nexttitle}}</span>
 </div>
+</br></br>
 <h3 style="margin-left: 3px">Ribbon Case</h3>
 <div id="badge-case" class='well'>
     <div class="badge"><img src='assets/img/badges/b-02.png'></div>
@@ -117,3 +148,4 @@
           <h4>Tech Talk</h4>
           <p>Stream a technical presentation.</p>
     </div>
+

@@ -148,8 +148,17 @@ define([
 
         this.tokenLogin = function(username, token) {
             // STOP PUTTING STUFF HERE!!!
+            mixpanel.identify(username);
             _this.api = new Api(token);
             _this.api.get_object_by_key('user', username, function(userdata) {
+
+                var mpu = userdata;
+                mpu['$email'] = userdata['email'];
+                mpu['$created'] = userdata['created'];
+                mpu['$last_login'] = new Date();
+                mixpanel.register(mpu);
+                window.d = mpu;
+
                 userdata.username = username;
                 _this.user = new User(userdata);
                 _this.onLogin.apply();
@@ -163,7 +172,6 @@ define([
             Storage.erase('token');
             Storage.erase('username');
             _this.onLogout.apply();
-            // $('#dropdown-text').removeAttr('data-toggle'); need to get this to work
         }
 
         this.showVideo = function(stream_id)
@@ -231,19 +239,22 @@ define([
             // Clippy
             Async.later(500, function(){
                 if (typeof(Mousetrap) !== 'undefined') {
-                    Mousetrap.bind('up up down down left right left right b a enter', function(){
-                        var agents = ['Clippy', 'Links', 'Bonzi'];
-                        var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
-                        clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
-                        clippy.load(selected_agent, function(agent){
-                            agent.show();
-                            agent.gestureAt(0,0);
-                            agent.speak("You look like you're trying to watch a video. Would you like some help?");
-                            Async.every(20000, function(){
-                                agent.animate();
+                    try {
+                        Mousetrap.bind('up up down down left right left right b a enter', function(){
+                            var agents = ['Clippy', 'Links', 'Bonzi'];
+                            var selected_agent = agents[Math.round(Util.random(0, agents.length - 1))];
+                            clippy.BASE_PATH = 'http://static.tapin.tv/agents/'
+                            clippy.load(selected_agent, function(agent){
+                                agent.show();
+                                agent.gestureAt(0,0);
+                                agent.speak("You look like you're trying to watch a video. Would you like some help?");
+                                Async.every(20000, function(){
+                                    agent.animate();
+                                });
+                                mixpanel.track('easteregg_clippit', {agent: selected_agent});
                             });
                         });
-                    });
+                    } catch (err) {}
                 }
             });
 
@@ -313,12 +324,17 @@ define([
                 var comment = $('#comment-form').val();
 
                 _this.api.post_comment_to_streamid(current_stream_id, comment, function(data) {
+                    mixpanel.track('commented');
                     Log('info', 'Comment posted!');
                     $("#comment-form").val('');
                     Async.later(250, function(){
                         _this.comments.updateCommentsFor(current_stream_id);
                     });
                 });
+            });
+
+            $("#welcome a").click(function(){
+                mixpanel.track('call_to_action_click');
             });
 
             // Vu frontend stuff
@@ -427,9 +443,15 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
+                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(data.user!== '')
+                        {
+                            $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
+                        }
+                        else {
+                            $('#video-meta #user').html("by anonymous");
+                        }
 
-                        $('#video-meta #date').text('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamstart * 1000)));
-                        $('#video-meta #user').text('by  ' + (typeof(data.user) !== 'undefined' ? data.user : 'anonymous'));
 
                         var connectionCount = data.streamconnectioncount;
                         if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
@@ -489,6 +511,7 @@ define([
                                     if (data.error) {
                                         alert(data.error);
                                     } else {
+                                        mixpanel.track('password_change');
                                         $('#fancybox-close').click();
                                     }
                                 }, function(err){
@@ -522,6 +545,7 @@ define([
                     $('#loginform').live('submit', function(event) {
                         event.stopPropagation();
                         var ret = window.fe.login($('#loginform #username').val(), $('#loginform #password').val(), function(){
+                            mixpanel.track('login');
                             window.fe.modal.hide();
                             $("#loginform #login").attr('disabled', '');
                         }, function(err){
@@ -534,22 +558,25 @@ define([
 
                     $('#registerform').live('submit', function(event){
                         event.stopPropagation();
-                        Api.register($('#registerform #username').val(), $('#registerform #password').val(), function(data){
-                            if (data.error)
-                            {
-                                alert(data.error);
-                                $("#registerform #register").removeAttr('disabled');
-                            } else {
-                                Storage.save('token', data.token);
-                                Storage.save('username', $('#registerform #username').val());
-                                _this.tokenLogin($('#registerform #username').val(), data.token);
-                                JQuery('#fancybox-close').click();
-                                JQuery('#dropdown-text').unbind('click.fb');
-                            }
-                        }, function(err){
-                            alert(err);
-                                $("#registerform #register").removeAttr('disabled');
-                        });
+                        if($('#registerform #email').val() == '') alert('Must enter a valid email');
+                        else {
+                            Api.register($('#registerform #username').val(), $('#registerform #password').val(), $('#registerform #email').val(), function(data){
+                                if (data.error)
+                                {
+                                    alert(data.error);
+                                    $("#registerform #register").removeAttr('disabled');
+                                } else {
+                                    mixpanel.track('register');
+                                    Storage.save('token', data.token);
+                                    Storage.save('username', $('#registerform #username').val());
+                                    _this.tokenLogin($('#registerform #username').val(), data.token);
+                                    JQuery('#fancybox-close').click();
+                                    JQuery('#dropdown-text').unbind('click.fb');
+                                }
+                            }, function(err){
+                                alert(err);
+                                    $("#registerform #register").removeAttr('disabled');
+                            });}
                         $("#registerform #register").attr('disabled', 'true');
                         return false;
                     })

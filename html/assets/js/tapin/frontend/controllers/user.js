@@ -30,6 +30,9 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
                         Log('info', 'Showing user modal for ' + username);
                         userdata.username = username;
                         var u = new User(userdata);
+                        (u.followers == undefined) ? u.followers = '' : u.followers.splice(0,1);
+                        (u.following == undefined) ? u.following = '' : u.following.splice(0,1);
+
                         Frontend.userModal.show(html, u);
 
                     }, true);

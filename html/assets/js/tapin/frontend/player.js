@@ -15,7 +15,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         this.playLive = function(server, stream_id)
         {
             Log('debug', 'Playing live');
-            mixpanel.track('play-live');
+            mixpanel.track('play', {type: 'live'});
             init_player({
                 provider: 'rtmp',
                 netConnectionUrl: 'rtmp://' + server + '/live/' + stream_id,
@@ -32,7 +32,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         this.playRecordedLive = function(stream_id)
         {
             Log('debug', 'Playing recorded');
-            mixpanel.track('play-recorded');
+            mixpanel.track('play', {type: 'recorded'});
             init_player({
                 provider: 'rtmp',
                 netConnectionUrl: 'rtmp://recorded.stream.tapin.tv/cfx/st/',
@@ -116,7 +116,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                         _this.playRecordedLive(clip.streamId);
                     } else {
                         player_div.html('<img src="assets/img/viderror.png" />');
-                        mixpanel.track('play-broken-stream');
+                        mixpanel.track('broken-stream');
                     }
                 },
                 onEnded: null,

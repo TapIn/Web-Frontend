@@ -24,8 +24,8 @@ define([], function(){
     };
 
     // Auto-enable debug settings if we're not on the main server
-    if (DEBUG) {
-        config['mixpanel']['key'] = 'ad2c04ad65bc38f15c4bfd34a6732da6';
+    if (window.location.hostname != 'www.tapin.tv') {
+        config['mixpanel']['key'] = '5bfe1c62a7f8e210b91880574bf71f80';
         config['logs']['level'] = 'debug';
         config['logs']['send'] = false;
     }
