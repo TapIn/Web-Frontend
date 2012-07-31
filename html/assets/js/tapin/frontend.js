@@ -149,6 +149,7 @@ define([
         this.tokenLogin = function(username, token) {
             // STOP PUTTING STUFF HERE!!!
             mixpanel.identify(username);
+            mixpanel.name_tag(username);
             _this.api = new Api(token);
             _this.api.get_object_by_key('user', username, function(userdata) {
 
@@ -156,8 +157,7 @@ define([
                 mpu['$email'] = userdata['email'];
                 mpu['$created'] = userdata['created'];
                 mpu['$last_login'] = new Date();
-                mixpanel.register(mpu);
-                window.d = mpu;
+                mixpanel.people.set(mpu);
 
                 userdata.username = username;
                 _this.user = new User(userdata);
@@ -491,7 +491,12 @@ define([
                           link: 'http://s.tapin.tv/fb/' + current_stream_id
                         };
 
-                        FB.ui(obj);
+                        var onFeedStoryPublished = function()
+                        {
+                            mixpanel.track('fb_published');
+                        }
+
+                        FB.ui(obj, onFeedStoryPublished);
                         return false;
                     });
 
