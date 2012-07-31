@@ -158,6 +158,31 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
             _this.call('neutralvote/stream/' + stream_id, {}, lambda, error_lambda);
         }
 
+
+        /**
+         * Follows a user
+         * @param  {string}             username     Username of person to follow
+         * @param  {function()}         lambda       Function to execute on success
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.follow = function(username, lambda, error_lambda)
+        {
+            Log('info', 'Following ' + username);
+            _this.call('follow?username='+username +'&token=' + token, {}, lambda, error_lambda);
+        }
+
+        /**
+         * Unfollows a user
+         * @param  {string}             username     Username of person to unfollow
+         * @param  {function()}         lambda       Function to execute on success
+         * @param  {function(string)}   error_lambda Function to execute on failure, taking error code
+         */
+        this.unfollow = function(username, lambda, error_lambda)
+        {
+            Log('info', 'Unfollowing ' + username);
+            _this.call('unfollow?username='+username +'&token=' + token, {}, lambda, error_lambda);
+        }
+
         /**
          * Gets the stream vote
          * @param  {string}             username     The username to get the vote for

@@ -4,13 +4,16 @@
     if('{{getName}}' == user) {
     }
     else { 
-      if ($.inArray(user, '{{followers}}')){
-        var btn = $('<li><input class="btn" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
+      var followers = '{{followers}}';
+      var followersArr = followers.split(',');
+      if ($.inArray(user, followersArr)==0){
+        var btn = $('<li><input class="btn" onClick="" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
       }
       else {
         var btn = $('<li><input class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
      }
       $('#under-bar').prepend(btn);
+
     }
   }
     </script>
