@@ -7,10 +7,10 @@
       var followers = '{{followers}}';
       var followersArr = followers.split(',');
       if ($.inArray(user, followersArr)==0){
-        var btn = $('<li><input class="btn" onClick="" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
+        var btn = $('<li id="unfollow-container"><input id="unfollow-button" class="btn" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
       }
       else {
-        var btn = $('<li><input class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
+        var btn = $('<li id="follow-container"><input id="follow-button" class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
      }
       $('#under-bar').prepend(btn);
 
@@ -25,6 +25,7 @@
         }
     </style>
 {{/if}}
+<div id='username-profile' class='hidden'>{{getName}}</div>
 <div class="user-profile">
     <div class="headline">
         <div class='well' style='height: 45px'>
@@ -39,8 +40,8 @@
     </div>
 </div>
 <div id='under-bar'>
-  <li><div id='followers'><b>{{followers.length}}</b><span class='light'> followers | </span></div></li>
-  <li id='afterthis'><div id='following'><b>{{following.length}}</b><span class='light'> following</span></div></li>
+  <li><div id='followers'><b id='followercount'>{{followers.length}}</b><span class='light'> followers | </span></div></li>
+  <li id='afterthis'><div id='following'><b id='followingcount'>{{following.length}}</b><span class='light'> following</span></div></li>
 </div>
 
 <!-- Level up bar! -->
