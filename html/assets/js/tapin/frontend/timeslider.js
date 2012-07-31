@@ -59,8 +59,7 @@ define(['jquery', 'tapin/util/event', 'tapin/util/log'], function(JQuery, Event,
 
             _this.onTimeChange.register(function(new_time){
                 Log('debug', 'Timescale was changed to last ' + new_time + ' seconds.');
-                mixpanel.track('timescale_' + new_time);
-                mixpanel.track('timescale_changed');
+                mixpanel.track('timescale', {selected: new_time});
             });
         }
         constructor(elem);
