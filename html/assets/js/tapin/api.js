@@ -329,9 +329,9 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
      * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
      * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
      */
-    _staticApi.register = function(username, password, lambda, error_lambda)
+    _staticApi.register = function(username, password, email, lambda, error_lambda)
     {
-         var params = 'username=' + username + '&password=' + password
+         var params = 'username=' + username + '&password=' + password + '&email=' + email
 
          //This will return a token
         _staticApi.call('register', params, function(data){

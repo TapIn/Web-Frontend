@@ -128,7 +128,7 @@ define([
             if (typeof(lambda_error) === 'undefined') {
                 lambda_error = function(){};
             }
-
+ 
             Api.login(username, password, function(data) {
                 if ('error' in data) {
                     Log('info', 'Could not log in: ' + data.error);
@@ -540,22 +540,24 @@ define([
 
                     $('#registerform').live('submit', function(event){
                         event.stopPropagation();
-                        Api.register($('#registerform #username').val(), $('#registerform #password').val(), function(data){
-                            if (data.error)
-                            {
-                                alert(data.error);
-                                $("#registerform #register").removeAttr('disabled');
-                            } else {
-                                Storage.save('token', data.token);
-                                Storage.save('username', $('#registerform #username').val());
-                                _this.tokenLogin($('#registerform #username').val(), data.token);
-                                JQuery('#fancybox-close').click();
-                                JQuery('#dropdown-text').unbind('click.fb');
-                            }
-                        }, function(err){
-                            alert(err);
-                                $("#registerform #register").removeAttr('disabled');
-                        });
+                        if($('#registerform #email').val() == '') alert('Must enter a valid email');
+                        else {
+                            Api.register($('#registerform #username').val(), $('#registerform #password').val(), $('#registerform #email').val(), function(data){
+                                if (data.error)
+                                {
+                                    alert(data.error);
+                                    $("#registerform #register").removeAttr('disabled');
+                                } else {
+                                    Storage.save('token', data.token);
+                                    Storage.save('username', $('#registerform #username').val());
+                                    _this.tokenLogin($('#registerform #username').val(), data.token);
+                                    JQuery('#fancybox-close').click();
+                                    JQuery('#dropdown-text').unbind('click.fb');
+                                }
+                            }, function(err){
+                                alert(err);
+                                    $("#registerform #register").removeAttr('disabled');
+                            });}
                         $("#registerform #register").attr('disabled', 'true');
                         return false;
                     })

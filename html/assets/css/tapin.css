@@ -29,6 +29,7 @@
 
 #video-share {
     float: right;
+    margin-right: -7px;
 }
  #date-range {
         position:relative;
@@ -110,6 +111,7 @@
     padding:5px 0 0;
     background-color:rgba(0,0,0,0.75);
     width: 500px;
+    margin-bottom: 6px;
 }
 
 /* when play button toggles between play/pause class
@@ -196,6 +198,10 @@
     margin-right: 3px;
     font-size: 12px;
 }
+#viewpoints {
+    margin-top: -13px;
+}
+
 
 #upvote.active {
     width:22px;
