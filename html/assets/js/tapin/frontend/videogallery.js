@@ -8,7 +8,7 @@ define(['jquery', 'tapin/util/log', 'tapin/util', 'tapin/util/async'], function(
         var lastUpdate;
         this.commitUpdate = function()
         {
-            if (typeof(lastUpdate) !== 'undefined' && ((new Date()).getTime() - lastUpdate.getTime()) / 1000 < 10) {
+            if (typeof(lastUpdate) !== 'undefined' && ((new Date()).getTime() - lastUpdate.getTime()) / 1000 < 2) {
                 Log('debug', 'Last thumb update was ' + ((new Date()).getTime() - lastUpdate.getTime()) / 1000 + ' seconds ago, skipping...');
                 _ids = [];
                 return;
@@ -53,6 +53,7 @@ define(['jquery', 'tapin/util/log', 'tapin/util', 'tapin/util/async'], function(
             _elem.after(temp);
             temp.css('position', 'absolute');
             temp.css('background', $('#sidebar').css('background'));
+            temp.offset(_elem.offset());
 
             _elem.html(html);
 
