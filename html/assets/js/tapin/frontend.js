@@ -601,7 +601,7 @@ define([
                 targetUser = $('#username-profile').html();
                 _this.api.unfollow(targetUser, function(){
                     $('#followercount').html(parseInt($('#followercount').html())-1);
-                    $('#unfollow-container').html('<input id="follow-button" class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" />');
+                    $('#follow-container').html('<input id="follow-button" class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" />');
                 });
             });
 
