@@ -54,7 +54,6 @@ define(['tapin/api', 'jquery', 'tapin/util/async'], function(Api, JQuery, Async)
                 var _data = {
                     comments: comments
                 };
-                console.log(comments);
                 if (data.length > 0)
                 {
                     var new_html = template(_data);
