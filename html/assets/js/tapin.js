@@ -47,10 +47,14 @@ define([
        'tapin/frontend/controllers/user'],
        function(JQuery, Backbone, Async)
 {
+    window.wasInternalNav = false;
     JQuery(document).ready(function(){
         // Start backbone
         Backbone.history.start();
+        window.wasInternalNav = true;
     });
     window['$'] = JQuery;
     window['jQuery'] = JQuery;
 })
+
+   

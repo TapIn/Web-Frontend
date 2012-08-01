@@ -41,7 +41,12 @@ define([
         this.onLogout = new Event();
         this.onStreamChange = new Event();
 
-        var current_stream_id = '';
+        try {
+            this.current_stream_id = window.location.href.split('#video/')[1].split('/')[0];
+        }
+        catch (e){
+            this.current_stream_id = '';
+        }
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -97,7 +102,7 @@ define([
                         _this.videoGallery.addVideo(i);
                     }
                     var coords = stream[stream.length - 1]['coord'];
-                    var pin = new Pin(coords[0], coords[1], i, {stream_id: i});
+                    var pin = new Pin(coords[0], coords[1], i, {stream_id: i, timestamp: stream[stream.length - 1]['timestamp']});
                     new_pins.addOrUpdatePin(pin);
                     c++;
                 }
@@ -189,7 +194,8 @@ define([
 
         var showVideoForPin = function(pin)
         {
-            window.location.hash = 'video/' + pin.Data.stream_id + '/now';
+            console.log(pin);
+            window.location.hash = 'video/' + pin.Data.stream_id + '/' + pin.Data.timestamp;
         }
 
         // Used for debugging
