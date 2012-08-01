@@ -52,7 +52,6 @@ define(['tapin/api', 'jquery', 'tapin/util/async'], function(Api, JQuery, Async)
                     comments.push(comment);
                 }
                 var _data = {
-                    user: _this.user,
                     comments: comments
                 };
                 if (data.length > 0)

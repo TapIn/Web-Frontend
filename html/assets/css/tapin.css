@@ -547,16 +547,20 @@ body {
 
 .carousel-inner {
     margin-bottom: -15px;
-}
-
-.video-preview-container {
     width: 95%;
     margin: 0 auto;
 }
 
-.video-preview img {
-    border: 1px solid black;
-    margin-left: 4px;
+.carousel-inner .item {
+    text-align: center;
+}
+
+.carousel-inner a {
+    margin-right: 10px;
+}
+
+.carousel-inner a img {
+    border: 1px solid #999 !important;
 }
 
 .badge-info h2 {
@@ -815,7 +819,6 @@ body {
 #hidden-data
 {
     width: 800px;
-    height: 600px;
 }
 
 #mixpanel-partner {

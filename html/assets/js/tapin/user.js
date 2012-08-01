@@ -24,6 +24,7 @@ define([], function(){
         this.points = null;
         this.followers = null;
         this.following = null;
+        this.emailhash = null;
 
         /**
          * Returns the display name of the user
@@ -43,6 +44,20 @@ define([], function(){
             }
 
             return name;
+        }
+
+        this.getAvatar = function(size) {
+            return 'http://www.gravatar.com/avatar/' + this.emailhash + '?r=pg&s=' + size + '&d=http%3A%2F%2Fwww.tapin.tv%2Fassets%2Fimg%2Ficon-noavatar-' + size + '.png';
+        }
+
+        this.getAvatar50 = function()
+        {
+            return this.getAvatar(50);
+        }
+
+        this.getAvatar35 = function()
+        {
+            return this.getAvatar(35);
         }
 
         /**

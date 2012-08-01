@@ -7,7 +7,7 @@
       var followers = '{{followers}}';
       var followersArr = followers.split(',');
       if ($.inArray(user, followersArr)==0){
-        var btn = $('<li id="unfollow-container"><input id="unfollow-button" class="btn" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
+        var btn = $('<li id="follow-container"><input id="unfollow-button" class="btn" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
       }
       else {
         var btn = $('<li id="follow-container"><input id="follow-button" class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" /></li>');
@@ -18,18 +18,11 @@
   }
     </script>
 
-{{#if background}}
-    <style type="text/css">
-        #user-modal {
-            background-image: url('{{getBackgroundUrl}}');
-        }
-    </style>
-{{/if}}
 <div id='username-profile' class='hidden'>{{getName}}</div>
 <div class="user-profile">
     <div class="headline">
         <div class='well' style='height: 45px'>
-          <div id='user-icon'>
+          <div id='user-icon' style="background-image:url('{{getAvatar50}}')">
           </div>
 
         <div id='header' style='display:block'> <h1>{{getName}} ({{points}} pts)</h1>  <a href='#stream/{{getName}}'>View  {{getName}}'s streams</a>
