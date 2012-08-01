@@ -18,18 +18,11 @@
   }
     </script>
 
-{{#if background}}
-    <style type="text/css">
-        #user-modal {
-            background-image: url('{{getBackgroundUrl}}');
-        }
-    </style>
-{{/if}}
 <div id='username-profile' class='hidden'>{{getName}}</div>
 <div class="user-profile">
     <div class="headline">
         <div class='well' style='height: 45px'>
-          <div id='user-icon'>
+          <div id='user-icon' style="background-image:url('{{getAvatar50}}')">
           </div>
 
         <div id='header' style='display:block'> <h1>{{getName}} ({{points}} pts)</h1>  <a href='#stream/{{getName}}'>View  {{getName}}'s streams</a>
