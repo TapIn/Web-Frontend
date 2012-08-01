@@ -52,9 +52,9 @@ define(['tapin/api', 'jquery', 'tapin/util/async'], function(Api, JQuery, Async)
                     comments.push(comment);
                 }
                 var _data = {
-                    user: _this.user,
                     comments: comments
                 };
+                console.log(comments);
                 if (data.length > 0)
                 {
                     var new_html = template(_data);

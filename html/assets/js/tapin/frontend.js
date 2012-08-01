@@ -585,6 +585,24 @@ define([
                         $("#registerform #register").attr('disabled', 'true');
                         return false;
                     })
+            $('#follow-button').live('click', function(event){
+                targetUser = $('#username-profile').html();
+                _this.api.follow(targetUser, function(){
+                    $('#followercount').html(parseInt($('#followercount').html())+1);
+                    $('#follow-container').html('<input id="unfollow-button" class="btn" type="button" value="Unfollow" style="position:relative;top: -5px; left: 5px; font-weight: 700" />');
+                });
+            });
+
+            $('#unfollow-button').live('click', function(event){
+                targetUser = $('#username-profile').html();
+                _this.api.unfollow(targetUser, function(){
+                    $('#followercount').html(parseInt($('#followercount').html())-1);
+                    $('#unfollow-container').html('<input id="follow-button" class="btn btn-primary" type="button" value="Follow" style="position:relative;top: -5px; left: 5px; font-weight: 700" />');
+                });
+            });
+
+                
+
             // END Vu frontend stuff
 
             // Bind to volume change events
