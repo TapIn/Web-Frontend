@@ -346,8 +346,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 _this.onPinClick.apply(pin);
 
                 // Set all previous clicked markers to something else
-                for(var e in _clickedMarkers) {
-                    var pinKey = _clickedMarkers[e];
+                for(var cm in _clickedMarkers) {
+                    var pinKey = _clickedMarkers[cm];
                     var _marker = _markers[pinKey]
                     try {
                         _marker.setIcon(watchedPin)
