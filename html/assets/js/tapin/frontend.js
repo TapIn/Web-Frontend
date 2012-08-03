@@ -343,7 +343,7 @@ define([
 
             // Vu frontend stuff
             $(document).ready(function() {
-                $("a#about-page").fancybox();
+                //$("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
 
