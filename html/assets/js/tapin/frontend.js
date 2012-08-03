@@ -201,7 +201,7 @@ define([
         // Used for debugging
         window.onStage = function() {
             Log('info', 'Switching API calls to stage.');
-            Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
+            Config['api']['base'] = 'http://dualstack.stage-api-tapin-tv-885671874.us-west-1.elb.amazonaws.com/web/';
         }
         window.onProd = function() {
             Log('info', 'Switching API calls to prod.');
@@ -453,7 +453,12 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
-                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(data.streamend == 0){
+                            $('#video-meta #date').html('Live Streaming');
+                        }
+                        else {
+                            $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        }
                         if(data.user!== '')
                         {
                             $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
