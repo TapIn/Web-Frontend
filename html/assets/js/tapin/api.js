@@ -417,5 +417,10 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         return _staticApi.get_object_by_secondary_key('stream', 'featured', 'true', lambda, error_lambda);
     }
 
+    _staticApi.send_text = function(no, lambda, error_lambda)
+    {
+        return _staticApi.call('sendtext', {'number': no}, lambda, error_lambda, 'POST');
+    }
+
     return _staticApi;
 })

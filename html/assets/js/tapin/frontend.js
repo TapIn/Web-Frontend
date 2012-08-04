@@ -17,7 +17,8 @@ define([
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
-       'tapin/user'],
+       'tapin/user',
+       'phoneformat/phoneformat'],
        function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, VideoGallery, Api, Util, Storage, Event, Async, Log, Config, User)
 {
     return new (function(){
@@ -195,7 +196,7 @@ define([
         // Used for debugging
         window.onStage = function() {
             Log('info', 'Switching API calls to stage.');
-            Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
+            Config['api']['base'] = 'http://debug.api.tapin.tv/web/';
         }
         window.onProd = function() {
             Log('info', 'Switching API calls to prod.');
@@ -343,9 +344,28 @@ define([
 
             // Vu frontend stuff
             $(document).ready(function() {
-                //$("a#about-page").fancybox();
+                $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
+
+                $("#phonenumberform").live('submit', function(event){
+                    event.stopPropagation();
+                    var phoneNo = formatE164("US", $("#phonenumber").val());
+                    if (phoneNo.length !== 12) {
+                        alert('Please enter your full phone number. (US only)');
+                    } else {
+                        phoneNo = phoneNo.substring(1);
+                        Api.send_text(phoneNo, function(){
+                            mixpanel.track('send_text');
+                            $("#phonenumber").val('');
+                            $("#fancybox-close").click();
+                        }, function(){
+                            alert("Couldn't send: double-check your phone number!");
+                        });
+                    }
+
+                    return false;
+                })
 
                    /* Special date widget */
                     var to = new Date();
