@@ -17,7 +17,8 @@ define([
        'tapin/util/async',
        'tapin/util/log',
        'tapin/config',
-       'tapin/user'],
+       'tapin/user',
+       'phoneformat/phoneformat'],
        function(JQuery, Map, Pin, PinCollection, Sidebar, TimeSlider, Modal, Filmstrip, Volume, Comments, VideoGallery, Api, Util, Storage, Event, Async, Log, Config, User)
 {
     return new (function(){
@@ -41,7 +42,12 @@ define([
         this.onLogout = new Event();
         this.onStreamChange = new Event();
 
-        var current_stream_id = '';
+        try {
+            this.current_stream_id = window.location.href.split('#video/')[1].split('/')[0];
+        }
+        catch (e){
+            this.current_stream_id = '';
+        }
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -97,7 +103,7 @@ define([
                         _this.videoGallery.addVideo(i);
                     }
                     var coords = stream[stream.length - 1]['coord'];
-                    var pin = new Pin(coords[0], coords[1], i, {stream_id: i});
+                    var pin = new Pin(coords[0], coords[1], i, {stream_id: i, timestamp: stream[stream.length - 1]['timestamp']});
                     new_pins.addOrUpdatePin(pin);
                     c++;
                 }
@@ -189,13 +195,14 @@ define([
 
         var showVideoForPin = function(pin)
         {
-            window.location.hash = 'video/' + pin.Data.stream_id + '/now';
+            console.log(pin);
+            window.location.hash = 'video/' + pin.Data.stream_id + '/' + pin.Data.timestamp;
         }
 
         // Used for debugging
         window.onStage = function() {
             Log('info', 'Switching API calls to stage.');
-            Config['api']['base'] = 'http://stage.api.tapin.tv/web/';
+            Config['api']['base'] = 'http://debug.api.tapin.tv/web/';
         }
         window.onProd = function() {
             Log('info', 'Switching API calls to prod.');
@@ -343,9 +350,28 @@ define([
 
             // Vu frontend stuff
             $(document).ready(function() {
-                //$("a#about-page").fancybox();
+                $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
+
+                $("#phonenumberform").live('submit', function(event){
+                    event.stopPropagation();
+                    var phoneNo = formatE164("US", $("#phonenumber").val());
+                    if (phoneNo.length !== 12) {
+                        alert('Please enter your full phone number. (US only)');
+                    } else {
+                        phoneNo = phoneNo.substring(1);
+                        Api.send_text(phoneNo, function(){
+                            mixpanel.track('send_text');
+                            $("#phonenumber").val('');
+                            $("#fancybox-close").click();
+                        }, function(){
+                            alert("Couldn't send: double-check your phone number!");
+                        });
+                    }
+
+                    return false;
+                })
 
                    /* Special date widget */
                     var to = new Date();
@@ -447,7 +473,12 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
-                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(data.streamend == 0){
+                            $('#video-meta #date').html('Live Streaming');
+                        }
+                        else {
+                            $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        }
                         if(data.user!== '')
                         {
                             $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
@@ -486,21 +517,12 @@ define([
                       return false;
                     });
 
-                    FB.init({appId: "468946679791837", status: true, cookie: true});
-
                     $('.share.fb').live('click', function(event){
                         event.stopPropagation();
-                        var obj = {
-                          method: 'feed',
-                          link: 'http://s.tapin.tv/fb/' + current_stream_id
-                        };
 
-                        var onFeedStoryPublished = function()
-                        {
-                            mixpanel.track('fb_published');
-                        }
-
-                        FB.ui(obj, onFeedStoryPublished);
+                        var url = 'http://www.facebook.com/sharer.php?u=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+                        newwindow=window.open(url,'','height=400,width=658');
+                        if (window.focus) {newwindow.focus()}
                         return false;
                     });
 
@@ -605,6 +627,20 @@ define([
                 });
             });
 
+            $('#timepicker').click(function(e){
+                switch(e.target.id){
+                    case 'date-rangepick':
+                        $('#date-range').removeClass('hidden');
+                        $('#timepicker a').parent().removeClass('active')
+                        $('#date-rangepick').addClass('hidden');
+                        break;
+                    default:
+                        $('#timepicker a').parent().removeClass('active')
+                        $('#date-range').addClass('hidden');
+                        $('#' + e.target.id).parent().addClass('active');
+                        break;
+                }
+            });
                 
 
             // END Vu frontend stuff

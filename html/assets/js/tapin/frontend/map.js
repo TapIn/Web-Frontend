@@ -9,7 +9,12 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         var _oms = null;
         var _clickedMarkers = {};
         var _currentStream = null;
-
+        try {
+            _currentStream = window.location.href.split('#video/')[1].split('/')[0];
+        }
+        catch (e){
+            _currentStream = '';
+        }
         var _centerInitialized = false;
 
         // Properties
@@ -325,11 +330,9 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             var watchingPin = "assets/img/pingreen.png";
             var watchedPin = "assets/img/pingray.png";
             var defaultPin =  "assets/img/pin.png";
-
             //Check if pin has been watched before
             var imagePin = (pin.Uid in _clickedMarkers)? watchedPin : defaultPin;
             if(pin.Uid == _currentStream) imagePin = watchingPin;
-
             _currentStream = pin.Uid;
 
             _markers[pin.Uid] = new google.maps.Marker({
