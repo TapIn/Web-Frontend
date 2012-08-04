@@ -38,6 +38,8 @@ define([
         this.user = false;
         this.videoGallery = new VideoGallery($('#myCarousel'));
 
+        this.isPlayingFeatured = false;
+
         this.onLogin = new Event();
         this.onLogout = new Event();
         this.onStreamChange = new Event();
@@ -100,7 +102,7 @@ define([
                 var c = 0;
                 for (var i in streams) {
                     var stream = streams[i];
-                    if (c < 6) {
+                    if (!_this.isPlayingFeatured && c < 6) {
                         _this.videoGallery.addVideo(i);
                     }
                     var coords = stream[stream.length - 1]['coord'];
@@ -108,7 +110,9 @@ define([
                     new_pins.addOrUpdatePin(pin);
                     c++;
                 }
-                _this.videoGallery.commitUpdate();
+                if (!_this.isPlayingFeatured) {
+                    _this.videoGallery.commitUpdate();
+                }
 
                 _this.mainMap.Pins.replace(new_pins);
             }, function(err){
@@ -196,7 +200,8 @@ define([
 
         var showVideoForPin = function(pin)
         {
-            console.log(pin);
+            _this.isPlayingFeatured = false;
+            $('#nearbytitle').text('Nearby Streams');
             window.location.hash = 'video/' + pin.Data.stream_id + '/' + pin.Data.timestamp;
         }
 
@@ -355,6 +360,23 @@ define([
                 $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
+
+                if (window.location.hash.substring(1,6) !== 'video') {
+                    _this.isPlayingFeatured = true;
+                    Api.get_featured_streams(function(data){
+                        var videos = Util.shuffle(data);
+
+                        _this.showVideo(videos[0][0]);
+
+                        for (var i = 0; i < Util.minimize(videos.length, 6); i++) {
+                            _this.videoGallery.addVideo(videos[i][0]);
+                        }
+
+                        $('#nearbytitle').text('Featured Streams');
+
+                        _this.videoGallery.commitUpdate();
+                    })
+                }
 
                 $("#phonenumberform").live('submit', function(event){
                     event.stopPropagation();
