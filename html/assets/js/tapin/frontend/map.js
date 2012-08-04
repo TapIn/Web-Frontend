@@ -15,7 +15,6 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         catch (e){
             _currentStream = '';
         }
-        alert(_currentStream);
         var _centerInitialized = false;
 
         // Properties

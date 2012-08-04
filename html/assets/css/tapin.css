@@ -19,6 +19,16 @@
     visibility: hidden;
 }
 
+.time {
+    color:green;
+    margin-right: -5px;
+    margin-left: -7px;
+}
+
+.pull-right .active{
+    color:white;
+}
+
 #see-videos {
     float:right;
 }
@@ -36,6 +46,7 @@
         margin-top: 6px;
         float:right;
         margin-right: -20px;
+        margin-left: -44px;
       }
       #date-range-field {
         width: 290px;

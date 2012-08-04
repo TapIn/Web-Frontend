@@ -616,6 +616,20 @@ define([
                 });
             });
 
+            $('#timepicker').click(function(e){
+                switch(e.target.id){
+                    case 'date-rangepick':
+                        $('#date-range').removeClass('hidden');
+                        $('#timepicker a').parent().removeClass('active')
+                        $('#date-rangepick').addClass('hidden');
+                        break;
+                    default:
+                        $('#timepicker a').parent().removeClass('active')
+                        $('#date-range').addClass('hidden');
+                        $('#' + e.target.id).parent().addClass('active');
+                        break;
+                }
+            });
                 
 
             // END Vu frontend stuff
