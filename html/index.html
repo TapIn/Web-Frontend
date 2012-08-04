@@ -57,9 +57,15 @@
                  </li>
                 <li><a href="assets/static/register.html" id="register">Register</a></li>
             </ul>
-            <ul class="nav pull-right">
+            <ul id ='timepicker' class="nav pull-right">
                  <li><a id='see-videos' >See videos from</a></li>
-                      <div id="date-range">
+                <!--   <li class='active'><a id='date-hour' class='time'>Hour</a></li>
+                  <li><a id='date-day' class='time'>Day</a></li>
+                  <li><a id='date-week' class='time'>Week</a></li>
+                  <li><a id='date-month' class='time'>Month</a></li>
+                  <li><a id='date-rangepick' class='time'>Range</a></li>
+ -->
+                      <div id="date-range" class=>
                         <div id="date-range-field">
                           <span></span>
                           <a href="#">&#9660;</a>
@@ -67,6 +73,7 @@
                         <div id="datepicker-calendar"></div>
                         <div id="datepicker-invisible" class='hidden'>default</div>
                       </div>
+                </ul>
 
          </div>
 
@@ -114,7 +121,7 @@
         <div id="volume"></div>
         <div id="mixpanel-partner"><a href="https://mixpanel.com/f/partner"><img src="https://mixpanel.com/site_media/images/partner/badge_light.png" alt="Mobile and Web Analytics" /></a></div>
         <h4 id='viewpoints' style="float:right"></h4>
-        <h2>Nearby Videos</h2>
+        <h2 id="nearbytitle">Nearby Videos</h2>
             <div id="myCarousel" class="carousel slide">
           <!-- Carousel items -->
           <div class="carousel-inner">

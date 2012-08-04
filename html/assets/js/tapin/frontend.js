@@ -38,11 +38,19 @@ define([
         this.user = false;
         this.videoGallery = new VideoGallery($('#myCarousel'));
 
+        this.isPlayingFeatured = false;
+
         this.onLogin = new Event();
         this.onLogout = new Event();
         this.onStreamChange = new Event();
+        this.externalLink = true;
 
-        var current_stream_id = '';
+        try {
+            this.current_stream_id = window.location.href.split('#video/')[1].split('/')[0];
+        }
+        catch (e){
+            this.current_stream_id = '';
+        }
 
         var timescale = 10*60;
         var showLoaderRef;
@@ -94,15 +102,17 @@ define([
                 var c = 0;
                 for (var i in streams) {
                     var stream = streams[i];
-                    if (c < 6) {
+                    if (!_this.isPlayingFeatured && c < 6) {
                         _this.videoGallery.addVideo(i);
                     }
                     var coords = stream[stream.length - 1]['coord'];
-                    var pin = new Pin(coords[0], coords[1], i, {stream_id: i});
+                    var pin = new Pin(coords[0], coords[1], i, {stream_id: i, timestamp: stream[stream.length - 1]['timestamp']});
                     new_pins.addOrUpdatePin(pin);
                     c++;
                 }
-                _this.videoGallery.commitUpdate();
+                if (!_this.isPlayingFeatured) {
+                    _this.videoGallery.commitUpdate();
+                }
 
                 _this.mainMap.Pins.replace(new_pins);
             }, function(err){
@@ -190,7 +200,9 @@ define([
 
         var showVideoForPin = function(pin)
         {
-            window.location.hash = 'video/' + pin.Data.stream_id + '/now';
+            _this.isPlayingFeatured = false;
+            $('#nearbytitle').text('Nearby Streams');
+            window.location.hash = 'video/' + pin.Data.stream_id + '/' + pin.Data.timestamp;
         }
 
         // Used for debugging
@@ -229,6 +241,7 @@ define([
                         }
                     });
                     $(window).trigger('hashchange');
+
                     return false;
                 }
             });
@@ -347,6 +360,23 @@ define([
                 $("a#about-page").fancybox();
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
+
+                if (window.location.hash.substring(1,6) !== 'video') {
+                    _this.isPlayingFeatured = true;
+                    Api.get_featured_streams(function(data){
+                        var videos = Util.shuffle(data);
+
+                        _this.showVideo(videos[0][0]);
+
+                        for (var i = 0; i < Util.minimize(videos.length, 6); i++) {
+                            _this.videoGallery.addVideo(videos[i][0]);
+                        }
+
+                        $('#nearbytitle').text('Featured Streams');
+
+                        _this.videoGallery.commitUpdate();
+                    })
+                }
 
                 $("#phonenumberform").live('submit', function(event){
                     event.stopPropagation();
@@ -467,7 +497,12 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
-                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(data.streamend == 0){
+                            $('#video-meta #date').html('Live Streaming');
+                        }
+                        else {
+                            $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        }
                         if(data.user!== '')
                         {
                             $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
@@ -477,7 +512,7 @@ define([
                         }
 
 
-                        var connectionCount = data.streamconnectioncount;
+                        var connectionCount = data.viewcount;
                         if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
                             connectionCount = 0;
                         }
@@ -506,21 +541,12 @@ define([
                       return false;
                     });
 
-                    FB.init({appId: "468946679791837", status: true, cookie: true});
-
                     $('.share.fb').live('click', function(event){
                         event.stopPropagation();
-                        var obj = {
-                          method: 'feed',
-                          link: 'http://s.tapin.tv/fb/' + current_stream_id
-                        };
 
-                        var onFeedStoryPublished = function()
-                        {
-                            mixpanel.track('fb_published');
-                        }
-
-                        FB.ui(obj, onFeedStoryPublished);
+                        var url = 'http://www.facebook.com/sharer.php?u=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+                        newwindow=window.open(url,'','height=400,width=658');
+                        if (window.focus) {newwindow.focus()}
                         return false;
                     });
 
@@ -625,6 +651,20 @@ define([
                 });
             });
 
+            $('#timepicker').click(function(e){
+                switch(e.target.id){
+                    case 'date-rangepick':
+                        $('#date-range').removeClass('hidden');
+                        $('#timepicker a').parent().removeClass('active')
+                        $('#date-rangepick').addClass('hidden');
+                        break;
+                    default:
+                        $('#timepicker a').parent().removeClass('active')
+                        $('#date-range').addClass('hidden');
+                        $('#' + e.target.id).parent().addClass('active');
+                        break;
+                }
+            });
                 
 
             // END Vu frontend stuff
