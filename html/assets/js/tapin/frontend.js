@@ -41,6 +41,7 @@ define([
         this.onLogin = new Event();
         this.onLogout = new Event();
         this.onStreamChange = new Event();
+        this.externalLink = true;
 
         try {
             this.current_stream_id = window.location.href.split('#video/')[1].split('/')[0];
@@ -235,6 +236,7 @@ define([
                         }
                     });
                     $(window).trigger('hashchange');
+
                     return false;
                 }
             });
