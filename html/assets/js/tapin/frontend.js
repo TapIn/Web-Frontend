@@ -488,7 +488,7 @@ define([
                         }
 
 
-                        var connectionCount = data.streamconnectioncount;
+                        var connectionCount = data.viewcount;
                         if (typeof(connectionCount) === 'undefined' || connectionCount === null) {
                             connectionCount = 0;
                         }
