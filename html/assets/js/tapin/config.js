@@ -32,7 +32,7 @@ define([], function(){
 
     // If we're on stage, use the staging API server
     if (window.location.hostname == 'stage.tapin.tv') {
-        config['api']['base'] = 'http://stage.api.tapin.tv/web/';
+        config['api']['base'] = 'http://debug.api.tapin.tv/web/';
     }
 
     return config;
