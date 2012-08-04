@@ -473,7 +473,12 @@ define([
 
                         $('#video-meta').removeClass('hidden');
                         $('#video-share').removeClass('hidden');
-                        $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        if(data.streamend == 0){
+                            $('#video-meta #date').html('Live Streaming');
+                        }
+                        else {
+                            $('#video-meta #date').html('Recorded ' + jQuery.timeago((new Date()).setTime(data.streamend * 1000)));
+                        }
                         if(data.user!== '')
                         {
                             $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
