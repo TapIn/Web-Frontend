@@ -319,7 +319,7 @@ define([], function(){
                 if(key == 'badge'){
                     for(i in data[key]){
                         _id = parseInt(data[key][i])-1;
-                        this.badges.push({id: _id, name: badgeIndex[_id]['name'], description: badgeIndex[_id]['description']})
+                        this.badges.push({id: _id+1, name: badgeIndex[_id]['name'], description: badgeIndex[_id]['description']})
                     }
                 }
             }
