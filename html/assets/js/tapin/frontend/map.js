@@ -350,7 +350,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 _this.onPinClick.apply(pin);
 
                 // Set all previous clicked markers to something else
-                for(e in _clickedMarkers) {
+                for(var e in _clickedMarkers) {
                     var pinKey = _clickedMarkers[e];
                     var _marker = _markers[pinKey]
                     try {
