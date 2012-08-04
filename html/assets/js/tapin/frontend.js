@@ -517,21 +517,12 @@ define([
                       return false;
                     });
 
-                    FB.init({appId: "468946679791837", status: true, cookie: true});
-
                     $('.share.fb').live('click', function(event){
                         event.stopPropagation();
-                        var obj = {
-                          method: 'feed',
-                          link: 'http://s.tapin.tv/fb/' + current_stream_id
-                        };
 
-                        var onFeedStoryPublished = function()
-                        {
-                            mixpanel.track('fb_published');
-                        }
-
-                        FB.ui(obj, onFeedStoryPublished);
+                        var url = 'http://www.facebook.com/sharer.php?u=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+                        newwindow=window.open(url,'','height=400,width=658');
+                        if (window.focus) {newwindow.focus()}
                         return false;
                     });
 
