@@ -48,6 +48,25 @@ define([], function(){
             return result;
         }
 
+        this.shuffle = function(o)
+        {
+            for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            return o;
+        }
+
+        this.minimize = function()
+        {
+            var min = null;
+            for (var i in arguments) {
+                var arg = arguments[i];
+                if (min === null || arg < min) {
+                    min = arg;
+                }
+            }
+
+            return min;
+        }
+
         /**
          * Generates a random float in the range
          * @param  float    min Min value

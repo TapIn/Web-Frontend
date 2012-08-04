@@ -26,17 +26,19 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
          */
         this.showVideoAtTime = function(id, time)
         {
-            var start = new Date(time*1000-259200000);
-            var end = new Date(time*1000+259200000);
-             $('#datepicker-invisible').text(start.getDate() + '/' + start.getMonth() + '/' + start.getFullYear() + '|' + 
-                    end.getDate() + '/' + end.getMonth() + '/' + end.getFullYear());
-            $('#datepicker-calendar').DatePickerSetDate([start, end], true);
-            $('#date-range-field span').text(start.getDate()+' '+start.getMonthName(true)+', '+start.getFullYear()+' - '+
-                                end.getDate()+' '+end.getMonthName(true)+', '+end.getFullYear());
-
+            if(!isNaN(time) && window.fe.externalLink){
+                var start = new Date(time*1000-259200000);
+                var end = new Date(time*1000+259200000);
+                 $('#datepicker-invisible').text(start.getDate() + '/' + start.getMonth() + '/' + start.getFullYear() + '|' + 
+                        end.getDate() + '/' + end.getMonth() + '/' + end.getFullYear());
+                $('#datepicker-calendar').DatePickerSetDate([start, end], true);
+                $('#date-range-field span').text(start.getDate()+' '+start.getMonthName(true)+', '+start.getFullYear()+' - '+
+                                    end.getDate()+' '+end.getMonthName(true)+', '+end.getFullYear());
+            } 
             Log('debug', 'Showing video from ' + id + '@' + time + 's');
             Frontend.showVideo(id);
             this.centerMapOnVideo(id);
+
         }
 
         this.centerMapOnVideo = function(id)

@@ -347,6 +347,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             pin.onClick.register(function(){
                 _this.onPinClick.apply(pin);
+                window.fe.externalLink = false;
 
                 // Set all previous clicked markers to something else
                 for(var cm in _clickedMarkers) {
