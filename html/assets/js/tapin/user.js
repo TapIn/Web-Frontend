@@ -228,6 +228,11 @@ define([], function(){
             "id": 39,
             "name": "Busker",
             "description": "Stream a busker"
+        },
+        {
+            "id":40,
+            "name": "Testing, testing, 1, 2, 3",
+            "description": "Made a test stream"
         }
     ]
 
