@@ -279,7 +279,7 @@ define([
             var oldLoginHtml = $('#user');
             _this.onLogin.register(function(){
                 $("#streams").attr('href', '#stream/' + _this.user.username);
-                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
+                var html = '<img style="float:left; margin-right: 3px" src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
                 JQuery('a#dropdown-text').html(html);
                 JQuery('a#account').attr('href', '#user/' + _this.user.username);
                 $('#dropdown-text').attr('data-toggle', 'dropdown');
