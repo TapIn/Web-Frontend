@@ -65,7 +65,7 @@ define([
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
             // Show the loader if the request takes too long
-            showLoaderRef = Async.later(800, function(){
+            showLoaderRef = Async.later(1500, function(){
                 _this.loader.show();
             });
 
@@ -188,6 +188,18 @@ define([
         this.showVideo = function(stream_id)
         {
             Log('debug', 'Showing video for pin', stream_id);
+            $('#currently-playing').removeClass('hidden');
+            $('#player-container').removeClass('hidden');
+            $('#controls').removeClass('hidden');
+            if (_this.user === false) {
+                $('#commentloggedout').removeClass('hidden');
+            } else {
+                $('#commentbox').removeClass('hidden');
+            }
+            $('#comments').removeClass('hidden');
+            $('#to-remove').addClass('hidden');
+            $('#comment-header').removeClass('hidden');
+            _this.isPlayingFeatured = false;
             Api.get_stream_by_stream_id(stream_id, function(data){
                 _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
@@ -200,7 +212,6 @@ define([
 
         var showVideoForPin = function(pin)
         {
-            _this.isPlayingFeatured = false;
             $('#nearbytitle').text('Nearby Streams');
             window.location.hash = 'video/' + pin.Data.stream_id + '/' + pin.Data.timestamp;
         }
@@ -290,8 +301,10 @@ define([
                 $('#volume').css('right', '95px');
 
                 // Switch comment box
-                $('#commentbox').removeClass('hidden');
-                $('#commentloggedout').addClass('hidden');
+                if (!_this.isPlayingFeatured) {
+                    $('#commentbox').removeClass('hidden');
+                    $('#commentloggedout').addClass('hidden');
+                }
 
                 // Hide register button
                 $('a#register').addClass('hidden');
@@ -313,8 +326,10 @@ define([
                 $('#volume').css('right', '35px');
 
                 // Switch comment box
-                $('#commentbox').addClass('hidden');
-                $('#commentloggedout').removeClass('hidden');
+                if (!_this.isPlayingFeatured) {
+                    $('#commentbox').addClass('hidden');
+                    $('#commentloggedout').removeClass('hidden');
+                }
 
                 // Show register button
                 $('a#register').removeClass('hidden');
@@ -371,8 +386,6 @@ define([
                     _this.isPlayingFeatured = true;
                     Api.get_featured_streams(function(data){
                         var videos = Util.shuffle(data);
-
-                        _this.showVideo(videos[0][0]);
 
                         for (var i = 0; i < Util.minimize(videos.length, 6); i++) {
                             _this.videoGallery.addVideo(videos[i][0]);
