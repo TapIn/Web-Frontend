@@ -361,6 +361,12 @@ define([
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
 
+                $('#report a').live('click', function(){
+                    Api.report_stream(current_stream_id, function(){
+                        alert("Thanks, the admins were notified!");
+                    });
+                });
+
                 if (window.location.hash.substring(1,6) !== 'video') {
                     _this.isPlayingFeatured = true;
                     Api.get_featured_streams(function(data){
