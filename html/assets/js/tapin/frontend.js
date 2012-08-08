@@ -608,24 +608,26 @@ define([
                         var ret = window.fe.login($('#loginform #username').val(), $('#loginform #password').val(), function(){
                             mixpanel.track('login');
                             window.fe.modal.hide();
-                            $("#loginform #login").attr('disabled', '');
+                            $("#loginform #login").prop('disabled', true);
                         }, function(err){
                             alert(err);
-                            $("#loginform #login").removeAttr('disabled');
+                            $("#loginform #login").prop('disabled', false);
                         });
-                        $("#loginform #login").attr('disabled', 'true');
+                        $("#loginform #login").prop('disabled', true);
                         return false;
                     });
 
                     $('#registerform').live('submit', function(event){
                         event.stopPropagation();
-                        if($('#registerform #email').val() == '') alert('Must enter a valid email');
-                        else {
+                        if($('#registerform #email').val() == '') {
+                            alert('Must enter a valid email');
+                        } else {
+                            $("#registerform #register").prop('disabled', true);
                             Api.register($('#registerform #username').val(), $('#registerform #password').val(), $('#registerform #email').val(), function(data){
                                 if (data.error)
                                 {
                                     alert(data.error);
-                                    $("#registerform #register").removeAttr('disabled');
+                                    $("#registerform #register").prop('disabled', false);
                                 } else {
                                     mixpanel.track('register');
                                     Storage.save('token', data.token);
@@ -636,9 +638,8 @@ define([
                                 }
                             }, function(err){
                                 alert(err);
-                                    $("#registerform #register").removeAttr('disabled');
+                                    $("#registerform #register").prop('disabled', false);
                             });}
-                        $("#registerform #register").attr('disabled', 'true');
                         return false;
                     })
             $('#follow-button').live('click', function(event){
