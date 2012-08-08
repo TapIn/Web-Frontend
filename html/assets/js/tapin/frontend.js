@@ -65,7 +65,7 @@ define([
             var since_time = Math.floor(((new Date()).getTime()/1000) - timescale);
 
             // Show the loader if the request takes too long
-            showLoaderRef = Async.later(800, function(){
+            showLoaderRef = Async.later(1500, function(){
                 _this.loader.show();
             });
 
@@ -188,6 +188,18 @@ define([
         this.showVideo = function(stream_id)
         {
             Log('debug', 'Showing video for pin', stream_id);
+            $('#currently-playing').removeClass('hidden');
+            $('#player-container').removeClass('hidden');
+            $('#controls').removeClass('hidden');
+            if (_this.user === false) {
+                $('#commentloggedout').removeClass('hidden');
+            } else {
+                $('#commentbox').removeClass('hidden');
+            }
+            $('#comments').removeClass('hidden');
+            $('#to-remove').addClass('hidden');
+            $('#comment-header').removeClass('hidden');
+            _this.isPlayingFeatured = false;
             Api.get_stream_by_stream_id(stream_id, function(data){
                 _this.comments.updateCommentsFor(stream_id);
                 _this.sidebar.player.playStreamData(data);
@@ -200,7 +212,6 @@ define([
 
         var showVideoForPin = function(pin)
         {
-            _this.isPlayingFeatured = false;
             $('#nearbytitle').text('Nearby Streams');
             window.location.hash = 'video/' + pin.Data.stream_id + '/' + pin.Data.timestamp;
         }
@@ -279,7 +290,7 @@ define([
             var oldLoginHtml = $('#user');
             _this.onLogin.register(function(){
                 $("#streams").attr('href', '#stream/' + _this.user.username);
-                var html = '<img src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
+                var html = '<img style="float:left; margin-right: 3px" src="assets/img/avatar-default-' + (_this.user.gender == 'woman'? 'woman' : 'man') + '.png" /> ' + _this.user.getName() + '<b class="caret"></ b>';
                 JQuery('a#dropdown-text').html(html);
                 JQuery('a#account').attr('href', '#user/' + _this.user.username);
                 $('#dropdown-text').attr('data-toggle', 'dropdown');
@@ -290,8 +301,10 @@ define([
                 $('#volume').css('right', '95px');
 
                 // Switch comment box
-                $('#commentbox').removeClass('hidden');
-                $('#commentloggedout').addClass('hidden');
+                if (!_this.isPlayingFeatured) {
+                    $('#commentbox').removeClass('hidden');
+                    $('#commentloggedout').addClass('hidden');
+                }
 
                 // Hide register button
                 $('a#register').addClass('hidden');
@@ -313,8 +326,10 @@ define([
                 $('#volume').css('right', '35px');
 
                 // Switch comment box
-                $('#commentbox').addClass('hidden');
-                $('#commentloggedout').removeClass('hidden');
+                if (!_this.isPlayingFeatured) {
+                    $('#commentbox').addClass('hidden');
+                    $('#commentloggedout').removeClass('hidden');
+                }
 
                 // Show register button
                 $('a#register').removeClass('hidden');
@@ -361,12 +376,16 @@ define([
                 $("a#change-password").fancybox();
                 $('a#register').fancybox();
 
+                $('#report a').live('click', function(){
+                    Api.report_stream(current_stream_id, function(){
+                        alert("Thanks, the admins were notified!");
+                    });
+                });
+
                 if (window.location.hash.substring(1,6) !== 'video') {
                     _this.isPlayingFeatured = true;
                     Api.get_featured_streams(function(data){
                         var videos = Util.shuffle(data);
-
-                        _this.showVideo(videos[0][0]);
 
                         for (var i = 0; i < Util.minimize(videos.length, 6); i++) {
                             _this.videoGallery.addVideo(videos[i][0]);
@@ -602,24 +621,26 @@ define([
                         var ret = window.fe.login($('#loginform #username').val(), $('#loginform #password').val(), function(){
                             mixpanel.track('login');
                             window.fe.modal.hide();
-                            $("#loginform #login").attr('disabled', '');
+                            $("#loginform #login").prop('disabled', true);
                         }, function(err){
                             alert(err);
-                            $("#loginform #login").removeAttr('disabled');
+                            $("#loginform #login").prop('disabled', false);
                         });
-                        $("#loginform #login").attr('disabled', 'true');
+                        $("#loginform #login").prop('disabled', true);
                         return false;
                     });
 
                     $('#registerform').live('submit', function(event){
                         event.stopPropagation();
-                        if($('#registerform #email').val() == '') alert('Must enter a valid email');
-                        else {
+                        if($('#registerform #email').val() == '') {
+                            alert('Must enter a valid email');
+                        } else {
+                            $("#registerform #register").prop('disabled', true);
                             Api.register($('#registerform #username').val(), $('#registerform #password').val(), $('#registerform #email').val(), function(data){
                                 if (data.error)
                                 {
                                     alert(data.error);
-                                    $("#registerform #register").removeAttr('disabled');
+                                    $("#registerform #register").prop('disabled', false);
                                 } else {
                                     mixpanel.track('register');
                                     Storage.save('token', data.token);
@@ -630,9 +651,8 @@ define([
                                 }
                             }, function(err){
                                 alert(err);
-                                    $("#registerform #register").removeAttr('disabled');
+                                    $("#registerform #register").prop('disabled', false);
                             });}
-                        $("#registerform #register").attr('disabled', 'true');
                         return false;
                     })
             $('#follow-button').live('click', function(event){

@@ -420,8 +420,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             _map = new google.maps.Map(_elem, {
                 center: new google.maps.LatLng(lat, lng),
-                zoom: 2,
-                minZoom: 2,
+                zoom: 4,
+                minZoom: 3,
                 panControl: false,
                 zoomControl: true,
                 mapTypeControl: false,
@@ -470,7 +470,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             });
 
 
-            $.getScript('http://j.maxmind.com/app/geoip.js', function()
+            /*$.getScript('http://j.maxmind.com/app/geoip.js', function()
             {
                 lat = geoip_latitude();
                 lon = geoip_longitude();
@@ -480,7 +480,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                     _this.center(lat, lon);
                     _this.zoom(9);
                 }
-            });
+            });*/
 
 
             $(document).mouseup(function(){
