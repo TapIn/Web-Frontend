@@ -718,10 +718,10 @@ define([
             this.mainMap.onPinClick.register(showVideoForPin);
 
             // Get an initial update
-            Async.later(1000, _this.updateMap);
+            Async.later(1500, _this.updateMap);
 
             // Fake live
-            Async.every(8 * 1000, _this.updateMap);
+            Async.every(30 * 1000, _this.updateMap);
 
             // Do login
             if (Storage.has('username') && Storage.has('token')) {
