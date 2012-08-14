@@ -717,6 +717,8 @@ define([
             // Show video when we click a pin
             this.mainMap.onPinClick.register(showVideoForPin);
 
+            mixpanel.track('page_load');
+
             // Get an initial update
             Async.later(1500, _this.updateMap);
 
