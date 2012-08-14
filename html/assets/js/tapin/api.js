@@ -385,6 +385,12 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         _staticApi.get_object_by_secondary_key('comment', 'streamid', stream_id, lambda, error_lambda);
     }
 
+
+    _staticApi.report_stream = function(stream_id, lambda, error_lambda)
+    {
+        _staticApi.call('report/' + stream_id, {}, lambda, error_lambda);
+    }
+
     /**
     * Gets a stream's time and location details
      * @param  {string}                             streamID     The ID of the stream to get

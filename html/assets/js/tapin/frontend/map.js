@@ -324,8 +324,6 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
         var onPinAdd = function(pin)
         {
-            Log('debug', "Pin added");
-
             // Pin styles temp
             var watchingPin = "assets/img/pingreen.png";
             var watchedPin = "assets/img/pingray.png";
@@ -374,13 +372,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
         var onPinUpdate = function(pin)
         {
-            Log('debug', "Pin updated");
             _markers[pin.Uid].setPosition(new google.maps.LatLng(pin.Lat, pin.Lon));
         }
 
         var onPinRemove = function(pin)
         {
-            Log('debug', "Pin removed");
             _markers[pin.Uid].setMap(null);
             _markerCluster.removeMarker(_markers[pin.Uid])
             _oms.removeMarker(_markers[pin.Uid])
@@ -420,8 +416,8 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
             _map = new google.maps.Map(_elem, {
                 center: new google.maps.LatLng(lat, lng),
-                zoom: 2,
-                minZoom: 2,
+                zoom: 4,
+                minZoom: 3,
                 panControl: false,
                 zoomControl: true,
                 mapTypeControl: false,
@@ -478,7 +474,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 if (!_centerInitialized)
                 {
                     _this.center(lat, lon);
-                    _this.zoom(9);
+                    _this.zoom(12);
                 }
             });
 
