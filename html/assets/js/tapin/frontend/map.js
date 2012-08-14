@@ -324,8 +324,6 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
         var onPinAdd = function(pin)
         {
-            Log('debug', "Pin added");
-
             // Pin styles temp
             var watchingPin = "assets/img/pingreen.png";
             var watchedPin = "assets/img/pingray.png";
@@ -374,13 +372,11 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
 
         var onPinUpdate = function(pin)
         {
-            Log('debug', "Pin updated");
             _markers[pin.Uid].setPosition(new google.maps.LatLng(pin.Lat, pin.Lon));
         }
 
         var onPinRemove = function(pin)
         {
-            Log('debug', "Pin removed");
             _markers[pin.Uid].setMap(null);
             _markerCluster.removeMarker(_markers[pin.Uid])
             _oms.removeMarker(_markers[pin.Uid])
@@ -470,7 +466,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             });
 
 
-            /*$.getScript('http://j.maxmind.com/app/geoip.js', function()
+            $.getScript('http://j.maxmind.com/app/geoip.js', function()
             {
                 lat = geoip_latitude();
                 lon = geoip_longitude();
@@ -478,9 +474,9 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
                 if (!_centerInitialized)
                 {
                     _this.center(lat, lon);
-                    _this.zoom(9);
+                    _this.zoom(12);
                 }
-            });*/
+            });
 
 
             $(document).mouseup(function(){
