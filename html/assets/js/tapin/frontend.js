@@ -524,7 +524,16 @@ define([
                         }
                         if(data.user!== '')
                         {
-                            $('#video-meta #user').html("by <a href='#user/" + data.user +"'>" + data.user + "</a>");
+                            var deleteLink = '';
+                            if (_this.user && data.user == _this.user.username) {
+                                deleteLink = $('<span> - </span>').append($('<a href="#" style="color:red">Delete Video</a>').click(function(){
+                                    _this.api.update_object_by_key('stream', current_stream_id, {'delete':true}, function(){
+                                        alert("Video has been deleted. Contact support to undo.");
+                                        window.location = '/';
+                                    });
+                                }));
+                            }
+                            $('#video-meta #user').html($("<span>by <a href='#user/" + data.user +"'>" + data.user + "</a></span>").append(deleteLink));
                         }
                         else {
                             $('#video-meta #user').html("by anonymous");
