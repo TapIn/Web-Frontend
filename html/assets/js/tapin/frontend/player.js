@@ -34,8 +34,9 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             Log('debug', 'Playing recorded');
             mixpanel.track('play', {type: 'recorded', 'stream_id': stream_id});
             init_player({
-                provider: 'http',
-                url: 'http://cdn.content.tapin.tv/' + stream_id + '/stream.mp4',
+                provider: 'rtmp',
+                netConnectionUrl: 'rtmp://recorded.stream.tapin.tv/cfx/st/',
+                url: 'mp4:' + stream_id + '/stream',
                 isLive: false,
                 streamId: stream_id
             });
