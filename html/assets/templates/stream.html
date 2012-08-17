@@ -12,6 +12,6 @@
 </div>
 <div id='stream-container'>
 {{#each streams}}
-<div class='stream-preview'><a  href='http://tapin.tv/#video/{{this.0.}}/now'><img src='http://thumbs.tapin.tv/{{this.0.}}/144x108/latest.jpg'/></a></div>
+<div class='stream-preview'><a  href='#video/{{this.0.}}/now' onclick="$('#fancybox-close').click()"><img src='http://thumbs.tapin.tv/{{this.0.}}/144x108/latest.jpg'/></a></div>
 {{/each}}
 </div>
