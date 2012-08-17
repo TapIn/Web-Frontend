@@ -418,7 +418,7 @@ define([
 
                    /* Special date widget */
                     var to = new Date();
-                    var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 7);
+                    var from = new Date(to.getTime() - 1000 * 60 * 60 * 24 * 2);
 
                     $('#datepicker-invisible').text(from.getDate() + '/' + from.getMonth() + '/' + from.getFullYear() + '|' + 
                     to.getDate() + '/' + to.getMonth() + '/' + to.getFullYear());
