@@ -111,23 +111,11 @@
     <div id="sidebar">
     <div id="to-remove">
     <h3>TapIn.tv is a mobile video app. It’s pretty simple. </h3>
-When you see something interesting, like:</br></br>
-  <div id="myCarousel2" class="carousel slide">
-          <!-- Carousel items -->
-           <div class="carousel-inner">
-            <div class="active item"><img src='assets/img/obama.png' /><p><i>Barack Obama crowdsurfing.</p></i></div>
-            <div class="item"><img src='assets/img/clown.png' /><p><i>A clown tripping.</p></i></div>
-            <div class="item"><img src='assets/img/wayne.png' /><p><i>Lil Wayne doing a sick kickflip over shark and crocodile infested flames.</p></i></div>
-            <div class="item"><img src='assets/img/protest.png' /><p><i>Protests.</p></i></div>
-            <div class="item"><img src='assets/img/hero.png' /><p><i>A super hero doing heroic things.</p></i></div>
-          </div>
+    See what our other users have been up to:</br></br>
+      </div>
 
-          <!-- Carousel nav -->
-          <a class="carousel-control left" href="#myCarousel2" data-slide="prev"><p>&lsaquo;</p></a>
-          <a class="carousel-control right" href="#myCarousel2" data-slide="next"><p>&rsaquo;</p></a>
-        </div> 
-        Take out the <a href='http://itunes.apple.com/us/app/tapin.tv/id540925404?ls=1&mt=8'>TapIn.tv</a> app to get video of it within seconds. It’s easy. Just Tap the record button. You're now streaming live and anyone on TapIn.tv can see what you’re seeing. </br></br>Check out some interesting videos below:<br /><img style="position:relative; left:400px; top: -30px;margin-bottom:-30px" src="assets/img/arrow.png" />
-    </div>
+    <input class="btn-danger btn-large" type="button" value="Get the app" onclick="document.location.href='http://itunes.apple.com/us/app/tapin.tv/id540925404?mt=8'" style='margin-top: 5px; font-weight: 700; float:right'>
+
         <h2 id='currently-playing' class='hidden'>Currently Playing</h2>
         <div id="player-container" class='hidden'></div>
         <div id="controls" class="hidden controls"><div id="controls-flow"></div><div id='points'></div></div>
@@ -158,14 +146,17 @@ When you see something interesting, like:</br></br>
         <h2 id="comment-header" class="hidden">Comment</h2>
         <form id="commentbox" class='hidden'>
             <div class='user-icon'></div>
-            <textarea id='comment-form' class='span4' rows="10" cols="30" placeholder='Leave a comment...'></textarea> 
-            <input id='submit-comment' class="btn btn-danger" type="button" value="Submit" style='margin-top: 5px'>
+            <textarea id='comment-form' class='span4' rows="10" cols="30" placeholder='Leave a comment...' style="float:left;"></textarea> 
+            <input id='submit-comment' class="btn btn-danger" type="button" value="Submit" style='position:absolute; margin-top: 5px; margin-left: 3px'>
         </form>
         <div class="hidden" id="commentloggedout">
             Log-in or create an account to comment!
         </div>
         <div class='hidden' id='comments'>
         </div>
+        <h2>Popular Videos</h2>
+        <div id="sidebar-popular"></div>
+        <div id="more" style="float:right; font-size: 15px; padding-bottom: 16px"><a>More...</a></div>
     </div>
 
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCT6d3KrGPRmnP-Z1asHB6MuC9Ed0idEXg&amp;sensor=false"></script>
