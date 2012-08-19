@@ -233,7 +233,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
      * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
      * @param  {string=}                            type         Optional type of the request (e.g. 'POST', 'PATCH'). Defaults to GET.
      */
-    _staticApi.call = function(endpoint, params, lambda, error_lambda, type) {
+    _staticApi.call = function(endpoint, params, lambda, error_lambda, type, timeout) {
         if (typeof(type) !== 'string') {
             type = 'get';
         }
@@ -262,6 +262,10 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
                 _staticApi.onApiError.apply(error + ": " + thrown);
             }
         };
+
+        if (typeof(timeout) !== 'undefined') {
+            conf['timeout'] = timeout;
+        }
 
         // If we're using IE < 10 we need to use JSONP because they don't support CORS headers
         // JSONP leaks memory, though, so it's not very optimal
@@ -348,14 +352,14 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
      * @param  {function(Object.<string, string>)}  lambda       Function to execute on success, taking response data
      * @param  {function(string)}                   error_lambda Function to execute on error, taking error code
      */
-    _staticApi.get_object_by_key = function(obj, key, lambda, error_lambda)
+    _staticApi.get_object_by_key = function(obj, key, lambda, error_lambda, timeout)
     {
          var params = null
 
         _staticApi.call(('get/' + obj + "/" + key), params, function(data){
             Log('debug', 'response data:', data);
             lambda(data);
-        }, error_lambda)
+        }, error_lambda, 'get', timeout)
     }
 
     /**
@@ -382,7 +386,7 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
     }
 
     _staticApi.get_random = function(lambda, error_lambda){
-        _staticApi.get_object_by_key('random', 'stream', lambda, error_lambda);
+        _staticApi.get_object_by_key('random', 'stream', lambda, error_lambda, 500);
     }
 
     /**
