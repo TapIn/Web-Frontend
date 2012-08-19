@@ -27,6 +27,12 @@
     visibility: hidden;
 }
 
+.navbar .divider-vertical {
+    background-color: #A00500;
+    border-right: 1px solid #DB9994;
+    margin: 0 !important;
+}
+
 .time {
     color:green;
     margin-right: -5px;
