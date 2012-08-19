@@ -374,6 +374,17 @@ define(['tapin/util/log', 'tapin/util/event', 'jquery', 'tapin/config', 'tapin/u
         }, error_lambda)
     }
 
+    _staticApi.get_popular = function(lambda, error_lambda) {
+        _staticApi.call('get/streambyviewcount', {'sortby': 'Viewcount'}, function(data){
+            Log('debug', 'response data:', data);
+            lambda(data);
+        }, error_lambda);
+    }
+
+    _staticApi.get_random = function(lambda, error_lambda){
+        _staticApi.get_object_by_key('random', 'stream', lambda, error_lambda);
+    }
+
     /**
      * Gets comments associated with a specific stream.
      * @param  {string}                             streamID     The ID of the stream to get

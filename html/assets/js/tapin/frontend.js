@@ -122,6 +122,7 @@ define([
 
         this.updateNav = function(page)
         {
+            return;
             var matchingPage = JQuery('ul.nav li a[href="' + page + '"]');
             if (matchingPage.length > 0) {
                 JQuery('ul.nav li').each(function(){
@@ -586,6 +587,25 @@ define([
                         if (window.focus) {newwindow.focus()}
                         return false;
                     })
+
+                    $("#popular").live('click', function(event){
+                        event.stopPropagation();
+                        Log('info', 'Showing popular');
+                        Api.get_popular(function(data){
+                            _this.userModal.show("{{#each streams}}<div class='stream-preview'><a  href='#video/{{this.0.}}/now' onclick=\"$('#fancybox-close').click()\"><img src='http://thumbs.tapin.tv/{{this.0.}}/144x108/latest.jpg'/></a></div>{{/each}}", {'streams':data.slice(0,25)});
+                        })
+                        return false;
+                    })
+
+                    $('#random').live('click', function(event){
+                        event.stopPropagation();
+                        Log('info', 'Showing a random video');
+                        Api.get_random(function(data){
+                            console.log(data.streamid);
+                            window.location.hash = '#video/' + data.streamid + '/now';
+                        });
+                        return false;
+                    });
 
                     $('#changepassform').live('submit', function(){
                         if ($('#oldpass').val() && $('#newpass').val() && $('#newpass2').val()) {
