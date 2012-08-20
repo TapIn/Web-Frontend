@@ -44,6 +44,8 @@ define([
         this.onLogout = new Event();
         this.onStreamChange = new Event();
         this.externalLink = true;
+        this.videosLoaded = 0
+        this.popularVideos = null;
 
         try {
             this.current_stream_id = window.location.href.split('#video/')[1].split('/')[0];
@@ -568,6 +570,28 @@ define([
                         $('#date-range-field a').css({borderBottomRightRadius:5});
                       }
                       return false;
+                    });
+
+                    // Get popular to load
+                    Api.get_popular(function(data){
+                        _this.popularVideos = data
+                        for (var i=0; i<48; i++){
+                            $('#sidebar-popular').append('<div class="stream-preview"><a href="#video/' +  
+                                _this.popularVideos[i][0] + '/' + _this.popularVideos[i][1]['streamend'] + 
+                                '""><img src="http://thumbs.tapin.tv/' + _this.popularVideos[i][0] + 
+                                '/144x108/latest.jpg"/></a></div>')
+                        }
+                        videosLoaded = 48;
+                    })
+
+                    $('#more').click(function(e) {
+                        for (var i=videosLoaded; i<videosLoaded+48; i++)
+                        {
+                            $('#sidebar-popular').append('<div class="stream-preview"><a href="#video/' +  
+                                _this.popularVideos[i][0] + '/' + _this.popularVideos[i][1]['streamend'] + 
+                                '""><img src="http://thumbs.tapin.tv/' + _this.popularVideos[i][0] + 
+                                '/144x108/latest.jpg"/></a></div>')
+                        }            
                     });
 
                     $('.share.fb').live('click', function(event){
