@@ -131,7 +131,7 @@
 .controls {
     position:relative;
     height:35px;
-    margin: -48px 0 0;
+    margin: -28px 0 0;
     padding:5px 0 0;
     background-color:rgba(0,0,0,0.75);
     width: 500px;
@@ -143,14 +143,14 @@
 .controls .play, .controls .pause {
     position:absolute;
     width: 18px;
-    height:14px;
+    height:13px;
     text-indent:-999em;
     cursor:pointer;
     overflow:hidden;
     background:url(../img/playpause.png) center top no-repeat;
     margin-top: 7px;
     margin-left: 10px;
-    background-position:center -14px;
+    background-position:center -15px;
 
 }
 
@@ -206,8 +206,8 @@
 
 #upvote {
     position:absolute;
-    width:22px;
-    height:21px;
+    width:21px;
+    height:20px;
     background: url(../img/upvote_hollow.png);
     float:right;
     right: 70px;
@@ -245,7 +245,7 @@
 
 #downvote {
     position:absolute;
-    width:22px;
+    width:21px;
     height:21px;
     background: url(../img/downvote_hollow.png);
     float:right;
@@ -255,7 +255,7 @@
 }
 
 #downvote.active {
-    width:22px;
+    width:21px;
     height:21px;
     background: url(../img/downvote_filled.png) no-repeat;
     background-position:center 0px;
@@ -571,7 +571,7 @@ body {
 
 .carousel-inner {
     margin-bottom: -15px;
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
 }
 
