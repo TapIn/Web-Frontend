@@ -145,6 +145,12 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
         {
             player_div = JQuery('<div id="player"></div>');
             $('#player-container').html(player_div)
+            $('#player-container').mouseover(function(){
+                $('#controls').css('opacity',1);
+            });
+            $('#player-container').mouseout(function(){
+                $('#controls').css('opacity',0);
+            });
             // init_player(null);
 
         }

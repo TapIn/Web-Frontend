@@ -129,6 +129,26 @@
 
 /* root element should be positioned relatively so that
     child elements can be positioned absolutely */
+
+#controls {
+    opacity:0;
+    -moz-transition-property: opacity;
+    -moz-transition-duration: .4s;
+    -moz-transition-delay: 0s;
+    /* WebKit */
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: .4s;
+    -webkit-transition-delay: 0s;
+    /* Opera */
+    -o-transition-property: opacity;
+    -o-transition-duration: .4s;
+    -o-transition-delay: 0s;
+    /* Standard */
+    transition-property: opacity;
+    transition-duration: .4s;
+    transition-delay: 0s;
+}
+
 .controls {
     position:relative;
     height:35px;
@@ -137,6 +157,10 @@
     background-color:rgba(0,0,0,0.75);
     width: 500px;
     margin-bottom: 6px;
+}
+
+#inner-controls {
+    opacity: 0;
 }
 
 /* when play button toggles between play/pause class
