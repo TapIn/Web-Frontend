@@ -45,6 +45,7 @@
 
 #see-videos {
     float:right;
+    margin-right: -15px;
 }
 #video-meta {
     margin-bottom: 9px;
