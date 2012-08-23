@@ -580,7 +580,7 @@ define([
                             $('#sidebar-popular').append('<div class="stream-preview"><a href="#video/' +  
                                 _this.popularVideos[i][0] + '/' + _this.popularVideos[i][1]['streamend'] + 
                                 '""><img src="http://thumbs.tapin.tv/' + _this.popularVideos[i][0] + 
-                                '/144x108/latest.jpg"/></a></div>')
+                                '/144x108/latest.jpg"/ onError="this.src=\' assets/img/default_thumb.png\'"></a></div>')
                         }
                         videosLoaded = 48;
                     })
@@ -591,7 +591,7 @@ define([
                             $('#sidebar-popular').append('<div class="stream-preview"><a href="#video/' +  
                                 _this.popularVideos[i][0] + '/' + _this.popularVideos[i][1]['streamend'] + 
                                 '""><img src="http://thumbs.tapin.tv/' + _this.popularVideos[i][0] + 
-                                '/144x108/latest.jpg"/></a></div>')
+                                '/144x108/latest.jpg" onError="this.src=\' assets/img/default_thumb.png\'"/></a></div>')
                         }            
                     });
 
@@ -617,7 +617,7 @@ define([
                         event.stopPropagation();
                         Log('info', 'Showing popular');
                         Api.get_popular(function(data){
-                            _this.userModal.show("{{#each streams}}<div class='stream-preview'><a  href='#video/{{this.0.}}/now' onclick=\"$('#fancybox-close').click()\"><img src='http://thumbs.tapin.tv/{{this.0.}}/144x108/latest.jpg'/></a></div>{{/each}}", {'streams':data.slice(0,25)});
+                            _this.userModal.show("{{#each streams}}<div class='stream-preview'><a  href='#video/{{this.0.}}/now' onclick=\"$('#fancybox-close').click()\"><img src='http://thumbs.tapin.tv/{{this.0.}}/144x108/latest.jpg' onError='this.src=\' assets/img/default_thumb.png\''/></a></div>{{/each}}", {'streams':data.slice(0,25)});
                         })
                         return false;
                     })
