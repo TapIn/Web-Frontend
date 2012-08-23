@@ -315,7 +315,8 @@ define([
                 // Hide the welcome pintop
                 $('#welcome').addClass('hidden');
 
-                $('#commentbox .user-icon').css('background-image', "url('" + _this.user.getAvatar35() + "')");
+                $('.user-icon').css('background-image', "url('" + _this.user.getAvatar35() + "')");
+
             });
 
             _this.onLogout.register(function(){
@@ -340,7 +341,7 @@ define([
                 // Show welcome pintop
                 $('#welcome').removeClass('hidden');
 
-                $('#commentbox .user-icon').css('background-image', "url('assets/img/icon-noavatar-35.png')");
+                $('.user-icon').css('background-image', "url('assets/img/icon-noavatar-35.png')");
             });
 
             $('a#signout').click(function(){
