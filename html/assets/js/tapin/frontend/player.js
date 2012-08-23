@@ -116,6 +116,7 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
                         mixpanel.track('broken-stream', {'url': clip.url});
                     }
                 },
+
                 onEnded: null,
                 clip: clip,
                 play: {
@@ -138,7 +139,8 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             $('#controls').append($('#volume'));
             $('#controls').append($('#upvote'));
             $('#controls').append($('#downvote'));
-
+            $('#controls').append($('#fullscreen'));
+            // $('#fullscreen').click(function(){alert(_player.toggleFullscreen())})
         }
 
         var constructor = function(div)
@@ -147,6 +149,12 @@ define(['flowplayer', 'tapin/util/log', 'jquery'], function(Flowplayer, Log, JQu
             $('#player-container').html(player_div)
             $('#player-container').mouseover(function(){
                 $('#controls').css('opacity',1);
+            });
+            $('#controls').mouseover(function(){
+                $('#controls').css('opacity',1);
+            });
+            $('#controls').mouseout(function(){
+                $('#controls').css('opacity',0);
             });
             $('#player-container').mouseout(function(){
                 $('#controls').css('opacity',0);
