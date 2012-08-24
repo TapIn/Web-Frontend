@@ -26,7 +26,7 @@ define(['jquery', 'documentcloud/backbone', 'tapin/frontend', 'tapin/util/log', 
          */
         this.showVideoAtTime = function(id, time)
         {
-            if(!isNaN(time) && window.fe.externalLink){
+            if(!isNaN(time) && window.fe.externalLink && time!=0){
                 var start = new Date(time*1000-259200000);
                 var end = new Date(time*1000+259200000);
                  $('#datepicker-invisible').text(start.getDate() + '/' + start.getMonth() + '/' + start.getFullYear() + '|' + 

@@ -9,6 +9,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
         var _oms = null;
         var _clickedMarkers = {};
         var _currentStream = null;
+        var _refreshTimer = 0;
         try {
             _currentStream = window.location.href.split('#video/')[1].split('/')[0];
         }
@@ -341,7 +342,7 @@ define(['tapin/frontend/map/pincollection', 'tapin/util/log', 'tapin/util/event'
             //Handles pin clustering
             _markerCluster.addMarker(_markers[pin.Uid]);
             //This handles the spidifying of hte pins
-            _oms.addMarker(_markers[pin.Uid]);
+            _oms.addMarker(_markers[pin.Uid]); 
 
             pin.onClick.register(function(){
                 _this.onPinClick.apply(pin);
