@@ -49,6 +49,7 @@ define([
 
         try {
             this.current_stream_id = window.location.href.split('#video/')[1].split('/')[0];
+
         }
         catch (e){
             this.current_stream_id = '';
@@ -315,7 +316,7 @@ define([
                 // Hide the welcome pintop
                 $('#welcome').addClass('hidden');
 
-                $('.user-icon').css('background-image', "url('" + _this.user.getAvatar35() + "')");
+                $('#commentbox .user-icon').css('background-image', "url('" + _this.user.getAvatar35() + "')");
 
             });
 
@@ -519,6 +520,11 @@ define([
                         }
 
                         $('#video-meta').removeClass('hidden');
+                        _this.api.get_object_by_key('user', data.user, function(d){
+                            if(d.emailhash){
+                                $('#video-meta .user-icon').css('background-image', "url('http://www.gravatar.com/avatar/"+d.emailhash+"?r=pg&s=35&d=http%3A%2F%2Fwww.tapin.tv%2Fassets%2Fimg%2Ficon-noavatar-35.png')");
+                            }
+                        })
                         $('#video-share').removeClass('hidden');
                         if(data.streamend == 0){
                             $('#video-meta #date').html('Live Streaming');
