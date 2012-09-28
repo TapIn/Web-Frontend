@@ -12,5 +12,7 @@ Desktop.ini
 
 local.ini
 
+.sass-cache
+
 # Compiled files
 /html-compiled/

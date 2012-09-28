@@ -1,0 +1,48 @@
+@import "config";
+
+@import "header";
+
+body {
+    background: #fff url(../img/bg-white-noise.png);
+}
+
+.container {
+    padding-top: 100px;
+}
+
+.hero {
+    text-align: center;
+
+    h1 {
+        font-family: $header-font;
+        font-size: 3em;
+        font-weight: normal;
+    }
+
+    img {
+        margin: 25px 0;
+    }
+
+    h2 {
+        font-family: $header-font;
+        font-weight: lighter;
+        font-size: 1.6em;
+    }
+
+    .download-button {
+        margin-top: 25px;
+        @include rounded-button(30px);
+    }
+}
+
+.ab {
+    margin: 3px;
+
+    &.zone {
+        @include rounded-button(10px, $black);
+    }
+
+    &.option {
+        @include rounded-button(10px, $light-black);
+    }
+}

@@ -23,26 +23,12 @@
     <meta property="og:description" content="TapIn.tv is the fastest way to share video online."/>
 
     <link rel="stylesheet" href="<?=ASSETS_URI?>/css/bootstrap.css"/>
+    <link rel="stylesheet" href="<?=ASSETS_URI?>/css/tapin.css"/>
 </head>
 <body>
     <div class="container">
-        <!-- Headerrrrrr -->
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
-                <div class="container">
-                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    </button>
-                    <a class="brand" href="/index.html">TapIn.tv</a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li>
-                                <a href="./index.html">Home</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <?php include('nav.php'); ?>
             </div>
         </div>

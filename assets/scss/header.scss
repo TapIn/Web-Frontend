@@ -1,0 +1,43 @@
+/**
+ * Navigation stuffs!
+ */
+@import "config";
+.navbar {
+    .navbar-inner {
+        background: $white url(../img/header.png);
+        height: 69px;
+        border: 0;
+
+        .container {
+            padding-top: 16px;
+
+            .brand {
+                color: $black;
+                font-size: 28px;
+                font-family: $header-font;
+                margin-right: 15px;
+            }
+        }
+    }
+
+    .nav {
+        margin-top: 4px;
+
+        > li > a, li a:hover, li a:active {
+            @include rounded-button-stub;
+        }
+
+        > li.active > a, li.active > a:hover, li.active a:active {
+            @include rounded-button;
+        }
+    }
+
+    .feature {
+        float: right;
+        margin-top: 4px;
+
+        a {
+            @include rounded-button;
+        }
+    }
+}
