@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Install webpy
+sleep 5
+apt-get update
+sleep 5
+
 echo "--> Installing Apache, PHP, and friends"
 apt-get install -y apache2 php5 libapache2-mod-php5 php5-curl
 
@@ -17,7 +20,7 @@ echo '<VirtualHost *:80>
                 Options FollowSymLinks
                 AllowOverride All
         </Directory>
-</VirtualHost>' > /etc/apache2/sites-available/000-default
+</VirtualHost>' > /etc/apache2/sites-available/default
 
 echo "--> Restarting apache"
 service apache2 restart

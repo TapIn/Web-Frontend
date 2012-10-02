@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm /var/www
-cp /tmp/bootstrap/stage3 /var/www
+cp -r /tmp/bootstrap/stage3 /var/www
 
 rm -rf /var/www/init.d
 
