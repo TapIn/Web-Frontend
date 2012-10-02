@@ -40,7 +40,7 @@
         </ul>
 
         <div class="feature">
-            <a href="<?=\FSStack\Config::get('app', 'download_app')?>">Download App</a>
+            <a href="<?=\FSStack\Config::get('app', 'download_app')?>" onclick="mixpanel.track('download_click', {'btn':'nav'});return true;">Download App</a>
         </div>
     </div>
 </div>

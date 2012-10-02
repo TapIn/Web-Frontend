@@ -1,4 +1,7 @@
 <?php include('parts/header.php'); ?>
+<script type="text/javascript">
+    mixpanel.track('userpage_view');
+</script>
 <div class="userprofile">
     <?php
     /**
@@ -39,6 +42,7 @@
             <?php foreach ($user->videos as $video) : ?>
                 <?php if ($user->is_live && $video->streamid === $user->live->streamid) continue; // Don't list the live video again ?>
                 <a
+                    onclick="mixpanel.track('video_click', {'from':'user'});return true;"
                     href="<?=\CuteControllers\Router::get_link('/v/' . $video->streamid);?>"
                     class="video">
 

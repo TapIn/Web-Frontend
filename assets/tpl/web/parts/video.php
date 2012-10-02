@@ -9,8 +9,14 @@
     <div class="videoinfo live">
         <i>&bull;</i> Live Now
     </div>
+    <script type="text/javascript">
+        mixpanel.track('play', {'live':'true', 'streamid':'<?=$stream->streamid?>'});
+    </script>
 <?php else : ?>
     <div class="player" data-rtmp="rtmp://recorded.stream.tapin.tv/cfx/st/">
         <video src="http://cdn.content.tapin.tv/<?=$stream->streamid?>/stream.mp4"></video>
     </div>
+    <script type="text/javascript">
+        mixpanel.track('play', {'live':'false', 'streamid':'<?=$stream->streamid?>'});
+    </script>
 <?php endif; ?>
