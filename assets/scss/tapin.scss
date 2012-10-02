@@ -1,0 +1,208 @@
+@import "config";
+
+@import "header";
+
+body {
+    background: #fff url(../img/bg-white-noise.png);
+}
+
+.container {
+    padding-top: 100px;
+}
+
+.hero {
+    text-align: center;
+
+    h1 {
+        font-family: $header-font;
+        font-size: 3em;
+        font-weight: normal;
+    }
+
+    img {
+        margin: 25px 0;
+    }
+
+    h2 {
+        font-family: $header-font;
+        font-weight: lighter;
+        font-size: 1.6em;
+    }
+
+    .download-button {
+        margin-top: 25px;
+        @include rounded-button(30px);
+    }
+}
+
+.ab {
+    margin: 3px;
+
+    &.zone {
+        @include rounded-button(10px, $black);
+    }
+
+    &.option {
+        @include rounded-button(10px, $light-black);
+    }
+}
+
+.userprofile {
+    width: 800px;
+    margin-left: 80px;
+
+    .row {
+        clear: both;
+    }
+
+    .details {
+        .picture {
+            width: 156px;
+            height: 156px;
+            margin: 0 15px 0 14px;
+            float: left;
+        }
+
+        .name {
+            color: $light-black;
+            font: 50px $header-font;
+            font-weight: 600;
+            text-shadow: 0px 2px 2px #fff;
+            display: block;
+        }
+
+        .description {
+            color: $gray;
+            font: 25px $header-font;
+            font-weight: 300;
+            display: block;
+        }
+
+        margin-bottom: 25px;
+    }
+
+    .live {
+        margin-left: -80px;
+        text-align: center;
+        .player {
+            width: 640px;
+            height: 480px;
+            margin: -15px auto 20px auto;
+        }
+
+        .videoinfo {
+            margin: 0 auto;
+            width: 640px;
+            text-align: right;
+            margin-top: -30px;
+            color: $red;
+
+            i {
+                font-size: 45px;
+                position: relative;
+                top: 10px;
+            }
+        }
+
+        margin-bottom: 40px;
+    }
+
+    .videos {
+        .video {
+            border: 1px solid #c2c2c2;
+            background: #fff;
+            padding: 4px;
+            display: inline-block;
+            float: left;
+            @include rounded(1);
+            margin: 10px;
+
+            img {
+                width: 167px;
+                height: 126px;
+            }
+        }
+    }
+}
+
+#loginregisterform {
+    width: 603px;
+    text-align: center;
+    margin: 0 auto;
+    font-family: $header-font;
+
+    form {
+        padding: 10px;
+        height: 250px;
+
+        border-top: 1px solid $gray;
+        border-bottom: 1px solid $gray;
+
+        &#register {
+            float: left;
+            background: white;
+            width: 320px;
+
+            @include rounded-special(top-left, 2px);
+            @include rounded-special(bottom-left, 2px);
+
+            border-left: 1px solid $gray;
+
+            input[type='submit'] {
+                @include rounded-button(12px, $red);
+                border: 0;
+            }
+        }
+
+        &#login {
+            float: right;
+            background: $white;
+            width: 240px;
+
+            @include rounded-special(top-right, 2px);
+            @include rounded-special(bottom-right, 2px);
+
+            border-right: 1px solid $gray;
+
+            input[type='submit'] {
+                @include rounded-button(12px, $gray);
+                border: 0;
+            }
+        }
+    }
+
+
+    hr {
+        clear: both;
+        visibility: hidden;
+    }
+}
+
+.flowplayer .fp-progress {
+    background-color: $red !important;
+}
+
+.videopage {
+    .player {
+        width: 860px;
+        float: left;
+    }
+
+    .picture {
+        display: block;
+        width: 50px;
+        height: 50px;
+        padding: 3px;
+        margin-left: 19px;
+        float: right;
+
+        background: #fff;
+        border: 1px solid $gray;
+        @include rounded(2);
+
+        img {
+            width: 50;
+            height: 50;
+        }
+    }
+}

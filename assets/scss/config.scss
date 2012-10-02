@@ -1,0 +1,59 @@
+$header-font: "nimbus-sans", "Helvetica", "Arial", sans-serif;
+
+$red: #ff4f4f;
+$black: #242424;
+$light-black: #4e5e5e;
+$white: #f1f1f1;
+$gray: #c2c2c2;
+
+$radius: 3px;
+
+@mixin rounded($radius) {
+    -moz-border-radius: $radius;
+    -webkit-border-radius:$radius;
+    border-radius:$radius;
+}
+
+@mixin rounded-special($where, $radius) {
+    -moz-border-#{$where}-radius: $radius;
+    -webkit-border-#{$where}-radius:$radius;
+    border-#{$where}-radius:$radius;
+}
+
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+
+@mixin text-shadow($shadow) {
+    -webkit-text-shadow: $shadow;
+    -moz-text-shadow: $shadow;
+    text-shadow: $shadow;
+}
+
+/**
+ * Generates a placeholder for a rounded-button, such that switching to a rounded button (e.g. on hover) won't generate any jarring transition
+ */
+@mixin rounded-button-stub ($size: 15px) {
+    font-family: $header-font;
+    font-size: $size;
+
+    display: inline-block;
+    text-decoration: none;
+    padding: $size/2 $size*.6;
+
+    @include box-shadow(none);
+    @include text-shadow(none);
+}
+
+/**
+ * Generates a rounded button
+ */
+@mixin rounded-button($size: 15px, $background: $red, $foreground: $white) {
+    @include rounded-button-stub($size);
+    @include rounded($radius);
+
+    background-color: $background;
+    color: $foreground;
+}
