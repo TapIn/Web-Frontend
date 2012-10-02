@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm /var/www
+rm -rf /var/www
 cp -r /tmp/bootstrap/stage3 /var/www
 
 rm -rf /var/www/init.d
