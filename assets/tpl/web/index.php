@@ -9,4 +9,21 @@
 
         </div>
     </div>
+    <div id="underscroll">
+        <img src="<?=ASSETS_URI?>/img/underscroll.png" /><br />
+        <a class="download-button" href="<?=\FSStack\Config::get('app', 'download_app')?>">Download the App</a><br /><br />
+        <img src="<?=ASSETS_URI?>/img/user-vids.png" /><br />
+        <?php $featured_streams = new \FSStack\TapIn\Models\Stream(array('viewcount' => ''), 'Viewcount'); ?>
+        <div class="videos">
+            <?php $i = 0; foreach ($featured_streams as $stream) : $i++; if ($i > 16) break; ?>
+                <a
+                    href="<?=\CuteControllers\Router::get_link('/v/' . $stream->streamid);?>"
+                    class="video">
+
+                    <img src="<?=THUMBS_URI . '/' . $stream->streamid . '/480x360/latest.jpg'?>" />
+                </a>
+            <?php endforeach; ?>
+            <hr />
+        </div>
+    </div>
 <?php include('parts/footer.php'); ?>

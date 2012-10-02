@@ -186,6 +186,10 @@ class Api
 
         $url .= $endpoint;
 
+        if (substr($url, -1) == '/') {
+            $url = substr($url, 0, strlen($url) - 1);
+        }
+
 
         // Build the query string:
         $body = http_build_query($params);

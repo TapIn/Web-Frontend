@@ -6,6 +6,48 @@ body {
     background: #fff url(../img/bg-white-noise.png);
 }
 
+
+.live {
+    color: $red;
+
+    &:before {
+        font-size: 2em;
+        content: "•";
+        position: relative;
+        top: .18em;
+        margin-right: -.1em;
+        margin-left: -.1em;
+    }
+}
+
+#underscroll {
+    background: $black;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin-top: 80px;
+
+    padding-bottom: 50px;
+
+    .download-button {
+        margin-top: 25px;
+        @include rounded-button(40px);
+    }
+
+    .videos {
+        width: 800px;
+        margin: 0 auto;
+
+        hr {
+            clear: both;
+            visibility: hidden;
+        }
+    }
+
+    @include box-shadow(inset 0 0 40px #000);
+}
+
 .container {
     padding-top: 100px;
 }
@@ -106,21 +148,21 @@ body {
 
         margin-bottom: 40px;
     }
+}
 
-    .videos {
-        .video {
-            border: 1px solid #c2c2c2;
-            background: #fff;
-            padding: 4px;
-            display: inline-block;
-            float: left;
-            @include rounded(1);
-            margin: 10px;
+.videos {
+    .video {
+        border: 1px solid #c2c2c2;
+        background: #fff;
+        padding: 4px;
+        display: inline-block;
+        float: left;
+        @include rounded(1);
+        margin: 10px;
 
-            img {
-                width: 167px;
-                height: 126px;
-            }
+        img {
+            width: 167px;
+            height: 126px;
         }
     }
 }
