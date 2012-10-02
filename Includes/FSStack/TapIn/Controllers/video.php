@@ -8,7 +8,7 @@ class video extends \CuteControllers\Base\Rest
 {
     function get_index()
     {
-        $video = new Models\Video($this->request->get('id'));
+        $stream = new Models\Stream($this->request->get('stream_id'));
         include(TEMPLATE_DIR . '/web/video.php');
     }
 }

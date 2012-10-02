@@ -4,6 +4,7 @@ $red: #ff4f4f;
 $black: #242424;
 $light-black: #4e5e5e;
 $white: #f1f1f1;
+$gray: #c2c2c2;
 
 $radius: 3px;
 
@@ -11,6 +12,12 @@ $radius: 3px;
     -moz-border-radius: $radius;
     -webkit-border-radius:$radius;
     border-radius:$radius;
+}
+
+@mixin rounded-special($where, $radius) {
+    -moz-border-#{$where}-radius: $radius;
+    -webkit-border-#{$where}-radius:$radius;
+    border-#{$where}-radius:$radius;
 }
 
 @mixin box-shadow($shadow) {

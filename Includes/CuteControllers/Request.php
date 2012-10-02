@@ -15,7 +15,6 @@ class Request
     public $full_uri;
     public $query;
     public $body;
-    protected $_get;
     protected $_post;
 
     public function __construct($ip, $username, $password, $method, $scheme, $hostname, $port, $path, $full_path, $query, $post, $body)
@@ -32,7 +31,6 @@ class Request
         $this->full_uri = $full_path;
         $this->query = $query;
 
-        parse_str($this->query, $this->_get);
         $this->_post = $post;
 
         $this->body = $body;
@@ -109,6 +107,10 @@ class Request
                 $pathparts = explode('/', $this->uri);
                 return array_pop($pathparts);
                 break;
+            case '_get':
+                $_get = array();
+                parse_str($this->query, $_get);
+                return $_get;
             case 'file_name':
                 return strpos($this->file, '.') !== FALSE? substr($this->file, 0, strrpos($this->file, '.')) : $this->file;
                 break;

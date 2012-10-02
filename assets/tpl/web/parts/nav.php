@@ -4,15 +4,27 @@
         <ul class="nav">
             <?php
                 $pages = array(
-                    array('name' => 'Join', 'uri' => '/join.html'),
-                    array('name' => 'Login', 'uri' => '/login.html'),
-                    array('name' => 'About', 'uri' => '/about.html'),
-                    array('name' => 'Map', 'uri' => '/map.html'),
+                    //array('name' => 'About', 'uri' => '/about.html'),
+                    //array('name' => 'Map', 'uri' => '/map.html'),
                 );
+
+                if (isset($_SESSION['username'])) {
+                    $pages[] = array('name' => 'My Profile', 'uri' => '/' . $_SESSION['username']);
+                    $pages[] = array('name' => 'Logout', 'uri' => '/login/logout.html');
+                } else {
+                    $pages[] = array('name' => 'Join', 'uri' => '/login.html');
+                    $pages[] = array('name' => 'Login', 'uri' => '/login.html');
+                }
 
                 if (isset($this)) {
                     $current = explode('/', $this->request->uri);
-                    $current = '/' . $current[1];
+                    if (isset($current[1])) {
+                        $current = '/' . $current[1];
+                    } else {
+                        $current = '/';
+                    }
+                } else {
+                    $current = '';
                 }
             ?>
             <?php foreach ($pages as $page) : ?>

@@ -1,4 +1,34 @@
     </div>
+
+    <?php // Flowplayer skin: ?>
+    <link rel="stylesheet" type="text/css" href="<?=ASSETS_URI?>/flowplayer/skin/minimalist.css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+    <script src="<?=ASSETS_URI?>/flowplayer/flowplayer.js"></script>
+    <script type="text/javascript">
+        flowplayer.conf = {
+            swf: '<?=ASSETS_URI?>/flowplayer/flowplayer.swf',
+            key: '$244665380945079',
+            logo: null,
+            embed: false,
+            debug: true,
+            errors: [ 'Video loading aborted', 'Network error', 'Video not properly encoded', 'Video could not be found', 'Media not supported' ],
+            autoplay: true,
+            engine: 'flash'
+        }
+
+        // Don't use feature detection because Android devices "support" flash but it's not optimal.
+        var agent = navigator.userAgent.toLowerCase();
+        if ((agent.indexOf('iphone') != -1) || (agent.indexOf('ipod') != -1) || (agent.indexOf('ipad') != -1) ||
+            (agent.indexOf('android') != -1)) {
+            flowplayer.conf.engine = 'html5';
+        }
+
+
+        $(".player").flowplayer();
+    </script>
+
     <script type="text/javascript" src="//use.typekit.net/edm6est.js"></script>
     <script type="text/javascript">
         try{Typekit.load();}catch(e){}
@@ -15,15 +45,10 @@
         a._i.push([b,c,f])};a.__SV=1.1;})(document,window.mixpanel||[]);
 
         mixpanel.init("<?=\FSStack\Config::get('mixpanel', 'token')?>");
-
-        <?php // Register test enrollment with PHP ?>
-
-        mixpanel.register({
-        <?php $i = 0; foreach (\FSStack\AB::get_enrollment() as $test_name=>$variant) : $i++;?>
-            "<?=$test_name?>": "<?=$variant?>"<?php if ($i !== count(\FSStack\AB::get_enrollment())) echo ","; ?>
-
-        <?php endforeach; ?>
-        });
     </script>
+    <?=\AutoAB\AB::get_mixpanel_enrollment()?>
+
 </body>
 </html>
+
+

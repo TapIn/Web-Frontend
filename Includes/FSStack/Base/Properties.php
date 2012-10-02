@@ -8,12 +8,12 @@ abstract class Properties
      * Cache of reflectors for all objects
      * @var array
      */
-    private static $reflectors = array();
+    protected static $reflectors = array();
     /**
      * Gets a reflector for the current object
      * @return \ReflectionClass Reflector for the current object
      */
-    private function getReflector()
+    protected function getReflector()
     {
         // Ironic that we have a "getX" property in a system intended to replace it...
         if (!isset(static::$reflectors[get_class($this)]))
@@ -37,7 +37,7 @@ abstract class Properties
         $getter_name = '__get_' . $key;
         // If there's a defined getter, call it
         if ($this->getReflector()->hasMethod($getter_name)) {
-            return $this->getter_name();
+            return $this->$getter_name();
         }
 
         // If we're trying to access a property, allow it

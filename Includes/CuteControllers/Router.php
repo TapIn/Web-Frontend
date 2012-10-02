@@ -16,30 +16,7 @@ class Router
         $request = static::apply_filters(Request::current());
         $request = static::apply_rewrites($request);
 
-        // Now we do the actual routing
-        // First off, if there is no path, there will have to be a controller.
-        if ($request->path === '') {
-            if ($request->file) {
-                $request->uri = $request->path . '/' . $request->file_name . '/' . ($request->file_ext? '.' . $request->file_ext : '');
-                $controller = static::get_controller($path, $request);
-                if (substr($request->full_uri, -1) !== '/') {
-                    $request->full_uri .= '/';
-                }
-            } else {
-                $request->path = '/index';
-                $controller = static::get_controller($path, $request);
-            }
-        } else {
-            $controller = static::get_controller($path, $request);
-            if ($controller === FALSE) {
-                // Maybe they want to call the index function
-                $request->uri = $request->path . '/' . $request->file_name . '/' . ($request->file_ext? '.' . $request->file_ext : '');
-                if (substr($request->full_uri, -1) !== '/') {
-                    $request->full_uri .= '/';
-                }
-                $controller = static::get_controller($path, $request);
-            }
-        }
+        $controller = static::get_controller($path, Request::current());
 
         if ($controller !== FALSE) {
             $controller->route();
@@ -83,13 +60,48 @@ class Router
         exit;
     }
 
+    public function check_route($path)
+    {
+        return static::get_controller($path, Request::current()) !== FALSE;
+    }
+
+    protected static function get_controller($path, Request $request)
+    {
+        // Now we do the actual routing
+        // First off, if there is no path, there will have to be a controller.
+        if ($request->path === '') {
+            if ($request->file) {
+                $request->uri = $request->path . '/' . $request->file_name . '/' . ($request->file_ext? '.' . $request->file_ext : '');
+                $controller = static::get_controller_from_file($path, $request);
+                if (substr($request->full_uri, -1) !== '/') {
+                    $request->full_uri .= '/';
+                }
+            } else {
+                $request->path = '/index';
+                $controller = static::get_controller_from_file($path, $request);
+            }
+        } else {
+            $controller = static::get_controller_from_file($path, $request);
+            if ($controller === FALSE) {
+                // Maybe they want to call the index function
+                $request->uri = $request->path . '/' . $request->file_name . '/' . ($request->file_ext? '.' . $request->file_ext : '');
+                if (substr($request->full_uri, -1) !== '/') {
+                    $request->full_uri .= '/';
+                }
+                $controller = static::get_controller_from_file($path, $request);
+            }
+        }
+
+        return $controller;
+    }
+
     /**
      * Gets a controller associated with a request object
      * @param  string  $path    Path to controllers folder
      * @param  Request $request Request object to load the controller for
      * @return mixed            False if the controller doesn't exist, otherwise the controller
      */
-    protected static function get_controller($path, Request $request)
+    protected static function get_controller_from_file($path, Request $request)
     {
         $path = $path . $request->path . '.php';
         if (file_exists($path))
@@ -191,7 +203,23 @@ class Router
             $from = $rewrite[0];
             $to = $rewrite[1];
 
-            $request->uri = preg_replace('/^' + str_replace('/', '\\/', $from) + '$/i', $to, $request->uri);
+            if ($request->uri) {
+                $before_base = substr($request->full_uri, 0, strpos($request->full_uri, $request->uri));
+            } else {
+                $before_base = '';
+            }
+
+            $from = '/^' . str_replace('/', '\\/', $from) . '$/i';
+
+            $new_uri = preg_replace($from, $to, $request->uri);
+
+            if (strpos($new_uri, '?') !== FALSE) {
+                list($new_uri, $query_string) = explode('?', $new_uri, 2);
+                $request->query = ($request->query? $request->query . '&' . $query_string : $query_string);
+            }
+
+            $request->uri = $new_uri;
+            $request->full_uri = $before_base . $new_uri;
         }
 
         return $request;

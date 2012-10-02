@@ -11,6 +11,7 @@ $loader->register();
 // Set debug mode options
 if (\FSStack\Config::get('app', 'debug')) {
     ini_set('display_errors', 1);
+    \FSStack\TapIn\Api::$debug = TRUE;
 }
 
 // Set some defines
@@ -27,14 +28,18 @@ define('THUMBS_URI', \FSStack\Config::get('app', 'thumbs'));
 define('INCLUDES_DIR', WEB_DIR . '/Includes');
 define('INCLUDES_URI', WEB_URI . '/Includes');
 
+define('CONTROLLERS_DIR', INCLUDES_DIR . '/FSStack/TapIn/Controllers');
+
 define('TEMPLATE_DIR', ASSETS_DIR . '/tpl');
 define('TEMPLATE_URL', ASSETS_URI . '/tpl');
 
 set_include_path(INCLUDES_DIR . PATH_SEPARATOR . get_include_path());
 
+include('rewrites.php');
+
 // Start routing
 try {
-    \CuteControllers\Router::start('Includes/FSStack/TapIn/Controllers');
+    \CuteControllers\Router::start(CONTROLLERS_DIR);
 } catch (\CuteControllers\HttpError $err) {
     if ($err->getCode() == 401) {
         \CuteControllers\Router::redirect('/login.html');

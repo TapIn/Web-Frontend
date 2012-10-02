@@ -23,7 +23,11 @@ class Api
     public function __construct($token)
     {
         $this->token = $token;
-        self::$_user_api = $this;
+    }
+
+    public static function from_token($token)
+    {
+        return new static($token);
     }
 
     /**
@@ -37,10 +41,11 @@ class Api
         $result = self::fetch_api_resource('login', array(
                                                             'username' => $username,
                                                             'password' => $password), 'GET', FALSE);
-        if (isset($result['error'])) {
-            throw new \Exception($result['error']);
+        if (isset($result->error)) {
+            throw new \Exception($result->error);
         } else {
-            return new Api($result['token']);
+            $_SESSION['api_user'] = $result->token;
+            return new Api($result->token);
         }
     }
 
@@ -58,18 +63,13 @@ class Api
                                                            'password' => $password,
                                                            'email' => $email), 'GET', FALSE);
 
-        if (isset($result['error'])) {
-            throw new \Exception($result['error']);
+        if (isset($result->error)) {
+            throw new \Exception($result->error);
         } else {
-            return new Api($result['token']);
+            $_SESSION['api_user'] = $result->token;
+            return new Api($result->token);
         }
     }
-
-    /**
-     * Most recent User API
-     * @var Api
-     */
-    public static $User = NULL;
 
     ///////////////////////
     // Logged-in methods //
@@ -81,9 +81,10 @@ class Api
      * @param  string $key_value The key value
      * @return Object            Object
      */
-    public function user_get_object_by_key($obj_type, $key_value)
+    public function user_get_object_by_key($obj_type, $key_value, $sortby = NULL)
     {
-        return $this->user_fetch_api_resource($obj_type . '/' . $key_value);
+
+        return $this->user_fetch_api_resource($obj_type . '/' . $key_value, array('sortby' => $sortby));
     }
 
     /**
@@ -113,9 +114,9 @@ class Api
      * @param  string $key_value The key value
      * @return Object            Object
      */
-    public function user_get_object_by_secondary_key($obj_type, $key_name, $key_value)
+    public function user_get_object_by_secondary_key($obj_type, $key_name, $key_value, $sortby = NULL)
     {
-        return $this->user_fetch_api_resource($obj_type . 'by' . $key_name . '/' . $key_value);
+        return $this->user_fetch_api_resource($obj_type . 'by' . $key_name . '/' . $key_value, array('sortby' => $sortby));
     }
 
     /**
@@ -145,9 +146,9 @@ class Api
      * @param  string $key_value The key value
      * @return Object            Object
      */
-    public static function get_object_by_key($obj_type, $key_value)
+    public static function get_object_by_key($obj_type, $key_value, $sortby = NULL)
     {
-        return self::fetch_api_resource($obj_type . '/' . $key_value);
+        return self::fetch_api_resource($obj_type . '/' . $key_value, array('sortby' => $sortby));
     }
 
     /**
@@ -157,9 +158,9 @@ class Api
      * @param  string $key_value The key value
      * @return Object            Object
      */
-    public static function get_object_by_secondary_key($obj_type, $key_name, $key_value)
+    public static function get_object_by_secondary_key($obj_type, $key_name, $key_value, $sortby = NULL)
     {
-        return self::fetch_api_resource($obj_type . 'by' . $key_name . '/' . $key_value);
+        return self::fetch_api_resource($obj_type . 'by' . $key_name . '/' . $key_value, array('sortby' => $sortby));
     }
 
     /**
@@ -186,7 +187,6 @@ class Api
         $url .= $endpoint;
 
 
-
         // Build the query string:
         $body = http_build_query($params);
 
@@ -202,16 +202,17 @@ class Api
                 case "POST":
                 case "UPDATE":
                 case "PATCH":
-                    curl_setopt ($c, CURLOPT_POST, true);
-                    curl_setopt ($c, CURLOPT_POSTFIELDS, $body);
+                    curl_setopt ($ch, CURLOPT_POST, true);
+                    curl_setopt ($ch, CURLOPT_POSTFIELDS, $body);
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
                     break;
                 default:
                     $url .= '?' . $body;
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
                     break;
             }
 
         curl_setopt ($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
 
         $content = curl_exec ($ch);
         curl_close ($ch);
