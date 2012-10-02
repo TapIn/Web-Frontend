@@ -11,7 +11,7 @@
                 </div>
             <?php endif; ?>
             <div id="loginregisterform">
-                <form id="register" method="post" action="/login/login" onsubmit="mixpanel.track('register');return true;">
+                <form id="register" method="post" action="/login/register" onsubmit="mixpanel.track('register');return true;">
                     Sign up to create your own profile page.<br />
                     <input type="text" name="username" placeholder="Username" /><br />
                     <input type="text" name="email" placeholder="Email" /><br />
