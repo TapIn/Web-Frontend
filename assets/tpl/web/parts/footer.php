@@ -44,6 +44,32 @@
         'set_config','people.identify','people.set','people.increment'];for(e=0;e<h.length;e++)d(g,h[e]);
         a._i.push([b,c,f])};a.__SV=1.1;})(document,window.mixpanel||[]);
 
+        $('.share.fb').live('click', function(event){
+            event.stopPropagation();
+
+            mixpanel.track('share', {'site': 'fb'});
+
+            var current_stream_id = $(this).parent().attr('data-video');
+
+            var url = 'http://www.facebook.com/sharer.php?u=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+            newwindow=window.open(url,'','height=400,width=658');
+            if (window.focus) {newwindow.focus()}
+            return false;
+        });
+
+        $('.share.twitter').live('click', function(event){
+            event.stopPropagation();
+
+            mixpanel.track('share', {'site': 'twitter'});
+
+            var current_stream_id = $(this).parent().attr('data-video');
+
+            var url = 'https://twitter.com/share?text=Check%20out%20this%20stream!&url=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+            newwindow=window.open(url,'','height=260,width=700');
+            if (window.focus) {newwindow.focus()}
+            return false;
+        })
+
         mixpanel.init("<?=\FSStack\Config::get('mixpanel', 'token')?>");
     </script>
     <?=\AutoAB\AB::get_mixpanel_enrollment()?>

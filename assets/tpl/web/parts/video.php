@@ -1,4 +1,8 @@
- <?php if ($stream->is_live) : ?>
+<div id="video-share" data-video="<?=$stream->streamid?>">
+    <a class="share fb" href="#"><img src="<?=ASSETS_URI?>/img/share-fb.png" alt="Share on Facebook!" /></a>
+    <a class="share twitter" href="#"><img src="<?=ASSETS_URI?>/img/share-twitter.png" alt="Share on Facebook!" /></a>
+</div>
+<?php if ($stream->is_live) : ?>
     <div class="player" data-engine="flash" data-rtmp="rtmp://<?=$stream->host?>/live/<?=$stream->streamid?>">
         <video src="http://example.com/stream"></video> <!--This is a really stupid flowplayer hack-->
     </div>

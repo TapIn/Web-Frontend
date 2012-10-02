@@ -1,1 +1,0 @@
-<p>SHARE ME WITH YOUR FRIENDS!</p>
