@@ -12,7 +12,6 @@
             key: '$244665380945079',
             logo: null,
             embed: false,
-            debug: true,
             errors: [ 'Video loading aborted', 'Network error', 'Video not properly encoded', 'Video could not be found', 'Media not supported' ],
             autoplay: true,
             engine: 'flash'
