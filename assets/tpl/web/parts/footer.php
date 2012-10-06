@@ -12,10 +12,15 @@
             key: '$244665380945079',
             logo: null,
             embed: false,
-            debug: true,
+            debug: false,
             errors: [ 'Video loading aborted', 'Network error', 'Video not properly encoded', 'Video could not be found', 'Media not supported' ],
             autoplay: true,
-            engine: 'flash'
+            engine: 'flash',
+            disabled: false,
+            keyboard: true,
+            ratio: 0.5625,
+            splash: false,
+            volume: 0.8
         }
 
         // Don't use feature detection because Android devices "support" flash but it's not optimal.
