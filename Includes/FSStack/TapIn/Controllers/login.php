@@ -41,7 +41,7 @@ class login extends \CuteControllers\Base\Rest
     {
         $username = $this->request->post('username');
         $password = $this->request->post('password');
-        $confirm_password = $this->request->post('password_confim');
+        $confirm_password = $this->request->post('password_confirm');
         $email = $this->request->post('email');
 
         if (!$username || !$password || !$confirm_password || !$email) {
