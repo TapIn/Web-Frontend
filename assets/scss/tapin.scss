@@ -7,7 +7,7 @@ body {
 }
 
 
-.live {
+strong.live {
     color: $red;
 
     &:before {
@@ -130,6 +130,13 @@ body {
             width: 640px;
             height: 480px;
             margin: -15px auto 20px auto;
+        }
+
+        #video-share {
+            margin-bottom: 20px;
+            text-align: left;
+            width: 640px;
+            margin-left: 150px;
         }
 
         .videoinfo {
