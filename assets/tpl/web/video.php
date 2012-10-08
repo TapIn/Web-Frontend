@@ -3,11 +3,13 @@
     <div class="row videos">
         <div class="span12">
             <?php include('parts/video.php'); ?>
-            <div class="picture">
-                <a href="/<?=$stream->user->username?>">
-                    <img src="<?=$stream->user->profile_image?>" />
-                </a>
-            </div>
+            <?php if (isset($stream->user)) : ?>
+                <div class="picture">
+                    <a href="/<?=$stream->user->username?>">
+                        <img src="<?=$stream->user->profile_image?>" />
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

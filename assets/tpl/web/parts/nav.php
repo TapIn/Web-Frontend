@@ -16,6 +16,8 @@
                     $pages[] = array('name' => 'Login', 'uri' => '/login.html');
                 }
 
+                $pages[] = array('name' => 'Support', 'uri' => 'http://support.tapin.tv/');
+
                 if (isset($this)) {
                     $current = explode('/', $this->request->uri);
                     if (isset($current[1])) {
@@ -32,6 +34,10 @@
                     list($pre) = explode('?', $page['uri'], 2);
                     $pre = explode('/', $pre);
                     $page_base = '/' . $pre[1];
+
+                    if (strlen($page['uri']) > 7 && substr($page['uri'], 0, 7) == 'http://') {
+                        $page_base = $page['uri'];
+                    }
                 ?>
                 <li<?php if($current == $page_base) echo ' class="active"'; ?>>
                     <a href="<?php echo \CuteControllers\Router::get_link($page['uri']); ?>"><?=$page['name'];?></a>
