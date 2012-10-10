@@ -1,0 +1,7 @@
+
+# WRT54g build
+CC = /home/eta/openwrt/kamikaze_8.09/staging_dir/toolchain-mipsel_gcc3.4.6/mipsel-linux-uclibc/bin/gcc
+CFLAGS = 
+
+com: com.o
+	$(CC) -o com com.o

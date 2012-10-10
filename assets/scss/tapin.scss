@@ -15,7 +15,6 @@ strong.live {
         content: "•";
         position: relative;
         top: .18em;
-        margin-right: -.1em;
         margin-left: -.1em;
     }
 }
@@ -145,16 +144,14 @@ strong.live {
             text-align: right;
             margin-top: -30px;
             color: $red;
-
-            i {
-                font-size: 45px;
-                position: relative;
-                top: 10px;
-            }
         }
 
         margin-bottom: 40px;
     }
+}
+
+.videoinfo {
+    clear: both;
 }
 
 .videos {

@@ -6,8 +6,8 @@
     <div class="player" data-engine="flash" data-rtmp="rtmp://<?=$stream->host?>/live/<?=$stream->streamid?>">
         <video src="http://example.com/stream"></video> <!--This is a really stupid flowplayer hack-->
     </div>
-    <div class="videoinfo live">
-        <i>&bull;</i> Live Now
+    <div class="videoinfo">
+        <strong class="live">Live Now</strong>
     </div>
     <script type="text/javascript">
         mixpanel.track('play', {'live':'true', 'streamid':'<?=$stream->streamid?>'});
