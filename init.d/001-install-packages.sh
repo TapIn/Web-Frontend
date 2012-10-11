@@ -5,10 +5,13 @@ apt-get update
 sleep 5
 
 echo "--> Installing Apache, PHP, and friends"
-apt-get install -y apache2 php5 libapache2-mod-php5 php5-curl
+apt-get install -y apache2 php5 libapache2-mod-php5 php5-curl python-pip
 
 echo "--> Enabling mod_rewrite"
 a2enmod rewrite
+
+echo "--> Installing requests"
+pip install requests
 
 echo "--> Setting up the site"
 echo '<VirtualHost *:80>
