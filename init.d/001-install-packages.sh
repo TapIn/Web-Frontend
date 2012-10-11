@@ -15,6 +15,9 @@ echo '<VirtualHost *:80>
         ServerName tapin.tv
         ServerAlias *.tapin.tv
 
+        ErrorLog /var/log/apache2/error.log
+        CustomLog /var/log/apache2/access.log combined
+
         DocumentRoot /var/www
         <Directory /var/www/>
                 Options FollowSymLinks

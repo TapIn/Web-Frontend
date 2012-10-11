@@ -1,10 +1,21 @@
 #!/bin/bash
+echo "--> Moving logger"
+cp -r /tmp/bootstrap/stage3/logger /etc
 
+echo "--> Installing crontab"
+crontab -l > mycron
+echo '* * * * * python /etc/logger/logger.py
+* * * * * ( sleep 30 ; python /etc/logger/logger.py )' >> mycron
+crontab mycron
+rm mycron
+
+echo "--> Moving web dir"
 rm -rf /var/www
 cp -r /tmp/bootstrap/stage3 /var/www
 
+echo "--> Removing useless stuff"
 rm -rf /var/www/init.d
-
+rm -rf /var/www/logger
 
 echo '[app]
 static=/assets
