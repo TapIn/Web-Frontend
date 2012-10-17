@@ -5,64 +5,81 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
+    <script type="text/javascript">
+    mixpanel.track('page viewed', {'page name' : document.title, 'url' : window.location.pathname});
+    </script>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-30870918-1']);
+    _gaq.push(['_setDomainName', 'tapin.tv']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
     <script src="<?=ASSETS_URI?>/flowplayer/flowplayer.js"></script>
     <script type="text/javascript">
-        flowplayer.conf = {
-            swf: '<?=ASSETS_URI?>/flowplayer/flowplayer.swf',
-            key: '$244665380945079',
-            logo: null,
-            embed: false,
-            debug: false,
-            errors: [ 'Video loading aborted', 'Network error', 'Video not properly encoded', 'Video could not be found', 'Media not supported' ],
-            autoplay: true,
-            engine: 'flash',
-            disabled: false,
-            keyboard: true,
-            ratio: 0.5625,
-            splash: false,
-            volume: 0.8
-        }
+    flowplayer.conf = {
+        swf: '<?=ASSETS_URI?>/flowplayer/flowplayer.swf',
+        key: '$244665380945079',
+        logo: null,
+        embed: false,
+        debug: false,
+        errors: [ 'Video loading aborted', 'Network error', 'Video not properly encoded', 'Video could not be found', 'Media not supported' ],
+        autoplay: true,
+        engine: 'flash',
+        disabled: false,
+        keyboard: true,
+        ratio: 0.5625,
+        splash: false,
+        volume: 0.8
+    }
 
         // Don't use feature detection because Android devices "support" flash but it's not optimal.
         var agent = navigator.userAgent.toLowerCase();
         if ((agent.indexOf('iphone') != -1) || (agent.indexOf('ipod') != -1) || (agent.indexOf('ipad') != -1) ||
             (agent.indexOf('android') != -1)) {
             flowplayer.conf.engine = 'html5';
-        }
+    }
 
 
-        $(".player").flowplayer();
+    $(".player").flowplayer();
     </script>
 
     <script type="text/javascript" src="//use.typekit.net/edm6est.js"></script>
     <script type="text/javascript">
-        try{Typekit.load();}catch(e){}
+    try{Typekit.load();}catch(e){}
 
-        $('.share.fb').live('click', function(event){
-            event.stopPropagation();
+    $('.share.fb').live('click', function(event){
+        event.stopPropagation();
 
-            mixpanel.track('share', {'site': 'fb'});
+        mixpanel.track('share', {'site': 'fb'});
 
-            var current_stream_id = $(this).parent().attr('data-video');
+        var current_stream_id = $(this).parent().attr('data-video');
 
-            var url = 'http://www.facebook.com/sharer.php?u=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
-            newwindow=window.open(url,'','height=400,width=658');
-            if (window.focus) {newwindow.focus()}
+        var url = 'http://www.facebook.com/sharer.php?u=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+        newwindow=window.open(url,'','height=400,width=658');
+        if (window.focus) {newwindow.focus()}
             return false;
-        });
+    });
 
-        $('.share.twitter').live('click', function(event){
-            event.stopPropagation();
+    $('.share.twitter').live('click', function(event){
+        event.stopPropagation();
 
-            mixpanel.track('share', {'site': 'twitter'});
+        mixpanel.track('share', {'site': 'twitter'});
 
-            var current_stream_id = $(this).parent().attr('data-video');
+        var current_stream_id = $(this).parent().attr('data-video');
 
-            var url = 'https://twitter.com/share?text=Check%20out%20this%20stream!&url=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
-            newwindow=window.open(url,'','height=260,width=700');
-            if (window.focus) {newwindow.focus()}
+        var url = 'https://twitter.com/share?text=Check%20out%20this%20stream!&url=http%3A%2F%2Fs.tapin.tv%2Ft%2f' + current_stream_id;
+        newwindow=window.open(url,'','height=260,width=700');
+        if (window.focus) {newwindow.focus()}
             return false;
-        })
+    })
 
     </script>
     <?=\AutoAB\AB::get_mixpanel_enrollment()?>
