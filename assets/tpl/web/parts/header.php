@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?=ASSETS_URI?>/css/tapin.css"/>
 </head>
 <body>
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
     <script type="text/javascript">
         (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
         b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
