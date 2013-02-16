@@ -3,7 +3,7 @@
     <?php // Flowplayer skin: ?>
     <link rel="stylesheet" type="text/css" href="<?=ASSETS_URI?>/flowplayer/skin/minimalist.css" />
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 
     <script type="text/javascript">
     mixpanel.track('page viewed', {'page name' : document.title, 'url' : window.location.pathname});
