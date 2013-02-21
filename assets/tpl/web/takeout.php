@@ -21,7 +21,7 @@
     <script type="text/javascript">
         $('form').on('submit', function(event){
             event.stopPropagation();
-            var xhr = $.get('http://export.tapin.tv/export?username=<?=urlencode($_SESSION["username"])?>&email=' + encodeURI($('#email')), function(){});
+            var xhr = $.get('http://export.tapin.tv/export?username=<?=urlencode($_SESSION["username"])?>&email=' + encodeURI($('#email').val()), function(){});
             setTimeout(function(){xhr.abort()}, 5000);
             $(this).parent().text("Thanks, your order is on its way! It can take some time to cook; you should get your email within 15 minutes.");
             return false;
