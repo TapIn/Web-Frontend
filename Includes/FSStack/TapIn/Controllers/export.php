@@ -88,7 +88,7 @@ class export extends \CuteControllers\Base\Rest {
                                                     'from' => 'TapIn Robot <export@robot.tapin.tv>',
                                                     'to' => $email,
                                                     'subject' => 'Lo, there it is!',
-                                                    'text' => 'Hi ' . $username . ",\n\n" . "We took all your videos, zipped them together, and now they're ready for you! Use the link below:\n\n" . $link . "\n\nBeepboop,\nThe TapIn.tv Export-O-Matic Robot\n"));
+                                                    'text' => 'Hi ' . $username . ",\n\n" . "We took all your videos, zipped them together, and now they're ready for you! Sadly, they'll only be available until March 19th, 2013, so make sure to get them using the link below:\n\n" . $link . "\n\nBeepboop,\nThe TapIn.tv Export-O-Matic Robot\n"));
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
