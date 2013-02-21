@@ -30,7 +30,7 @@ class login extends \CuteControllers\Base\Rest
         try {
             \FSStack\TapIn\Api::login($username, $password);
             $_SESSION['username'] = $username;
-            $this->redirect('/' . $username);
+            $this->redirect('/takeout');
         } catch (\Exception $ex) {
             $error = $ex->getMessage();
             include(TEMPLATE_DIR . '/web/login.php');
